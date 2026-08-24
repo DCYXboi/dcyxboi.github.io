@@ -383,6 +383,14 @@
     transition: border-color .18s ease, color .18s ease;
   }
   .chip:hover { border-color: var(--accent); color: var(--accent); }
+  /* Capability rows read as a sentence rather than a set of named tools. */
+  .prose {
+    margin: 0;
+    max-width: 62ch;
+    font-size: 15.5px;
+    color: var(--ink-soft);
+    text-wrap: pretty;
+  }
   .spoken {
     font-family: var(--serif);
     font-size: clamp(22px, 2.6vw, 28px);
@@ -679,11 +687,13 @@
     </summary>
     <div class="body">
       <ul class="points">
-        <li>Coordinate with team members to identify issues, resolve tickets and troubleshoot faulty devices.</li>
-        <li>Provide onsite support for switch and server maintenance.</li>
-        <li>Take part in onsite project implementation: installation, cabling, switch configuration and acceptance testing.</li>
-        <li>Coordinate with vendors and support teams on technical problem resolution and implementation issues.</li>
-        <li>Prepare project documentation in advance &mdash; configuration scripts, cable connection tables, and project and service acceptance reports.</li>
+        <li>Provide operational support for enterprise server and network infrastructure, resolving tickets and troubleshooting faulty devices alongside team members and vendors.</li>
+        <li>Work in Linux/Unix server environments, using command-line tools for routine maintenance, system health checks and issue resolution.</li>
+        <li>Build CentOS 7 and RHEL virtual machines to replicate server environments and validate fixes before applying them to production systems.</li>
+        <li>Run hardware diagnostics on production servers &mdash; fieldiag test suites and GPU burn and stress testing &mdash; to validate stability and isolate faulty components before deployment.</li>
+        <li>Analyse system, BMC and event logs to identify the root cause of hardware and platform faults, including ECC memory error investigation.</li>
+        <li>Support onsite project implementation and deployment: installation, cabling, switch configuration and acceptance testing.</li>
+        <li>Prepare and maintain operational documentation &mdash; configuration scripts, cable connection tables, and project and service acceptance reports.</li>
       </ul>
     </div>
   </details>
@@ -701,10 +711,11 @@
     </summary>
     <div class="body">
       <ul class="points">
-        <li>Monitored and analysed security logs for 30 clients using IBM QRadar to identify recurring incidents.</li>
-        <li>Created and managed client incident tickets in Palo Alto XSOAR.</li>
-        <li>Assessed and determined whether incidents required escalation to Level 2 SOC support.</li>
-        <li>Performed daily system health checks on client devices and monitored website availability.</li>
+        <li>Monitored and analysed system and security logs for 30 client environments using IBM QRadar, investigating alerts to identify recurring incidents and their underlying root causes.</li>
+        <li>Connected to Linux servers via PuTTY using CyberArk-vaulted privileged credentials, following controlled access procedures for production investigation and log retrieval.</li>
+        <li>Managed the full incident ticket lifecycle in Palo Alto XSOAR, working to agreed response and escalation criteria.</li>
+        <li>Assessed whether incidents required escalation to Level 2 support, documenting findings, root cause assessment and status updates for stakeholders.</li>
+        <li>Performed daily system health checks on client devices and monitored application and website availability across a multi-client production environment.</li>
       </ul>
     </div>
   </details>
@@ -722,11 +733,11 @@
     </summary>
     <div class="body">
       <ul class="points">
-        <li>Created a new app with PowerApps, SharePoint and Power Automate covering employee onboarding, offboarding and joiner&ndash;leaver record management.</li>
-        <li>Built customised workflows and forms to meet client-specific operational needs, improving internal productivity.</li>
-        <li>Debugged code day to day and kept workflows running smoothly.</li>
-        <li>Ensured continuous system operation and reduced downtime.</li>
-        <li>Ensured application and data security compliance across connected platforms.</li>
+        <li>Sole developer and application support owner for the company&rsquo;s employee onboarding, offboarding and joiner&ndash;leaver record management system, built on PowerApps, SharePoint and Power Automate.</li>
+        <li>Provided ongoing application support: handled service and change requests from internal stakeholders, investigated production issues, and resolved defects without escalation support.</li>
+        <li>Monitored automated Power Automate workflow execution, investigated failed runs and resolved processing errors to maintain continuous operation and reduce downtime.</li>
+        <li>Owned end-to-end quality for delivered changes, from requirement validation through functional and regression testing to user acceptance testing prior to release.</li>
+        <li>Documented system configuration for handover and maintained application and data security compliance across connected platforms.</li>
       </ul>
     </div>
   </details>
@@ -749,7 +760,8 @@
     </div>
     <ul class="points">
       <li>Integrated a Mobile Ad Hoc Network (MANET) with blockchain technology to strengthen decentralised communication and data security.</li>
-      <li>Improved blockchain security through a custom database extension module, reducing data tampering risks.</li>
+      <li>Developed a custom database extension module in Go backed by MySQL &mdash; relational schema design and SQL queries covering joins, filtering and aggregation &mdash; to persist and retrieve chain and node data, reducing data tampering risks.</li>
+      <li>Handled MySQL connectivity, query execution and transaction handling from Go application code.</li>
       <li>Optimised MANET scalability and performance, increasing network efficiency and stability.</li>
     </ul>
   </div>
@@ -760,23 +772,64 @@
     <h2>Skills</h2>
     <div class="line"></div>
   </div>
+
   <div class="skills-row">
-    <div class="label">Technical</div>
+    <div class="label">Operating systems</div>
     <div class="chips">
-      <span class="chip">IBM QRadar</span>
-      <span class="chip">Palo Alto XSOAR</span>
+      <span class="chip">Linux / Unix</span>
+      <span class="chip">CentOS 7</span>
+      <span class="chip">RHEL</span>
+      <span class="chip">Windows</span>
+      <span class="chip">macOS</span>
+    </div>
+  </div>
+
+  <div class="skills-row">
+    <div class="label">Production support</div>
+    <p class="prose">Incident and service request management, log and system alert analysis, root cause investigation, escalation against defined SLA criteria, system health and availability monitoring, deployment support.</p>
+  </div>
+
+  <div class="skills-row">
+    <div class="label">Tools &amp; platforms</div>
+    <div class="chips">
+      <span class="chip">IBM QRadar (SIEM)</span>
+      <span class="chip">Palo Alto XSOAR (SOAR)</span>
+      <span class="chip">CyberArk</span>
+      <span class="chip">PuTTY / SSH</span>
       <span class="chip">PRTG Network Monitoring</span>
+      <span class="chip">fieldiag</span>
+      <span class="chip">GPU stress &amp; burn diagnostics</span>
+    </div>
+  </div>
+
+  <div class="skills-row">
+    <div class="label">Scripting &amp; development</div>
+    <div class="chips">
+      <span class="chip">Go</span>
+      <span class="chip">Shell &amp; configuration scripting</span>
       <span class="chip">PowerApps</span>
       <span class="chip">Power Automate</span>
       <span class="chip">SharePoint</span>
       <span class="chip">Visual Studio</span>
-      <span class="chip">MongoDB</span>
-      <span class="chip">Microsoft Tools</span>
     </div>
   </div>
+
+  <div class="skills-row">
+    <div class="label">Databases</div>
+    <div class="chips">
+      <span class="chip">MySQL</span>
+      <span class="chip">MongoDB</span>
+    </div>
+  </div>
+
+  <div class="skills-row">
+    <div class="label">Documentation</div>
+    <p class="prose">Incident and status reporting, configuration scripts, operational and acceptance reports; advanced Microsoft Excel and Word.</p>
+  </div>
+
   <div class="skills-row">
     <div class="label">Spoken</div>
-    <div class="spoken">Mandarin, English and Malay.</div>
+    <div class="spoken">English, Mandarin and Malay.</div>
   </div>
 </section>
 
