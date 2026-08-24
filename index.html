@@ -34,6 +34,7 @@
 
     --gut: clamp(20px, 6vw, 96px);
     --col: 190px;
+    --maxw: 1240px;
   }
 
   @media (prefers-color-scheme: dark) {
@@ -103,7 +104,10 @@
     border-radius: 2px;
   }
 
-  .wrap { padding-inline: var(--gut); }
+  /* Content is capped and centred, but the elements stay full width so the
+     nav bar, the accent project panel and the footer still bleed edge to
+     edge. Padding does the centring, so there is no scrollbar-width drift. */
+  .wrap { padding-inline: max(var(--gut), calc((100% - var(--maxw)) / 2)); }
 
   .label {
     font-family: var(--mono);
@@ -139,12 +143,24 @@
     pointer-events: none;
   }
 
+  .hero-name {
+    position: relative;
+    z-index: 1;
+    margin: 0 0 clamp(26px, 4vw, 46px);
+    text-align: center;
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(42px, 7.6vw, 100px);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
   /* Terminal on the left, status readout and the four links stacked on the
      right, so the whole identity block reads as one console. */
   .intro {
     position: relative;
     z-index: 1;
-    max-width: 1180px;
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(272px, 360px);
     gap: clamp(18px, 2.6vw, 40px);
@@ -260,7 +276,7 @@
   nav::-webkit-scrollbar { display: none; }
   /* Pull the bar back by the links' own padding so the first label still
      sits on the page gutter. */
-  nav.wrap { padding-inline: calc(var(--gut) - 13px); }
+  nav.wrap { padding-inline: max(calc(var(--gut) - 13px), calc((100% - var(--maxw)) / 2 - 13px)); }
 
   .navlink {
     display: flex;
@@ -285,43 +301,24 @@
     border-bottom-color: var(--accent);
   }
 
-  /* The h1 lives in the terminal, which scrolls away — so the sticky bar
-     carries the name for the rest of the page. */
-  .nav-name {
-    flex: 0 0 auto;
-    display: flex;
-    align-items: center;
-    min-height: 46px;
-    padding-right: 16px;
-    margin-right: 4px;
-    border-right: 1px solid var(--rule);
-    font-family: var(--mono);
-    font-size: 11.5px;
-    font-weight: 500;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--ink);
-    white-space: nowrap;
-  }
 
   /* ---------- fact strip ---------- */
 
   .facts {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 1px;
-    background: var(--rule);
+    padding-inline: max(var(--gut), calc((100% - var(--maxw)) / 2));
     border-bottom: 1px solid var(--rule);
   }
   .fact {
-    background: var(--paper);
-    padding: 22px var(--gut);
+    padding: 22px clamp(20px, 3vw, 32px);
     display: flex;
     flex-direction: column;
     gap: 6px;
   }
-  .fact:not(:first-child) { padding-inline: clamp(20px, 3vw, 32px); }
-  .fact:last-child { padding-right: var(--gut); }
+  .fact + .fact { border-left: 1px solid var(--rule); }
+  .fact:first-child { padding-left: 0; }
+  .fact:last-child { padding-right: 0; }
   .fact p { margin: 0; font-size: 15px; }
   .fact span { color: var(--ink-soft); }
 
@@ -767,13 +764,13 @@
     .entry { grid-template-columns: 1fr; gap: 12px; }
     .entry .when { padding-top: 0; }
     .intro { grid-template-columns: 1fr; gap: 22px; }
-    .nav-name { padding-right: 12px; letter-spacing: 0.06em; }
     .skl { grid-template-columns: 1fr; gap: 12px; }
     .skl .label { padding-top: 0; }
     .skl-ctx { grid-column: 1; }
     .term-body { padding: 14px 13px 18px; }
     .facts { grid-template-columns: 1fr; }
-    .fact { padding-inline: var(--gut) !important; }
+    .fact { padding-inline: 0; }
+    .fact + .fact { border-left: 0; border-top: 1px solid var(--rule); }
     .project { grid-template-columns: 1fr; }
     footer .colophon { text-align: left; }
     /* Comfortable thumb targets once the page is being tapped, not clicked. */
@@ -849,6 +846,7 @@
 
 <header class="masthead wrap">
   <canvas class="net" aria-hidden="true"></canvas>
+  <h1 class="hero-name">Danny Chan Yi Xiang</h1>
   <div class="intro">
   <div class="term">
     <div class="term-bar">
@@ -857,7 +855,7 @@
     </div>
     <div class="term-body">
       <p class="ln"><span class="ps1">$</span> whoami</p>
-      <h1 class="ln">Danny Chan Yi Xiang <span class="dim">&mdash; Cybersecurity / Infrastructure Engineer</span></h1>
+      <p class="ln">Danny Chan Yi Xiang <span class="dim">&mdash; Cybersecurity / Infrastructure Engineer</span></p>
       <p class="ln sp"></p>
       <p class="ln"><span class="ps1">$</span> cat interests.txt</p>
       <p class="ln">SOC operations</p>
@@ -901,7 +899,6 @@
 </header>
 
 <nav class="wrap" aria-label="Sections">
-  <span class="nav-name">Danny Chan Yi Xiang</span>
   <button class="navlink" data-to="experience" aria-current="true">Experience</button>
   <button class="navlink" data-to="project">Project</button>
   <button class="navlink" data-to="skills">Skills</button>
