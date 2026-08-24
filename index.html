@@ -125,11 +125,6 @@
 
   .masthead {
     position: relative;
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: clamp(24px, 5vw, 72px);
     padding-block: clamp(56px, 9vw, 108px) clamp(40px, 6vw, 68px);
   }
 
@@ -150,32 +145,6 @@
     display: flex;
     flex-direction: column;
     gap: 26px;
-    flex: 1 1 auto;
-    min-width: 0;
-  }
-
-  /* Duotone plate: the accent shows through the photo's dark values, so the
-     portrait is built from the page's own two colours instead of sitting on
-     top of them as a foreign rectangle. */
-  .portrait {
-    position: relative;
-    z-index: 1;
-    flex: 0 0 auto;
-    width: clamp(112px, 17vw, 188px);
-    aspect-ratio: 1 / 1.16;
-    margin-top: 6px;
-    overflow: hidden;
-    background: var(--accent);
-  }
-  .portrait img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: 50% 20%;
-    filter: grayscale(1) contrast(1.06);
-    mix-blend-mode: luminosity;
-    opacity: 0.9;
   }
 
   h1 {
@@ -431,35 +400,83 @@
 
   /* ---------- skills ---------- */
 
-  .skills-row {
+  .deck {
     display: grid;
-    grid-template-columns: var(--col) 1fr;
-    gap: clamp(16px, 3vw, 36px);
-    align-items: baseline;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
   }
-  .skills-row + .skills-row {
-    margin-top: 26px;
-    padding-top: 26px;
-    border-top: 1px solid var(--rule);
+
+  /* Each card is a real button: hover flips it, click pins it open, and the
+     keyboard reaches it like any other control. */
+  .flip {
+    /* Tall enough for the longest back face — seven items — without the
+       list needing to scroll inside the card. */
+    height: 232px;
+    perspective: 1000px;
+    padding: 0;
+    border: 0;
+    background: none;
+    font: inherit;
+    color: inherit;
+    text-align: left;
+    cursor: pointer;
   }
-  /* Set as a run of text rather than boxed tags: nothing in this section is
-     clickable, so nothing in it should look like a button. The middot is the
-     same separator the fact strip and the location line already use. */
-  .items {
+  .flip-in {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform .55s cubic-bezier(.2, .7, .3, 1);
+  }
+  .flip:hover .flip-in,
+  .flip:focus-visible .flip-in,
+  .flip[aria-expanded="true"] .flip-in { transform: rotateY(180deg); }
+
+  .face {
+    position: absolute;
+    inset: 0;
     display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    max-width: 68ch;
-    font-size: 16px;
-    line-height: 1.75;
-    color: var(--ink);
+    padding: 20px;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
   }
-  .items span { display: inline-flex; align-items: baseline; }
-  .items span:not(:last-child)::after {
-    content: "\00B7";
-    margin: 0 13px;
-    color: var(--ink-faint);
+  .face.front {
+    flex-direction: column;
+    justify-content: space-between;
+    border: 1px solid var(--rule);
+    transition: border-color .2s ease;
   }
+  .flip:hover .face.front { border-color: var(--accent); }
+  .face.front h3 {
+    margin: 0;
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: 23px;
+    line-height: 1.15;
+    letter-spacing: -0.005em;
+    text-wrap: balance;
+  }
+  .turn { color: var(--ink-faint); align-self: flex-end; }
+  .flip:hover .turn { color: var(--accent); }
+
+  .face.back {
+    transform: rotateY(180deg);
+    background: var(--accent);
+    color: var(--paper);
+    align-items: center;
+    padding: 18px 20px;
+    overflow-y: auto;
+  }
+  .card-list {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    font-size: 14px;
+    line-height: 1.55;
+  }
+
+  @media (max-width: 1020px) { .deck { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 
   /* ---------- education ---------- */
 
@@ -624,12 +641,8 @@
 
   @media (max-width: 860px) {
     :root { --col: 0px; }
-    /* Portrait sits above the name on a phone rather than crowding it. */
-    .masthead { flex-direction: column-reverse; align-items: flex-start; gap: 30px; }
-    .portrait { margin-top: 0; width: clamp(96px, 30vw, 132px); }
     .role summary,
     .role .body,
-    .skills-row,
     .entry { grid-template-columns: 1fr auto; }
     .role summary { grid-template-columns: 1fr 24px; }
     .role summary .when { grid-column: 1; padding-top: 0; margin-bottom: 6px; }
@@ -637,8 +650,9 @@
     .role .chev { grid-row: 1 / span 2; grid-column: 2; padding-top: 4px; }
     .role .body { grid-template-columns: 1fr; padding-bottom: 26px; }
     .role .body > ul { grid-column: 1; }
-    .skills-row, .entry { grid-template-columns: 1fr; gap: 12px; }
-    .entry .when, .skills-row .label { padding-top: 0; }
+    .entry { grid-template-columns: 1fr; gap: 12px; }
+    .entry .when { padding-top: 0; }
+    .deck { grid-template-columns: 1fr; }
     .facts { grid-template-columns: 1fr; }
     .fact { padding-inline: var(--gut) !important; }
     .project { grid-template-columns: 1fr; }
@@ -662,7 +676,7 @@
   .js-reveal .head,
   .js-reveal .role,
   .js-reveal .project,
-  .js-reveal .skills-row,
+  .js-reveal .deck,
   .js-reveal .entry,
   .js-reveal footer > * {
     opacity: 0;
@@ -690,12 +704,19 @@
     .js-reveal .head,
     .js-reveal .role,
     .js-reveal .project,
-    .js-reveal .skills-row,
+    .js-reveal .deck,
     .js-reveal .entry,
     .js-reveal footer > * {
       opacity: 1;
       transform: none;
     }
+    /* No rotation either: the back simply takes the front's place. */
+    .flip-in { transform: none !important; }
+    .face { backface-visibility: visible; -webkit-backface-visibility: visible; }
+    .face.back { transform: none; opacity: 0; }
+    .flip:hover .face.back,
+    .flip:focus-visible .face.back,
+    .flip[aria-expanded="true"] .face.back { opacity: 1; }
   }
 </style>
 </head>
@@ -724,9 +745,6 @@
       Download resume
     </a>
   </div>
-  </div>
-  <div class="portrait">
-    <img src="headshot.jpg" alt="Danny Chan Yi Xiang" width="307" height="359">
   </div>
 </header>
 
@@ -859,70 +877,128 @@
     <div class="line"></div>
   </div>
 
-  <div class="skills-row">
-    <div class="label">Operating systems</div>
-    <div class="items">
-      <span>Linux / Unix</span>
-      <span>CentOS 7</span>
-      <span>RHEL</span>
-      <span>Windows</span>
-      <span>macOS</span>
-    </div>
-  </div>
+  <div class="deck">
 
-  <div class="skills-row">
-    <div class="label">Production support</div>
-    <div class="items">
-      <span>Incident &amp; service request management</span>
-      <span>Log &amp; system alert analysis</span>
-      <span>Root cause investigation</span>
-      <span>SLA-based escalation</span>
-      <span>Health &amp; availability monitoring</span>
-      <span>Deployment support</span>
-    </div>
-  </div>
+    <button class="flip" type="button" aria-expanded="false">
+      <span class="flip-in">
+        <span class="face front">
+          <h3>Operating systems</h3>
+          <span class="turn" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9 9 0 0 1 7 3.3"></path><polyline points="19 2 19 6.5 14.5 6.5"></polyline><path d="M21 12a9 9 0 0 1-9 9 9 9 0 0 1-7-3.3"></path><polyline points="5 22 5 17.5 9.5 17.5"></polyline></svg>
+          </span>
+        </span>
+        <span class="face back">
+          <span class="card-list">
+            <span>Linux / Unix</span>
+            <span>CentOS 7</span>
+            <span>RHEL</span>
+            <span>Windows</span>
+            <span>macOS</span>
+          </span>
+        </span>
+      </span>
+    </button>
 
-  <div class="skills-row">
-    <div class="label">Tools &amp; platforms</div>
-    <div class="items">
-      <span>IBM QRadar (SIEM)</span>
-      <span>Palo Alto XSOAR (SOAR)</span>
-      <span>CyberArk</span>
-      <span>PuTTY / SSH</span>
-      <span>PRTG Network Monitoring</span>
-      <span>fieldiag</span>
-      <span>GPU stress &amp; burn diagnostics</span>
-    </div>
-  </div>
+    <button class="flip" type="button" aria-expanded="false">
+      <span class="flip-in">
+        <span class="face front">
+          <h3>Production support</h3>
+          <span class="turn" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9 9 0 0 1 7 3.3"></path><polyline points="19 2 19 6.5 14.5 6.5"></polyline><path d="M21 12a9 9 0 0 1-9 9 9 9 0 0 1-7-3.3"></path><polyline points="5 22 5 17.5 9.5 17.5"></polyline></svg>
+          </span>
+        </span>
+        <span class="face back">
+          <span class="card-list">
+            <span>Incident &amp; service request management</span>
+            <span>Log &amp; system alert analysis</span>
+            <span>Root cause investigation</span>
+            <span>SLA-based escalation</span>
+            <span>Health &amp; availability monitoring</span>
+            <span>Deployment support</span>
+          </span>
+        </span>
+      </span>
+    </button>
 
-  <div class="skills-row">
-    <div class="label">Scripting &amp; development</div>
-    <div class="items">
-      <span>Shell &amp; configuration scripting</span>
-      <span>Go</span>
-      <span>SQL</span>
-      <span>PowerApps</span>
-      <span>Power Automate</span>
-      <span>SharePoint</span>
-      <span>Visual Studio</span>
-    </div>
-  </div>
+    <button class="flip" type="button" aria-expanded="false">
+      <span class="flip-in">
+        <span class="face front">
+          <h3>Tools &amp; platforms</h3>
+          <span class="turn" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9 9 0 0 1 7 3.3"></path><polyline points="19 2 19 6.5 14.5 6.5"></polyline><path d="M21 12a9 9 0 0 1-9 9 9 9 0 0 1-7-3.3"></path><polyline points="5 22 5 17.5 9.5 17.5"></polyline></svg>
+          </span>
+        </span>
+        <span class="face back">
+          <span class="card-list">
+            <span>IBM QRadar (SIEM)</span>
+            <span>Palo Alto XSOAR (SOAR)</span>
+            <span>CyberArk</span>
+            <span>PuTTY / SSH</span>
+            <span>PRTG Network Monitoring</span>
+            <span>fieldiag</span>
+            <span>GPU stress &amp; burn diagnostics</span>
+          </span>
+        </span>
+      </span>
+    </button>
 
-  <div class="skills-row">
-    <div class="label">Databases</div>
-    <div class="items">
-      <span>MySQL</span>
-      <span>MongoDB</span>
-    </div>
-  </div>
+    <button class="flip" type="button" aria-expanded="false">
+      <span class="flip-in">
+        <span class="face front">
+          <h3>Scripting &amp; development</h3>
+          <span class="turn" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9 9 0 0 1 7 3.3"></path><polyline points="19 2 19 6.5 14.5 6.5"></polyline><path d="M21 12a9 9 0 0 1-9 9 9 9 0 0 1-7-3.3"></path><polyline points="5 22 5 17.5 9.5 17.5"></polyline></svg>
+          </span>
+        </span>
+        <span class="face back">
+          <span class="card-list">
+            <span>Shell &amp; configuration scripting</span>
+            <span>Go</span>
+            <span>SQL</span>
+            <span>PowerApps</span>
+            <span>Power Automate</span>
+            <span>SharePoint</span>
+            <span>Visual Studio</span>
+          </span>
+        </span>
+      </span>
+    </button>
 
-  <div class="skills-row">
-    <div class="label">Spoken</div>
-    <div class="items">
-      <span>English</span>
-      <span>Mandarin</span>
-      <span>Malay</span>
-    </div>
+    <button class="flip" type="button" aria-expanded="false">
+      <span class="flip-in">
+        <span class="face front">
+          <h3>Databases</h3>
+          <span class="turn" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9 9 0 0 1 7 3.3"></path><polyline points="19 2 19 6.5 14.5 6.5"></polyline><path d="M21 12a9 9 0 0 1-9 9 9 9 0 0 1-7-3.3"></path><polyline points="5 22 5 17.5 9.5 17.5"></polyline></svg>
+          </span>
+        </span>
+        <span class="face back">
+          <span class="card-list">
+            <span>MySQL</span>
+            <span>MongoDB</span>
+          </span>
+        </span>
+      </span>
+    </button>
+
+    <button class="flip" type="button" aria-expanded="false">
+      <span class="flip-in">
+        <span class="face front">
+          <h3>Spoken</h3>
+          <span class="turn" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9 9 0 0 1 7 3.3"></path><polyline points="19 2 19 6.5 14.5 6.5"></polyline><path d="M21 12a9 9 0 0 1-9 9 9 9 0 0 1-7-3.3"></path><polyline points="5 22 5 17.5 9.5 17.5"></polyline></svg>
+          </span>
+        </span>
+        <span class="face back">
+          <span class="card-list">
+            <span>English</span>
+            <span>Mandarin</span>
+            <span>Malay</span>
+          </span>
+        </span>
+      </span>
+    </button>
+
   </div>
 </section>
 
@@ -1013,7 +1089,7 @@
     if (!root.classList.contains('js-reveal')) return;
 
     var blocks = document.querySelectorAll(
-      '.fact, .head, .role, .project, .skills-row, .entry, footer > *'
+      '.fact, .head, .role, .project, .deck, .entry, footer > *'
     );
 
     var reveal = function (el) { el.classList.add('is-revealed'); };
@@ -1032,6 +1108,19 @@
       // Never leave the page's content stranded behind a broken effect.
       Array.prototype.forEach.call(blocks, reveal);
     }
+  })();
+
+  // ---- skill cards ----
+  // Hover is the quick way in, but it does not exist on a phone and cannot be
+  // reached from a keyboard, so a click pins the card open as well.
+  (function () {
+    var cards = document.querySelectorAll('.flip');
+    Array.prototype.forEach.call(cards, function (card) {
+      card.addEventListener('click', function () {
+        var open = card.getAttribute('aria-expanded') === 'true';
+        card.setAttribute('aria-expanded', open ? 'false' : 'true');
+      });
+    });
   })();
 
   // ---- masthead node field ----
