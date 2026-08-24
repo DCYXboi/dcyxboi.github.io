@@ -139,18 +139,22 @@
     pointer-events: none;
   }
 
+  /* Terminal on the left, status readout and the four links stacked on the
+     right, so the whole identity block reads as one console. */
   .intro {
     position: relative;
     z-index: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 26px;
+    max-width: 1180px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(272px, 360px);
+    gap: clamp(18px, 2.6vw, 40px);
+    align-items: start;
   }
+  .hero-side { display: flex; flex-direction: column; gap: 14px; }
 
   /* ---------- terminal hero ---------- */
 
   .term {
-    max-width: 780px;
     border: 1px solid var(--rule);
     background: color-mix(in oklab, var(--ink) 5%, var(--paper));
     font-family: var(--mono);
@@ -216,26 +220,24 @@
   }
   .kbd:hover { color: var(--accent); border-color: var(--accent); }
 
+  /* All four read as controls now that they sit together in a block: boxed
+     rather than underlined, each taking the ink wipe edge to edge. */
   .contact {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 14px 28px;
-    margin-top: 6px;
-    font-size: 15px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
   }
-
-  /* The one control in the header, so it reads as a control: boxed rather
-     than underlined, and it takes the ink wipe edge to edge. */
   .cv {
     display: inline-flex;
     align-items: center;
-    gap: 9px;
-    padding: 10px 17px;
+    justify-content: center;
+    gap: 8px;
+    padding: 11px 14px;
     border: 1px solid var(--ink);
     color: var(--ink);
-    font-size: 14.5px;
+    font-size: 14px;
     line-height: 1;
+    white-space: nowrap;
   }
   .cv svg { flex: 0 0 auto; }
 
@@ -281,6 +283,25 @@
   .navlink[aria-current="true"] {
     color: var(--accent);
     border-bottom-color: var(--accent);
+  }
+
+  /* The h1 lives in the terminal, which scrolls away — so the sticky bar
+     carries the name for the rest of the page. */
+  .nav-name {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    min-height: 46px;
+    padding-right: 16px;
+    margin-right: 4px;
+    border-right: 1px solid var(--rule);
+    font-family: var(--mono);
+    font-size: 11.5px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink);
+    white-space: nowrap;
   }
 
   /* ---------- fact strip ---------- */
@@ -488,14 +509,12 @@
   /* ---------- system status ---------- */
 
   .sys {
-    margin-top: clamp(48px, 7vw, 84px);
     border: 1px solid var(--rule);
-    padding: clamp(20px, 3vw, 30px);
+    padding: 18px 20px;
     font-family: var(--mono);
-    font-size: 13.5px;
-    max-width: 620px;
+    font-size: 12.5px;
   }
-  .sys-head { color: var(--accent); letter-spacing: 0.08em; margin-bottom: 16px; }
+  .sys-head { color: var(--accent); letter-spacing: 0.08em; margin-bottom: 14px; }
   .sys ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 9px; }
   .sys li { display: flex; align-items: baseline; gap: 10px; }
   .sys .k { color: var(--ink); white-space: nowrap; }
@@ -513,7 +532,7 @@
   .sys li:nth-child(5) .v { transition-delay: .72s; }
   .bar {
     display: inline-block;
-    width: 108px;
+    width: 64px;
     height: 9px;
     border: 1px solid var(--accent);
     vertical-align: -1px;
@@ -669,7 +688,6 @@
 
   .navlink::before { inset: 5px 0 4px; }
   .role summary::before { inset: 8px -16px; }
-  .contact a:not(.cv)::before,
   .paper::before,
   footer a::before { inset: -3px -8px; }
   .cv::before { inset: 0; }
@@ -702,8 +720,6 @@
   .role summary:focus-visible .meta,
   .role summary:focus-visible .chev { color: var(--paper); }
 
-  .contact a:not(.cv):hover,
-  .contact a:not(.cv):focus-visible,
   .paper:hover,
   .paper:focus-visible,
   footer a:hover,
@@ -719,7 +735,6 @@
     border-color: var(--accent);
   }
 
-  .contact a:not(.cv),
   .paper,
   footer a { padding-inline: 8px; margin-inline: -8px; }
 
@@ -751,6 +766,8 @@
     .role .body > ul { grid-column: 1; }
     .entry { grid-template-columns: 1fr; gap: 12px; }
     .entry .when { padding-top: 0; }
+    .intro { grid-template-columns: 1fr; gap: 22px; }
+    .nav-name { padding-right: 12px; letter-spacing: 0.06em; }
     .skl { grid-template-columns: 1fr; gap: 12px; }
     .skl .label { padding-top: 0; }
     .skl-ctx { grid-column: 1; }
@@ -779,7 +796,6 @@
   .js-reveal .role,
   .js-reveal .project,
   .js-reveal .skl,
-  .js-reveal .sys,
   .js-reveal .entry,
   .js-reveal footer > * {
     opacity: 0;
@@ -808,7 +824,6 @@
     .js-reveal .role,
     .js-reveal .project,
     .js-reveal .skl,
-  .js-reveal .sys,
     .js-reveal .entry,
     .js-reveal footer > * {
       opacity: 1;
@@ -861,19 +876,32 @@
       <p class="ln"><span class="ps1">$</span> <span class="caret" aria-hidden="true"></span></p>
     </div>
   </div>
+  <div class="hero-side">
+  <div class="sys">
+    <div class="sys-head">[ SYSTEM ONLINE ]</div>
+    <ul>
+      <li><span class="k">Linux / Unix</span><span class="dots"></span><span class="v">OK</span></li>
+      <li><span class="k">Security operations</span><span class="dots"></span><span class="v">OK</span></li>
+      <li><span class="k">Infrastructure</span><span class="dots"></span><span class="v">OK</span></li>
+      <li><span class="k">Security+</span><span class="dots"></span><span class="v">VALID &rarr; FEB 2028</span></li>
+      <li><span class="k">Coffee</span><span class="dots"></span><span class="v"><span class="bar" aria-hidden="true"><i></i></span>100%</span></li>
+    </ul>
+  </div>
   <div class="contact">
-    <a href="mailto:danny.chan2003@yahoo.com">danny.chan2003@yahoo.com</a>
-    <a href="https://www.linkedin.com/in/danny-chan-a013aa204/" target="_blank" rel="noopener">LinkedIn</a>
-    <a href="https://github.com/DCYXboi" target="_blank" rel="noopener">GitHub</a>
+    <a class="cv" href="mailto:danny.chan2003@yahoo.com">Email</a>
+    <a class="cv" href="https://www.linkedin.com/in/danny-chan-a013aa204/" target="_blank" rel="noopener">LinkedIn</a>
+    <a class="cv" href="https://github.com/DCYXboi" target="_blank" rel="noopener">GitHub</a>
     <a class="cv" href="resume.pdf" download="Danny-Chan-Yi-Xiang-Resume.pdf">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-      Download resume
+      Resume
     </a>
+  </div>
   </div>
   </div>
 </header>
 
 <nav class="wrap" aria-label="Sections">
+  <span class="nav-name">Danny Chan Yi Xiang</span>
   <button class="navlink" data-to="experience" aria-current="true">Experience</button>
   <button class="navlink" data-to="project">Project</button>
   <button class="navlink" data-to="skills">Skills</button>
@@ -1137,16 +1165,6 @@
     </div>
   </div>
 
-  <div class="sys">
-    <div class="sys-head">[ SYSTEM ONLINE ]</div>
-    <ul>
-      <li><span class="k">Linux / Unix</span><span class="dots"></span><span class="v">OK</span></li>
-      <li><span class="k">Security operations</span><span class="dots"></span><span class="v">OK</span></li>
-      <li><span class="k">Infrastructure</span><span class="dots"></span><span class="v">OK</span></li>
-      <li><span class="k">Security+</span><span class="dots"></span><span class="v">VALID &rarr; FEB 2028</span></li>
-      <li><span class="k">Coffee</span><span class="dots"></span><span class="v"><span class="bar" aria-hidden="true"><i></i></span>100%</span></li>
-    </ul>
-  </div>
 </section>
 
 </main>
@@ -1223,7 +1241,7 @@
     if (!root.classList.contains('js-reveal')) return;
 
     var blocks = document.querySelectorAll(
-      '.fact, .head, .role, .project, .skl, .sys, .entry, footer > *'
+      '.fact, .head, .role, .project, .skl, .entry, footer > *'
     );
 
     var reveal = function (el) { el.classList.add('is-revealed'); };
