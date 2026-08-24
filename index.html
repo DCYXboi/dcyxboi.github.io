@@ -367,34 +367,30 @@
     display: grid;
     grid-template-columns: var(--col) 1fr;
     gap: clamp(16px, 3vw, 36px);
-    align-items: start;
+    align-items: baseline;
   }
   .skills-row + .skills-row {
-    margin-top: 30px;
-    padding-top: 30px;
+    margin-top: 26px;
+    padding-top: 26px;
     border-top: 1px solid var(--rule);
   }
-  .chips { display: flex; flex-wrap: wrap; gap: 9px; }
-  .chip {
-    border: 1px solid var(--rule);
-    padding: 8px 15px;
-    font-size: 14.5px;
+  /* Set as a run of text rather than boxed tags: nothing in this section is
+     clickable, so nothing in it should look like a button. The middot is the
+     same separator the fact strip and the location line already use. */
+  .items {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    max-width: 68ch;
+    font-size: 16px;
+    line-height: 1.75;
     color: var(--ink);
-    transition: border-color .18s ease, color .18s ease;
   }
-  .chip:hover { border-color: var(--accent); color: var(--accent); }
-  /* Capability rows read as a sentence rather than a set of named tools. */
-  .prose {
-    margin: 0;
-    max-width: 62ch;
-    font-size: 15.5px;
-    color: var(--ink-soft);
-    text-wrap: pretty;
-  }
-  .spoken {
-    font-family: var(--serif);
-    font-size: clamp(22px, 2.6vw, 28px);
-    line-height: 1.35;
+  .items span { display: inline-flex; align-items: baseline; }
+  .items span:not(:last-child)::after {
+    content: "\00B7";
+    margin: 0 13px;
+    color: var(--ink-faint);
   }
 
   /* ---------- education ---------- */
@@ -775,61 +771,68 @@
 
   <div class="skills-row">
     <div class="label">Operating systems</div>
-    <div class="chips">
-      <span class="chip">Linux / Unix</span>
-      <span class="chip">CentOS 7</span>
-      <span class="chip">RHEL</span>
-      <span class="chip">Windows</span>
-      <span class="chip">macOS</span>
+    <div class="items">
+      <span>Linux / Unix</span>
+      <span>CentOS 7</span>
+      <span>RHEL</span>
+      <span>Windows</span>
+      <span>macOS</span>
     </div>
   </div>
 
   <div class="skills-row">
     <div class="label">Production support</div>
-    <p class="prose">Incident and service request management, log and system alert analysis, root cause investigation, escalation against defined SLA criteria, system health and availability monitoring, deployment support.</p>
+    <div class="items">
+      <span>Incident &amp; service request management</span>
+      <span>Log &amp; system alert analysis</span>
+      <span>Root cause investigation</span>
+      <span>SLA-based escalation</span>
+      <span>Health &amp; availability monitoring</span>
+      <span>Deployment support</span>
+    </div>
   </div>
 
   <div class="skills-row">
     <div class="label">Tools &amp; platforms</div>
-    <div class="chips">
-      <span class="chip">IBM QRadar (SIEM)</span>
-      <span class="chip">Palo Alto XSOAR (SOAR)</span>
-      <span class="chip">CyberArk</span>
-      <span class="chip">PuTTY / SSH</span>
-      <span class="chip">PRTG Network Monitoring</span>
-      <span class="chip">fieldiag</span>
-      <span class="chip">GPU stress &amp; burn diagnostics</span>
+    <div class="items">
+      <span>IBM QRadar (SIEM)</span>
+      <span>Palo Alto XSOAR (SOAR)</span>
+      <span>CyberArk</span>
+      <span>PuTTY / SSH</span>
+      <span>PRTG Network Monitoring</span>
+      <span>fieldiag</span>
+      <span>GPU stress &amp; burn diagnostics</span>
     </div>
   </div>
 
   <div class="skills-row">
     <div class="label">Scripting &amp; development</div>
-    <div class="chips">
-      <span class="chip">Go</span>
-      <span class="chip">Shell &amp; configuration scripting</span>
-      <span class="chip">PowerApps</span>
-      <span class="chip">Power Automate</span>
-      <span class="chip">SharePoint</span>
-      <span class="chip">Visual Studio</span>
+    <div class="items">
+      <span>Shell &amp; configuration scripting</span>
+      <span>Go</span>
+      <span>SQL</span>
+      <span>PowerApps</span>
+      <span>Power Automate</span>
+      <span>SharePoint</span>
+      <span>Visual Studio</span>
     </div>
   </div>
 
   <div class="skills-row">
     <div class="label">Databases</div>
-    <div class="chips">
-      <span class="chip">MySQL</span>
-      <span class="chip">MongoDB</span>
+    <div class="items">
+      <span>MySQL</span>
+      <span>MongoDB</span>
     </div>
   </div>
 
   <div class="skills-row">
-    <div class="label">Documentation</div>
-    <p class="prose">Incident and status reporting, configuration scripts, operational and acceptance reports; advanced Microsoft Excel and Word.</p>
-  </div>
-
-  <div class="skills-row">
     <div class="label">Spoken</div>
-    <div class="spoken">English, Mandarin and Malay.</div>
+    <div class="items">
+      <span>English</span>
+      <span>Mandarin</span>
+      <span>Malay</span>
+    </div>
   </div>
 </section>
 
