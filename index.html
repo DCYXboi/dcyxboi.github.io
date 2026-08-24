@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Danny Chan Yi Xiang</title>
-<meta name="description" content="Danny Chan Yi Xiang — Operation &amp; Maintenance Engineer and Computer Science (Cyber Security) graduate, working across security operations, application support and infrastructure.">
+<meta name="description" content="Danny Chan Yi Xiang â€” Operation &amp; Maintenance Engineer and Computer Science (Cyber Security) graduate, working across security operations, application support and infrastructure.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;450;500;600&display=swap">
@@ -128,7 +128,7 @@
     padding-block: clamp(56px, 9vw, 108px) clamp(40px, 6vw, 68px);
   }
 
-  /* Drifting nodes behind the masthead — a quiet nod to the MANET work.
+  /* Drifting nodes behind the masthead â€” a quiet nod to the MANET work.
      Purely decorative, so it sits under the text and ignores the pointer. */
   .net {
     position: absolute;
@@ -147,26 +147,74 @@
     gap: 26px;
   }
 
+  /* ---------- terminal hero ---------- */
+
+  .term {
+    max-width: 780px;
+    border: 1px solid var(--rule);
+    background: color-mix(in oklab, var(--ink) 5%, var(--paper));
+    font-family: var(--mono);
+    font-size: clamp(12.5px, 1.3vw, 15px);
+    line-height: 1.9;
+  }
+  .term-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 9px 15px;
+    border-bottom: 1px solid var(--rule);
+    font-size: 11.5px;
+    letter-spacing: 0.07em;
+    color: var(--ink-faint);
+  }
+  .term-body { padding: 16px 15px 20px; }
+
+  .ln { margin: 0; white-space: pre-wrap; color: var(--ink); }
+  .ln.sp { height: 0.85em; }
+  .ps1 { color: var(--accent); }
+  .dim { color: var(--ink-soft); }
+
+  /* The name is the first thing in the document, just typed rather than set. */
   h1 {
     margin: 0;
-    font-family: var(--serif);
-    font-weight: 400;
-    font-size: clamp(52px, 11vw, 116px);
-    line-height: 0.94;
-    letter-spacing: -0.015em;
-    text-wrap: balance;
+    font-family: var(--mono);
+    font-size: inherit;
+    font-weight: 500;
+    line-height: inherit;
+    letter-spacing: 0;
   }
 
-  .lede {
-    margin: 0;
-    max-width: 30em;
-    font-family: var(--serif);
-    font-size: clamp(21px, 2.6vw, 29px);
-    line-height: 1.42;
-    color: var(--ink-soft);
-    text-wrap: pretty;
+  .caret {
+    display: inline-block;
+    width: 0.55em;
+    height: 1.05em;
+    background: var(--accent);
+    vertical-align: -0.17em;
+    animation: blink 1.05s steps(1) infinite;
   }
-  .lede em { font-style: italic; color: var(--ink); }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  /* Lines are hidden by visibility, not display, so the box never changes
+     height as they arrive and the page below never jumps. */
+  .term.typing .ln { visibility: hidden; }
+  .term.typing .ln.on { visibility: visible; }
+
+  .kbd {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 8px;
+    border: 1px solid var(--rule);
+    background: none;
+    color: var(--ink-faint);
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.07em;
+    cursor: pointer;
+    transition: color .18s ease, border-color .18s ease;
+  }
+  .kbd:hover { color: var(--accent); border-color: var(--accent); }
 
   .contact {
     display: flex;
@@ -400,83 +448,134 @@
 
   /* ---------- skills ---------- */
 
-  .deck {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 14px;
-  }
+  .skl { display: grid; grid-template-columns: var(--col) 1fr; gap: clamp(16px, 3vw, 36px); }
+  .skl + .skl { margin-top: 22px; padding-top: 22px; border-top: 1px solid var(--rule); }
+  .skl .label { padding-top: 7px; }
 
-  /* Each card is a real button: hover flips it, click pins it open, and the
-     keyboard reaches it like any other control. */
-  .flip {
-    /* Tall enough for the longest back face — seven items — without the
-       list needing to scroll inside the card. */
-    height: 232px;
-    perspective: 1000px;
-    padding: 0;
+  .skl-items { display: flex; flex-wrap: wrap; gap: 8px; }
+  .sk {
+    padding: 6px 12px;
+    border: 1px solid var(--rule);
+    background: none;
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--ink);
+    cursor: pointer;
+    transition: border-color .16s ease, color .16s ease, background-color .16s ease;
+  }
+  .sk:hover { border-color: var(--accent); color: var(--accent); }
+  .sk[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--paper); }
+  .sk:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  /* A fixed-height readout under each group, so showing context never moves
+     the page. Without JS every line simply renders as a list instead. */
+  .skl-ctx {
+    grid-column: 2;
+    min-height: 3.2em;
+    margin-top: 12px;
+    padding-left: 14px;
+    border-left: 2px solid var(--accent);
+    max-width: 62ch;
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+  }
+  .skl-ctx .hint { font-family: var(--mono); font-size: 12.5px; color: var(--ink-faint); }
+  .js-ctx .skl-ctx .ctx { display: none; }
+  .js-ctx .skl-ctx .ctx.is-on { display: block; }
+  .js-ctx .skl-ctx.has-pick .hint { display: none; }
+
+  /* ---------- system status ---------- */
+
+  .sys {
+    margin-top: clamp(48px, 7vw, 84px);
+    border: 1px solid var(--rule);
+    padding: clamp(20px, 3vw, 30px);
+    font-family: var(--mono);
+    font-size: 13.5px;
+    max-width: 620px;
+  }
+  .sys-head { color: var(--accent); letter-spacing: 0.08em; margin-bottom: 16px; }
+  .sys ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 9px; }
+  .sys li { display: flex; align-items: baseline; gap: 10px; }
+  .sys .k { color: var(--ink); white-space: nowrap; }
+  .sys .dots { flex: 1 1 auto; border-bottom: 1px dotted var(--rule); transform: translateY(-4px); min-width: 20px; }
+  .sys .v {
+    color: var(--accent);
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity .35s ease;
+  }
+  .sys.is-live .v { opacity: 1; }
+  .sys li:nth-child(2) .v { transition-delay: .18s; }
+  .sys li:nth-child(3) .v { transition-delay: .36s; }
+  .sys li:nth-child(4) .v { transition-delay: .54s; }
+  .sys li:nth-child(5) .v { transition-delay: .72s; }
+  .bar {
+    display: inline-block;
+    width: 108px;
+    height: 9px;
+    border: 1px solid var(--accent);
+    vertical-align: -1px;
+    margin-right: 7px;
+  }
+  .bar i { display: block; height: 100%; width: 0; background: var(--accent); transition: width 1.2s cubic-bezier(.3,.8,.4,1) .8s; }
+  .sys.is-live .bar i { width: 100%; }
+
+  /* ---------- command palette ---------- */
+
+  .pal {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: clamp(60px, 14vh, 160px) 20px 20px;
+    background: color-mix(in oklab, var(--paper) 55%, transparent);
+    backdrop-filter: blur(4px);
+  }
+  .pal[hidden] { display: none; }
+  .pal-box {
+    width: min(520px, 100%);
+    border: 1px solid var(--accent);
+    background: var(--paper);
+    font-family: var(--mono);
+  }
+  .pal-input {
+    width: 100%;
+    padding: 15px 16px;
+    border: 0;
+    border-bottom: 1px solid var(--rule);
+    background: none;
+    color: var(--ink);
+    font-family: var(--mono);
+    font-size: 14px;
+  }
+  .pal-input:focus { outline: none; }
+  .pal ul { list-style: none; margin: 0; padding: 6px; max-height: 46vh; overflow-y: auto; }
+  .pal li button {
+    display: block;
+    width: 100%;
+    padding: 9px 12px;
     border: 0;
     background: none;
+    color: var(--ink-soft);
     font: inherit;
-    color: inherit;
+    font-size: 13px;
     text-align: left;
     cursor: pointer;
   }
-  .flip-in {
-    position: relative;
-    display: block;
-    width: 100%;
-    height: 100%;
-    transform-style: preserve-3d;
-    transition: transform .55s cubic-bezier(.2, .7, .3, 1);
+  .pal li button:hover,
+  .pal li button[data-active="true"] { background: var(--accent); color: var(--paper); }
+  .pal li.none { padding: 12px; font-size: 13px; color: var(--ink-faint); }
+  .pal-foot {
+    padding: 9px 14px;
+    border-top: 1px solid var(--rule);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--ink-faint);
   }
-  .flip:hover .flip-in,
-  .flip:focus-visible .flip-in,
-  .flip[aria-expanded="true"] .flip-in { transform: rotateY(180deg); }
-
-  .face {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    padding: 20px;
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-  }
-  .face.front {
-    flex-direction: column;
-    justify-content: space-between;
-    border: 1px solid var(--rule);
-    transition: border-color .2s ease;
-  }
-  .flip:hover .face.front { border-color: var(--accent); }
-  .face.front h3 {
-    margin: 0;
-    font-family: var(--serif);
-    font-weight: 400;
-    font-size: 23px;
-    line-height: 1.15;
-    letter-spacing: -0.005em;
-    text-wrap: balance;
-  }
-  .turn { color: var(--ink-faint); align-self: flex-end; }
-  .flip:hover .turn { color: var(--accent); }
-
-  .face.back {
-    transform: rotateY(180deg);
-    background: var(--accent);
-    color: var(--paper);
-    align-items: center;
-    padding: 18px 20px;
-    overflow-y: auto;
-  }
-  .card-list {
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-    font-size: 14px;
-    line-height: 1.55;
-  }
-
-  @media (max-width: 1020px) { .deck { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 
   /* ---------- education ---------- */
 
@@ -652,7 +751,10 @@
     .role .body > ul { grid-column: 1; }
     .entry { grid-template-columns: 1fr; gap: 12px; }
     .entry .when { padding-top: 0; }
-    .deck { grid-template-columns: 1fr; }
+    .skl { grid-template-columns: 1fr; gap: 12px; }
+    .skl .label { padding-top: 0; }
+    .skl-ctx { grid-column: 1; }
+    .term-body { padding: 14px 13px 18px; }
     .facts { grid-template-columns: 1fr; }
     .fact { padding-inline: var(--gut) !important; }
     .project { grid-template-columns: 1fr; }
@@ -669,14 +771,15 @@
   /* ---------- scroll reveal ----------
      Below the masthead, each block waits under the fold and rises into
      place as it enters view. The hidden state is scoped to `.js-reveal`,
-     which only exists once the script below has run — without JS every
+     which only exists once the script below has run â€” without JS every
      block renders normally. */
 
   .js-reveal .fact,
   .js-reveal .head,
   .js-reveal .role,
   .js-reveal .project,
-  .js-reveal .deck,
+  .js-reveal .skl,
+  .js-reveal .sys,
   .js-reveal .entry,
   .js-reveal footer > * {
     opacity: 0;
@@ -699,24 +802,23 @@
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
     * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
-    /* No motion means no reveal — everything is simply present. */
+    /* No motion means no reveal â€” everything is simply present. */
     .js-reveal .fact,
     .js-reveal .head,
     .js-reveal .role,
     .js-reveal .project,
-    .js-reveal .deck,
+    .js-reveal .skl,
+  .js-reveal .sys,
     .js-reveal .entry,
     .js-reveal footer > * {
       opacity: 1;
       transform: none;
     }
-    /* No rotation either: the back simply takes the front's place. */
-    .flip-in { transform: none !important; }
-    .face { backface-visibility: visible; -webkit-backface-visibility: visible; }
-    .face.back { transform: none; opacity: 0; }
-    .flip:hover .face.back,
-    .flip:focus-visible .face.back,
-    .flip[aria-expanded="true"] .face.back { opacity: 1; }
+    /* Status readouts and the terminal simply arrive, already finished. */
+    .sys .v { opacity: 1; }
+    .sys .bar i { width: 100%; }
+    .term.typing .ln { visibility: visible; }
+    .caret { animation: none; }
   }
 </style>
 </head>
@@ -733,9 +835,32 @@
 <header class="masthead wrap">
   <canvas class="net" aria-hidden="true"></canvas>
   <div class="intro">
-  <div class="label">Petaling Jaya &middot; Selangor &middot; Malaysia</div>
-  <h1>Danny Chan<br>Yi Xiang</h1>
-  <p class="lede">Computer Science <em>(Cyber Security)</em> graduate working across security operations, application support and infrastructure. I have monitored security logs for 30 client environments in a SOC and judged what needed escalating, built an employee onboarding and offboarding app on PowerApps and Power Automate, and I now keep switches and servers running on site. CompTIA Security+ certified.</p>
+  <div class="term">
+    <div class="term-bar">
+      <span>danny@portfolio ~</span>
+      <button class="kbd" type="button" data-open-palette>Ctrl K</button>
+    </div>
+    <div class="term-body">
+      <p class="ln"><span class="ps1">$</span> whoami</p>
+      <h1 class="ln">Danny Chan Yi Xiang <span class="dim">&mdash; Cybersecurity / Infrastructure Engineer</span></h1>
+      <p class="ln sp"></p>
+      <p class="ln"><span class="ps1">$</span> cat interests.txt</p>
+      <p class="ln">SOC operations</p>
+      <p class="ln">Linux / Unix</p>
+      <p class="ln">Server infrastructure</p>
+      <p class="ln">Incident response</p>
+      <p class="ln">Hardware diagnostics</p>
+      <p class="ln">Automation</p>
+      <p class="ln sp"></p>
+      <p class="ln"><span class="ps1">$</span> whereis danny</p>
+      <p class="ln">Petaling Jaya, Selangor, Malaysia <span class="dim">(UTC+8)</span></p>
+      <p class="ln sp"></p>
+      <p class="ln"><span class="ps1">$</span> uptime</p>
+      <p class="ln">Always learning. Always troubleshooting.</p>
+      <p class="ln sp"></p>
+      <p class="ln"><span class="ps1">$</span> <span class="caret" aria-hidden="true"></span></p>
+    </div>
+  </div>
   <div class="contact">
     <a href="mailto:danny.chan2003@yahoo.com">danny.chan2003@yahoo.com</a>
     <a href="https://www.linkedin.com/in/danny-chan-a013aa204/" target="_blank" rel="noopener">LinkedIn</a>
@@ -877,128 +1002,118 @@
     <div class="line"></div>
   </div>
 
-  <div class="deck">
+  <div class="skl">
+    <div class="label">Operating systems</div>
+    <div class="skl-items">
+      <button class="sk" type="button" data-ctx="os-linux" aria-pressed="false">Linux / Unix</button>
+      <button class="sk" type="button" data-ctx="os-centos" aria-pressed="false">CentOS 7</button>
+      <button class="sk" type="button" data-ctx="os-rhel" aria-pressed="false">RHEL</button>
+      <button class="sk" type="button" data-ctx="os-win" aria-pressed="false">Windows</button>
+      <button class="sk" type="button" data-ctx="os-mac" aria-pressed="false">macOS</button>
+    </div>
+    <div class="skl-ctx" aria-live="polite">
+      <span class="hint">hover or tap a skill for context</span>
+      <span class="ctx" id="os-linux">My daily working environment at Titanicom &mdash; command-line maintenance, system health checks and issue resolution on production servers.</span>
+      <span class="ctx" id="os-centos">I build CentOS 7 virtual machines to replicate a server environment, reproduce the fault, and prove a fix before it touches production.</span>
+      <span class="ctx" id="os-rhel">Same RHEL-family workflow as CentOS: rebuild the environment, reproduce, validate, then apply.</span>
+      <span class="ctx" id="os-win">Client-device support during daily health checks at Ensign, and the desktop side of application support at PKT(M).</span>
+      <span class="ctx" id="os-mac">Third working environment alongside Linux and Windows.</span>
+    </div>
+  </div>
 
-    <button class="flip" type="button" aria-expanded="false">
-      <span class="flip-in">
-        <span class="face front">
-          <h3>Operating systems</h3>
-          <span class="turn" aria-hidden="true">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9 9 0 0 1 7 3.3"></path><polyline points="19 2 19 6.5 14.5 6.5"></polyline><path d="M21 12a9 9 0 0 1-9 9 9 9 0 0 1-7-3.3"></path><polyline points="5 22 5 17.5 9.5 17.5"></polyline></svg>
-          </span>
-        </span>
-        <span class="face back">
-          <span class="card-list">
-            <span>Linux / Unix</span>
-            <span>CentOS 7</span>
-            <span>RHEL</span>
-            <span>Windows</span>
-            <span>macOS</span>
-          </span>
-        </span>
-      </span>
-    </button>
+  <div class="skl">
+    <div class="label">Production support</div>
+    <div class="skl-items">
+      <button class="sk" type="button" data-ctx="ps-incident" aria-pressed="false">Incident &amp; service request management</button>
+      <button class="sk" type="button" data-ctx="ps-logs" aria-pressed="false">Log &amp; system alert analysis</button>
+      <button class="sk" type="button" data-ctx="ps-rca" aria-pressed="false">Root cause investigation</button>
+      <button class="sk" type="button" data-ctx="ps-sla" aria-pressed="false">SLA-based escalation</button>
+      <button class="sk" type="button" data-ctx="ps-monitor" aria-pressed="false">Health &amp; availability monitoring</button>
+      <button class="sk" type="button" data-ctx="ps-deploy" aria-pressed="false">Deployment support</button>
+    </div>
+    <div class="skl-ctx" aria-live="polite">
+      <span class="hint">hover or tap a skill for context</span>
+      <span class="ctx" id="ps-incident">Ran the full ticket lifecycle in Palo Alto XSOAR at Ensign, and handled service and change requests direct from stakeholders at PKT(M).</span>
+      <span class="ctx" id="ps-logs">Monitored and analysed system and security logs for 30 client environments in IBM QRadar, investigating alerts for recurring incidents.</span>
+      <span class="ctx" id="ps-rca">Traced system, BMC and event logs to the underlying hardware or platform fault &mdash; including ECC memory error investigation.</span>
+      <span class="ctx" id="ps-sla">Judged which incidents warranted escalation to Level 2, and documented the findings and reasoning for stakeholders.</span>
+      <span class="ctx" id="ps-monitor">Daily health checks on client devices, plus application and website availability across a multi-client production environment.</span>
+      <span class="ctx" id="ps-deploy">Onsite implementation work: installation, cabling, switch configuration and acceptance testing.</span>
+    </div>
+  </div>
 
-    <button class="flip" type="button" aria-expanded="false">
-      <span class="flip-in">
-        <span class="face front">
-          <h3>Production support</h3>
-          <span class="turn" aria-hidden="true">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9 9 0 0 1 7 3.3"></path><polyline points="19 2 19 6.5 14.5 6.5"></polyline><path d="M21 12a9 9 0 0 1-9 9 9 9 0 0 1-7-3.3"></path><polyline points="5 22 5 17.5 9.5 17.5"></polyline></svg>
-          </span>
-        </span>
-        <span class="face back">
-          <span class="card-list">
-            <span>Incident &amp; service request management</span>
-            <span>Log &amp; system alert analysis</span>
-            <span>Root cause investigation</span>
-            <span>SLA-based escalation</span>
-            <span>Health &amp; availability monitoring</span>
-            <span>Deployment support</span>
-          </span>
-        </span>
-      </span>
-    </button>
+  <div class="skl">
+    <div class="label">Tools &amp; platforms</div>
+    <div class="skl-items">
+      <button class="sk" type="button" data-ctx="tp-qradar" aria-pressed="false">IBM QRadar (SIEM)</button>
+      <button class="sk" type="button" data-ctx="tp-xsoar" aria-pressed="false">Palo Alto XSOAR (SOAR)</button>
+      <button class="sk" type="button" data-ctx="tp-cyberark" aria-pressed="false">CyberArk</button>
+      <button class="sk" type="button" data-ctx="tp-putty" aria-pressed="false">PuTTY / SSH</button>
+      <button class="sk" type="button" data-ctx="tp-prtg" aria-pressed="false">PRTG Network Monitoring</button>
+      <button class="sk" type="button" data-ctx="tp-fieldiag" aria-pressed="false">fieldiag</button>
+      <button class="sk" type="button" data-ctx="tp-gpu" aria-pressed="false">GPU stress &amp; burn diagnostics</button>
+    </div>
+    <div class="skl-ctx" aria-live="polite">
+      <span class="hint">hover or tap a skill for context</span>
+      <span class="ctx" id="tp-qradar">The SIEM I lived in at Ensign &mdash; 30 client environments, watching for the alert that actually mattered.</span>
+      <span class="ctx" id="tp-xsoar">Created and managed client incident tickets end to end, working to agreed response and escalation criteria.</span>
+      <span class="ctx" id="tp-cyberark">Checked out vaulted privileged credentials to reach production servers under controlled access procedures.</span>
+      <span class="ctx" id="tp-putty">How I actually got onto those Linux servers for investigation and log retrieval.</span>
+      <span class="ctx" id="tp-prtg">Network and device monitoring.</span>
+      <span class="ctx" id="tp-fieldiag">Hardware test suites run against production servers to isolate a faulty component before it ships.</span>
+      <span class="ctx" id="tp-gpu">Burn and stress testing on GPU servers to prove stability before deployment.</span>
+    </div>
+  </div>
 
-    <button class="flip" type="button" aria-expanded="false">
-      <span class="flip-in">
-        <span class="face front">
-          <h3>Tools &amp; platforms</h3>
-          <span class="turn" aria-hidden="true">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9 9 0 0 1 7 3.3"></path><polyline points="19 2 19 6.5 14.5 6.5"></polyline><path d="M21 12a9 9 0 0 1-9 9 9 9 0 0 1-7-3.3"></path><polyline points="5 22 5 17.5 9.5 17.5"></polyline></svg>
-          </span>
-        </span>
-        <span class="face back">
-          <span class="card-list">
-            <span>IBM QRadar (SIEM)</span>
-            <span>Palo Alto XSOAR (SOAR)</span>
-            <span>CyberArk</span>
-            <span>PuTTY / SSH</span>
-            <span>PRTG Network Monitoring</span>
-            <span>fieldiag</span>
-            <span>GPU stress &amp; burn diagnostics</span>
-          </span>
-        </span>
-      </span>
-    </button>
+  <div class="skl">
+    <div class="label">Scripting &amp; development</div>
+    <div class="skl-items">
+      <button class="sk" type="button" data-ctx="sd-shell" aria-pressed="false">Shell &amp; configuration scripting</button>
+      <button class="sk" type="button" data-ctx="sd-go" aria-pressed="false">Go</button>
+      <button class="sk" type="button" data-ctx="sd-sql" aria-pressed="false">SQL</button>
+      <button class="sk" type="button" data-ctx="sd-powerapps" aria-pressed="false">PowerApps</button>
+      <button class="sk" type="button" data-ctx="sd-flow" aria-pressed="false">Power Automate</button>
+      <button class="sk" type="button" data-ctx="sd-sp" aria-pressed="false">SharePoint</button>
+      <button class="sk" type="button" data-ctx="sd-vs" aria-pressed="false">Visual Studio</button>
+    </div>
+    <div class="skl-ctx" aria-live="polite">
+      <span class="hint">hover or tap a skill for context</span>
+      <span class="ctx" id="sd-shell">Command-line tooling for routine maintenance, plus the configuration scripts that ship with a project handover.</span>
+      <span class="ctx" id="sd-go">Wrote CloudChain&rsquo;s custom database extension module in Go, backed by MySQL.</span>
+      <span class="ctx" id="sd-sql">Relational schema design and queries &mdash; joins, filtering, aggregation &mdash; to persist and retrieve chain and node data.</span>
+      <span class="ctx" id="sd-powerapps">Sole developer of PKT(M)&rsquo;s employee onboarding, offboarding and joiner&ndash;leaver system.</span>
+      <span class="ctx" id="sd-flow">The automated workflows behind that system. I monitored the runs and fixed the ones that failed.</span>
+      <span class="ctx" id="sd-sp">The data layer the same joiner&ndash;leaver system was built on.</span>
+      <span class="ctx" id="sd-vs">Development environment for that work.</span>
+    </div>
+  </div>
 
-    <button class="flip" type="button" aria-expanded="false">
-      <span class="flip-in">
-        <span class="face front">
-          <h3>Scripting &amp; development</h3>
-          <span class="turn" aria-hidden="true">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9 9 0 0 1 7 3.3"></path><polyline points="19 2 19 6.5 14.5 6.5"></polyline><path d="M21 12a9 9 0 0 1-9 9 9 9 0 0 1-7-3.3"></path><polyline points="5 22 5 17.5 9.5 17.5"></polyline></svg>
-          </span>
-        </span>
-        <span class="face back">
-          <span class="card-list">
-            <span>Shell &amp; configuration scripting</span>
-            <span>Go</span>
-            <span>SQL</span>
-            <span>PowerApps</span>
-            <span>Power Automate</span>
-            <span>SharePoint</span>
-            <span>Visual Studio</span>
-          </span>
-        </span>
-      </span>
-    </button>
+  <div class="skl">
+    <div class="label">Databases</div>
+    <div class="skl-items">
+      <button class="sk" type="button" data-ctx="db-mysql" aria-pressed="false">MySQL</button>
+      <button class="sk" type="button" data-ctx="db-mongo" aria-pressed="false">MongoDB</button>
+    </div>
+    <div class="skl-ctx" aria-live="polite">
+      <span class="hint">hover or tap a skill for context</span>
+      <span class="ctx" id="db-mysql">Schema design, query execution and transaction handling, driven from Go application code in CloudChain.</span>
+      <span class="ctx" id="db-mongo">Document-store work alongside the relational side.</span>
+    </div>
+  </div>
 
-    <button class="flip" type="button" aria-expanded="false">
-      <span class="flip-in">
-        <span class="face front">
-          <h3>Databases</h3>
-          <span class="turn" aria-hidden="true">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9 9 0 0 1 7 3.3"></path><polyline points="19 2 19 6.5 14.5 6.5"></polyline><path d="M21 12a9 9 0 0 1-9 9 9 9 0 0 1-7-3.3"></path><polyline points="5 22 5 17.5 9.5 17.5"></polyline></svg>
-          </span>
-        </span>
-        <span class="face back">
-          <span class="card-list">
-            <span>MySQL</span>
-            <span>MongoDB</span>
-          </span>
-        </span>
-      </span>
-    </button>
-
-    <button class="flip" type="button" aria-expanded="false">
-      <span class="flip-in">
-        <span class="face front">
-          <h3>Spoken</h3>
-          <span class="turn" aria-hidden="true">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9 9 0 0 1 7 3.3"></path><polyline points="19 2 19 6.5 14.5 6.5"></polyline><path d="M21 12a9 9 0 0 1-9 9 9 9 0 0 1-7-3.3"></path><polyline points="5 22 5 17.5 9.5 17.5"></polyline></svg>
-          </span>
-        </span>
-        <span class="face back">
-          <span class="card-list">
-            <span>English</span>
-            <span>Mandarin</span>
-            <span>Malay</span>
-          </span>
-        </span>
-      </span>
-    </button>
-
+  <div class="skl">
+    <div class="label">Spoken</div>
+    <div class="skl-items">
+      <button class="sk" type="button" data-ctx="sp-en" aria-pressed="false">English</button>
+      <button class="sk" type="button" data-ctx="sp-zh" aria-pressed="false">Mandarin</button>
+      <button class="sk" type="button" data-ctx="sp-ms" aria-pressed="false">Malay</button>
+    </div>
+    <div class="skl-ctx" aria-live="polite">
+      <span class="hint">hover or tap a skill for context</span>
+      <span class="ctx" id="sp-en">Working language for documentation, incident reporting and stakeholder updates.</span>
+      <span class="ctx" id="sp-zh">Spoken.</span>
+      <span class="ctx" id="sp-ms">Spoken.</span>
+    </div>
   </div>
 </section>
 
@@ -1021,6 +1136,17 @@
       <p>Diploma in Computer Science &mdash; CGPA 3.53</p>
     </div>
   </div>
+
+  <div class="sys">
+    <div class="sys-head">[ SYSTEM ONLINE ]</div>
+    <ul>
+      <li><span class="k">Linux / Unix</span><span class="dots"></span><span class="v">OK</span></li>
+      <li><span class="k">Security operations</span><span class="dots"></span><span class="v">OK</span></li>
+      <li><span class="k">Infrastructure</span><span class="dots"></span><span class="v">OK</span></li>
+      <li><span class="k">Security+</span><span class="dots"></span><span class="v">VALID &rarr; FEB 2028</span></li>
+      <li><span class="k">Coffee</span><span class="dots"></span><span class="v"><span class="bar" aria-hidden="true"><i></i></span>100%</span></li>
+    </ul>
+  </div>
 </section>
 
 </main>
@@ -1035,6 +1161,14 @@
     <div>References available on request</div>
   </div>
 </footer>
+
+<div class="pal" id="palette" hidden>
+  <div class="pal-box" role="dialog" aria-modal="true" aria-label="Command palette">
+    <input class="pal-input" id="pal-input" type="text" placeholder="Type a command or section&hellip;" aria-label="Search this site" autocomplete="off" spellcheck="false">
+    <ul id="pal-list"></ul>
+    <div class="pal-foot">&uarr;&darr; move &middot; &crarr; open &middot; esc close</div>
+  </div>
+</div>
 
 <script>
   (function () {
@@ -1089,7 +1223,7 @@
     if (!root.classList.contains('js-reveal')) return;
 
     var blocks = document.querySelectorAll(
-      '.fact, .head, .role, .project, .deck, .entry, footer > *'
+      '.fact, .head, .role, .project, .skl, .sys, .entry, footer > *'
     );
 
     var reveal = function (el) { el.classList.add('is-revealed'); };
@@ -1110,16 +1244,198 @@
     }
   })();
 
-  // ---- skill cards ----
-  // Hover is the quick way in, but it does not exist on a phone and cannot be
-  // reached from a keyboard, so a click pins the card open as well.
+  // ---- terminal ----
+  // The lines are all in the document already; typing just reveals them in
+  // order. Hidden by visibility, so the box is full height from the first
+  // frame and nothing below it moves.
   (function () {
-    var cards = document.querySelectorAll('.flip');
-    Array.prototype.forEach.call(cards, function (card) {
-      card.addEventListener('click', function () {
-        var open = card.getAttribute('aria-expanded') === 'true';
-        card.setAttribute('aria-expanded', open ? 'false' : 'true');
+    var term = document.querySelector('.term');
+    if (!term) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    var lines = term.querySelectorAll('.ln');
+    if (!lines.length) return;
+
+    term.classList.add('typing');
+
+    var i = 0;
+    var tick = function () {
+      if (i >= lines.length) return;
+      lines[i].classList.add('on');
+      i++;
+      // Command lines land a beat slower than their output, the way a real
+      // prompt does.
+      var next = lines[i - 1].querySelector('.ps1') ? 190 : 85;
+      window.setTimeout(tick, next);
+    };
+    tick();
+
+    // If anything above stalls, never leave the hero half-drawn.
+    window.setTimeout(function () {
+      Array.prototype.forEach.call(lines, function (l) { l.classList.add('on'); });
+    }, 6000);
+  })();
+
+  // ---- skill context ----
+  // Hover reads, click pins. Without this script every context line simply
+  // renders as a list, so nothing is hidden behind JS.
+  (function () {
+    var groups = document.querySelectorAll('.skl');
+    if (!groups.length) return;
+    document.documentElement.classList.add('js-ctx');
+
+    Array.prototype.forEach.call(groups, function (group) {
+      var pane = group.querySelector('.skl-ctx');
+      var buttons = group.querySelectorAll('.sk');
+      if (!pane || !buttons.length) return;
+
+      var pinned = null;
+
+      var show = function (id) {
+        var any = false;
+        Array.prototype.forEach.call(pane.querySelectorAll('.ctx'), function (c) {
+          var on = c.id === id;
+          c.classList.toggle('is-on', on);
+          if (on) any = true;
+        });
+        pane.classList.toggle('has-pick', any);
+      };
+
+      var restore = function () { show(pinned); };
+
+      Array.prototype.forEach.call(buttons, function (btn) {
+        var id = btn.getAttribute('data-ctx');
+        btn.addEventListener('mouseenter', function () { show(id); });
+        btn.addEventListener('focus', function () { show(id); });
+        btn.addEventListener('click', function () {
+          var already = pinned === id;
+          pinned = already ? null : id;
+          Array.prototype.forEach.call(buttons, function (b) {
+            b.setAttribute('aria-pressed', b === btn && !already ? 'true' : 'false');
+          });
+          show(pinned || id);
+        });
       });
+
+      group.addEventListener('mouseleave', restore);
+      group.addEventListener('focusout', function (e) {
+        if (!group.contains(e.relatedTarget)) restore();
+      });
+    });
+  })();
+
+  // ---- system status ----
+  (function () {
+    var sys = document.querySelector('.sys');
+    if (!sys) return;
+    var light = function () { sys.classList.add('is-live'); };
+    if (!window.IntersectionObserver) { light(); return; }
+    var io = new IntersectionObserver(function (entries) {
+      if (!entries[0].isIntersecting) return;
+      light();
+      io.disconnect();
+    }, { threshold: 0.3 });
+    io.observe(sys);
+  })();
+
+  // ---- command palette ----
+  (function () {
+    var pal = document.getElementById('palette');
+    var input = document.getElementById('pal-input');
+    var list = document.getElementById('pal-list');
+    if (!pal || !input || !list) return;
+
+    var ITEMS = [
+      { label: 'Experience', hint: 'section', go: function () { jump('experience'); } },
+      { label: 'Project — CloudChain', hint: 'section', go: function () { jump('project'); } },
+      { label: 'Skills', hint: 'section', go: function () { jump('skills'); } },
+      { label: 'Education', hint: 'section', go: function () { jump('education'); } },
+      { label: 'Email danny.chan2003@yahoo.com', hint: 'contact', go: function () { location.href = 'mailto:danny.chan2003@yahoo.com'; } },
+      { label: 'LinkedIn', hint: 'external', go: function () { open('https://www.linkedin.com/in/danny-chan-a013aa204/'); } },
+      { label: 'GitHub', hint: 'external', go: function () { open('https://github.com/DCYXboi'); } },
+      { label: 'Download resume', hint: 'file', go: function () { location.href = 'resume.pdf'; } },
+      { label: 'Read the CloudChain paper', hint: 'external', go: function () { open('https://digitallibrary.peninsulacollege.edu.my/items/9e8d502c-2c09-4133-8221-f0ef71f895b6'); } }
+    ];
+
+    function open(url) { window.open(url, '_blank', 'noopener'); }
+    function jump(id) {
+      var el = document.getElementById(id);
+      if (el) el.scrollIntoView({ block: 'start' });
+    }
+
+    var shown = [];
+    var active = 0;
+    var lastFocus = null;
+
+    function render(q) {
+      var needle = q.trim().toLowerCase();
+      shown = ITEMS.filter(function (it) {
+        return !needle || it.label.toLowerCase().indexOf(needle) !== -1 || it.hint.indexOf(needle) !== -1;
+      });
+      active = 0;
+      list.innerHTML = '';
+      if (!shown.length) {
+        var li = document.createElement('li');
+        li.className = 'none';
+        li.textContent = 'no matches';
+        list.appendChild(li);
+        return;
+      }
+      shown.forEach(function (it, i) {
+        var li = document.createElement('li');
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.textContent = it.label;
+        if (i === 0) b.setAttribute('data-active', 'true');
+        b.addEventListener('click', function () { close(); it.go(); });
+        b.addEventListener('mouseenter', function () { active = i; paint(); });
+        li.appendChild(b);
+        list.appendChild(li);
+      });
+    }
+
+    function paint() {
+      var bs = list.querySelectorAll('button');
+      Array.prototype.forEach.call(bs, function (b, i) {
+        if (i === active) { b.setAttribute('data-active', 'true'); b.scrollIntoView({ block: 'nearest' }); }
+        else { b.removeAttribute('data-active'); }
+      });
+    }
+
+    function openPal() {
+      lastFocus = document.activeElement;
+      pal.hidden = false;
+      input.value = '';
+      render('');
+      input.focus();
+    }
+    function close() {
+      pal.hidden = true;
+      if (lastFocus && lastFocus.focus) lastFocus.focus();
+    }
+
+    input.addEventListener('input', function () { render(input.value); });
+
+    document.addEventListener('keydown', function (e) {
+      var k = e.key.toLowerCase();
+      if ((e.metaKey || e.ctrlKey) && k === 'k') {
+        e.preventDefault();
+        if (pal.hidden) { openPal(); } else { close(); }
+        return;
+      }
+      if (pal.hidden) return;
+      if (e.key === 'Escape') { e.preventDefault(); close(); return; }
+      if (!shown.length) return;
+      if (e.key === 'ArrowDown') { e.preventDefault(); active = (active + 1) % shown.length; paint(); }
+      else if (e.key === 'ArrowUp') { e.preventDefault(); active = (active - 1 + shown.length) % shown.length; paint(); }
+      else if (e.key === 'Enter') { e.preventDefault(); var it = shown[active]; close(); if (it) it.go(); }
+    });
+
+    // Clicking the backdrop dismisses it.
+    pal.addEventListener('mousedown', function (e) { if (e.target === pal) close(); });
+
+    Array.prototype.forEach.call(document.querySelectorAll('[data-open-palette]'), function (b) {
+      b.addEventListener('click', openPal);
     });
   })();
 
