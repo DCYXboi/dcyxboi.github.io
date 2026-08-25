@@ -20,10 +20,6 @@
     --rule-firm:  oklch(0.225 0.008 125);
     --accent:     oklch(0.435 0.115 22);
     --accent-dim: oklch(0.78 0.045 22);
-    --footer-bg:  oklch(0.215 0.008 125);
-    --footer-fg:  oklch(0.925 0.004 125);
-    --footer-mut: oklch(0.635 0.006 125);
-    --footer-acc: oklch(0.80 0.075 25);
     /* Plain rgb triplet: canvas fillStyle needs a format every browser
        parses, and oklch() is not reliably one of them yet. */
     --net: 123, 46, 51;
@@ -48,10 +44,6 @@
       --rule-firm:  oklch(0.928 0.004 125);
       --accent:     oklch(0.735 0.105 25);
       --accent-dim: oklch(0.44 0.065 25);
-      --footer-bg:  oklch(0.145 0.006 125);
-      --footer-fg:  oklch(0.915 0.004 125);
-      --footer-mut: oklch(0.555 0.006 125);
-      --footer-acc: oklch(0.775 0.09 25);
       --net: 208, 140, 134;
     }
   }
@@ -66,10 +58,6 @@
     --rule-firm:  oklch(0.928 0.004 125);
     --accent:     oklch(0.735 0.105 25);
     --accent-dim: oklch(0.44 0.065 25);
-    --footer-bg:  oklch(0.145 0.006 125);
-    --footer-fg:  oklch(0.915 0.004 125);
-    --footer-mut: oklch(0.555 0.006 125);
-    --footer-acc: oklch(0.775 0.09 25);
     --net: 208, 140, 134;
   }
 
@@ -657,41 +645,38 @@
 
   /* ---------- footer ---------- */
 
+  /* The page opens on a terminal and closes on one: same frame, same
+     prompt, contact details as the output of a cat. */
   footer {
     margin-top: clamp(56px, 8vw, 96px);
-    background: var(--footer-bg);
-    color: var(--footer-fg);
-    padding-block: clamp(52px, 7vw, 88px);
+    padding-block: clamp(40px, 6vw, 72px);
+    border-top: 1px solid var(--rule);
+  }
+  .foot-term { max-width: 660px; }
+  .rows {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .row {
+    display: grid;
+    grid-template-columns: 108px minmax(0, 1fr);
+    gap: 12px;
+    align-items: baseline;
+  }
+  .row .key { color: var(--ink-faint); letter-spacing: 0.06em; }
+  footer a { color: var(--accent); border-bottom-color: var(--accent-dim); }
+  footer .colophon {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    align-items: flex-end;
-    gap: 32px;
-  }
-  footer h2 {
-    margin: 0 0 18px;
-    font-family: var(--serif);
-    font-weight: 400;
-    font-size: clamp(40px, 6vw, 68px);
-    line-height: 1;
-    letter-spacing: -0.015em;
-  }
-  footer a {
-    font-size: 18px;
-    color: var(--footer-acc);
-    border-bottom-color: color-mix(in oklab, var(--footer-acc) 45%, transparent);
-  }
-  footer a:hover { border-bottom-color: var(--footer-acc); }
-  footer .colophon {
-    display: flex;
-    flex-direction: column;
-    gap: 7px;
-    text-align: right;
+    gap: 8px 24px;
+    margin-top: 22px;
     font-family: var(--mono);
     font-size: 10.5px;
     letter-spacing: 0.13em;
     text-transform: uppercase;
-    color: var(--footer-mut);
+    color: var(--ink-faint);
   }
 
   /* ---------- ink wipe ----------
@@ -814,7 +799,9 @@
     .fact { padding-inline: 0; }
     .fact + .fact { border-left: 0; border-top: 1px solid var(--rule); }
     .project { grid-template-columns: 1fr; }
-    footer .colophon { text-align: left; }
+    .row { grid-template-columns: minmax(0, 1fr); gap: 1px; }
+    .row .key { font-size: 0.9em; }
+    footer .colophon { justify-content: flex-start; flex-direction: column; }
     /* Comfortable thumb targets once the page is being tapped, not clicked. */
     .contact a, footer a {
       display: inline-flex;
@@ -1230,13 +1217,27 @@
 </main>
 
 <footer class="wrap">
-  <div>
-    <h2>Let's talk.</h2>
-    <a href="mailto:danny.chan2003@yahoo.com">danny.chan2003@yahoo.com</a>
+  <div class="term foot-term">
+    <div class="term-bar">
+      <span>danny@portfolio ~/contact</span>
+    </div>
+    <div class="term-body">
+      <p class="ln"><span class="ps1">$</span> cat contact.txt</p>
+      <p class="ln sp"></p>
+      <div class="rows">
+        <div class="row"><span class="key">EMAIL</span><span><a href="mailto:danny.chan2003@yahoo.com">danny.chan2003@yahoo.com</a></span></div>
+        <div class="row"><span class="key">PHONE</span><span><a href="tel:+60125506089">+6012-5506089</a></span></div>
+        <div class="row"><span class="key">LINKEDIN</span><span><a href="https://www.linkedin.com/in/danny-chan-a013aa204/" target="_blank" rel="noopener">/in/danny-chan-a013aa204</a></span></div>
+        <div class="row"><span class="key">GITHUB</span><span><a href="https://github.com/DCYXboi" target="_blank" rel="noopener">DCYXboi</a></span></div>
+        <div class="row"><span class="key">LOCATION</span><span class="dim">Petaling Jaya, Selangor, Malaysia (UTC+8)</span></div>
+      </div>
+      <p class="ln sp"></p>
+      <p class="ln"><span class="ps1">$</span> <span class="caret" aria-hidden="true"></span></p>
+    </div>
   </div>
   <div class="colophon">
-    <div>Petaling Jaya, Malaysia</div>
-    <div>References available on request</div>
+    <span>&copy; 2026 Danny Chan Yi Xiang</span>
+    <span>References available on request</span>
   </div>
 </footer>
 
