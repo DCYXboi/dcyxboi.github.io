@@ -866,8 +866,7 @@
   .js-reveal .project,
   .js-reveal .skl,
   .js-reveal .entry,
-  .js-reveal .contact-term,
-  .js-reveal footer > * {
+  .js-reveal .contact-term {
     opacity: 0;
     transform: translateY(16px);
     transition: opacity .62s cubic-bezier(.22, .61, .36, 1),
@@ -881,8 +880,7 @@
 
   /* Members of a set arrive in reading order rather than all at once. */
   .js-reveal .facts .fact:nth-child(2),
-  .js-reveal #education .entry:nth-of-type(2),
-  .js-reveal footer > *:nth-child(2) { transition-delay: 90ms; }
+  .js-reveal #education .entry:nth-of-type(2) { transition-delay: 90ms; }
   .js-reveal .facts .fact:nth-child(3) { transition-delay: 180ms; }
 
   @media (prefers-reduced-motion: reduce) {
@@ -895,8 +893,7 @@
     .js-reveal .project,
     .js-reveal .skl,
     .js-reveal .entry,
-    .js-reveal .contact-term,
-  .js-reveal footer > * {
+    .js-reveal .contact-term {
       opacity: 1;
       transform: none;
     }
@@ -1352,7 +1349,7 @@
     if (!root.classList.contains('js-reveal')) return;
 
     var blocks = document.querySelectorAll(
-      '.fact, .head, .role, .project, .skl, .entry, .contact-term, footer > *'
+      '.fact, .head, .role, .project, .skl, .entry, .contact-term'
     );
 
     var reveal = function (el) { el.classList.add('is-revealed'); };
@@ -1367,6 +1364,22 @@
       }, { rootMargin: '0px 0px -12% 0px', threshold: 0.08 });
 
       Array.prototype.forEach.call(blocks, function (el) { watcher.observe(el); });
+
+      // The observer ignores the bottom slice of the viewport, so a block
+      // sitting in the last screenful can never scroll high enough to
+      // trigger and would stay invisible for good. Once the page is at the
+      // end — or never scrolls at all — reveal whatever is still waiting.
+      var sweep = function () {
+        var atEnd = window.innerHeight + window.scrollY >=
+                    document.documentElement.scrollHeight - 4;
+        if (!atEnd) return;
+        Array.prototype.forEach.call(blocks, reveal);
+        window.removeEventListener('scroll', sweep);
+        window.removeEventListener('resize', sweep);
+      };
+      window.addEventListener('scroll', sweep, { passive: true });
+      window.addEventListener('resize', sweep, { passive: true });
+      sweep();
     } catch (err) {
       // Never leave the page's content stranded behind a broken effect.
       Array.prototype.forEach.call(blocks, reveal);
