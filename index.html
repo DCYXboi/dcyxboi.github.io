@@ -673,16 +673,11 @@
   .entry p { margin: 0; font-size: 15.5px; color: var(--ink-soft); }
   .entry .when { padding-top: 7px; }
 
-  /* ---------- footer ---------- */
+  /* ---------- contact terminal ---------- */
 
   /* The page opens on a terminal and closes on one: same frame, same
      prompt, contact details as the output of a cat. */
-  footer {
-    margin-top: clamp(56px, 8vw, 96px);
-    padding-block: clamp(40px, 6vw, 72px);
-    border-top: 1px solid var(--rule);
-  }
-  .foot-term { max-width: 660px; }
+  .contact-term { max-width: 660px; }
   .rows {
     display: flex;
     flex-direction: column;
@@ -695,13 +690,21 @@
     align-items: baseline;
   }
   .row .key { color: var(--ink-faint); letter-spacing: 0.06em; }
-  footer a { color: var(--accent); border-bottom-color: var(--accent-dim); }
-  footer .colophon {
+  .contact-term a { color: var(--accent); border-bottom-color: var(--accent-dim); }
+
+  /* ---------- footer ---------- */
+
+  /* Just the colophon now that contact has its own block above. */
+  footer {
+    margin-top: clamp(48px, 7vw, 80px);
+    padding-block: 20px 26px;
+    border-top: 1px solid var(--rule);
+  }
+  .colophon {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     gap: 8px 24px;
-    margin-top: 22px;
     font-family: var(--mono);
     font-size: 10.5px;
     letter-spacing: 0.13em;
@@ -720,7 +723,7 @@
   .contact a,
   .paper,
   .cv,
-  footer a {
+  .contact-term a {
     position: relative;
     isolation: isolate;
   }
@@ -730,7 +733,7 @@
   .contact a::before,
   .paper::before,
   .cv::before,
-  footer a::before {
+  .contact-term a::before {
     content: "";
     position: absolute;
     z-index: -1;
@@ -743,7 +746,7 @@
   .navlink::before { inset: 5px 0 4px; }
   .role summary::before { inset: 8px -16px; }
   .paper::before,
-  footer a::before { inset: -3px -8px; }
+  .contact-term a::before { inset: -3px -8px; }
   .cv::before { inset: 0; }
 
   .navlink:hover::before,
@@ -756,8 +759,8 @@
   .paper:focus-visible::before,
   .cv:hover::before,
   .cv:focus-visible::before,
-  footer a:hover::before,
-  footer a:focus-visible::before {
+  .contact-term a:hover::before,
+  .contact-term a:focus-visible::before {
     transform: scaleY(1);
   }
 
@@ -776,8 +779,8 @@
 
   .paper:hover,
   .paper:focus-visible,
-  footer a:hover,
-  footer a:focus-visible {
+  .contact-term a:hover,
+  .contact-term a:focus-visible {
     color: var(--paper);
     border-bottom-color: transparent;
   }
@@ -790,7 +793,7 @@
   }
 
   .paper,
-  footer a { padding-inline: 8px; margin-inline: -8px; }
+  .contact-term a { padding-inline: 8px; margin-inline: -8px; }
 
   /* On the accent field the wipe inverts, or it would be invisible. */
   #project .paper {
@@ -831,9 +834,9 @@
     .project { grid-template-columns: 1fr; }
     .row { grid-template-columns: minmax(0, 1fr); gap: 1px; }
     .row .key { font-size: 0.9em; }
-    footer .colophon { justify-content: flex-start; flex-direction: column; }
+    .colophon { justify-content: flex-start; flex-direction: column; }
     /* Comfortable thumb targets once the page is being tapped, not clicked. */
-    .contact a, footer a {
+    .contact a, .contact-term a {
       display: inline-flex;
       align-items: center;
       min-height: 44px;
@@ -853,6 +856,7 @@
   .js-reveal .project,
   .js-reveal .skl,
   .js-reveal .entry,
+  .js-reveal .contact-term,
   .js-reveal footer > * {
     opacity: 0;
     transform: translateY(16px);
@@ -881,7 +885,8 @@
     .js-reveal .project,
     .js-reveal .skl,
     .js-reveal .entry,
-    .js-reveal footer > * {
+    .js-reveal .contact-term,
+  .js-reveal footer > * {
       opacity: 1;
       transform: none;
     }
@@ -1243,10 +1248,8 @@
 
 </section>
 
-</main>
-
-<footer class="wrap">
-  <div class="term foot-term">
+<section id="contact" class="wrap">
+  <div class="term contact-term">
     <div class="term-bar">
       <span>danny@portfolio ~/contact</span>
     </div>
@@ -1264,6 +1267,11 @@
       <p class="ln"><span class="ps1">$</span> <span class="caret" aria-hidden="true"></span></p>
     </div>
   </div>
+</section>
+
+</main>
+
+<footer class="wrap">
   <div class="colophon">
     <span>&copy; 2026 Danny Chan Yi Xiang</span>
     <span>References available on request</span>
@@ -1331,7 +1339,7 @@
     if (!root.classList.contains('js-reveal')) return;
 
     var blocks = document.querySelectorAll(
-      '.fact, .head, .role, .project, .skl, .entry, footer > *'
+      '.fact, .head, .role, .project, .skl, .entry, .contact-term, footer > *'
     );
 
     var reveal = function (el) { el.classList.add('is-revealed'); };
