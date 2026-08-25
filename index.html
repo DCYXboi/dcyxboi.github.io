@@ -717,6 +717,106 @@
   .entry p { margin: 0; font-size: 15.5px; color: var(--ink-soft); }
   .entry .when { padding-top: 7px; }
 
+  /* ---------- interaction layer ----------
+     One easing curve across all three sections, weighted rather than linear,
+     and only transform/opacity/colour so nothing triggers layout. */
+
+  /* Project: the stack is pickable, and the readout under it swaps. */
+  .stack { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+  .st {
+    padding: 5px 11px;
+    border: 1px solid color-mix(in oklab, var(--paper) 38%, transparent);
+    background: none;
+    color: var(--paper);
+    font-family: var(--mono);
+    font-size: 12.5px;
+    cursor: pointer;
+    transition: background-color .45s cubic-bezier(.32,.72,0,1),
+                color .45s cubic-bezier(.32,.72,0,1),
+                border-color .45s cubic-bezier(.32,.72,0,1),
+                transform .45s cubic-bezier(.32,.72,0,1);
+  }
+  .st:hover,
+  .st[aria-pressed="true"] {
+    background: var(--paper);
+    border-color: var(--paper);
+    color: var(--accent);
+    transform: translateY(-2px);
+  }
+  .st:active { transform: translateY(0); }
+  .stack-out {
+    margin: 14px 0 0;
+    min-height: 3em;
+    max-width: 46ch;
+    font-family: var(--mono);
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--paper);
+    opacity: 0.82;
+  }
+
+  /* Bullets answer the pointer instead of sitting inert. */
+  #project ul.points li {
+    transition: transform .4s cubic-bezier(.32,.72,0,1), opacity .4s cubic-bezier(.32,.72,0,1);
+  }
+  #project ul.points li:hover { transform: translateX(5px); opacity: 1; }
+  #project ul.points li::before {
+    transition: transform .4s cubic-bezier(.32,.72,0,1);
+  }
+  #project ul.points li:hover::before { transform: scale(1.9); }
+
+  /* Education: a run of nodes rather than two stranded rows. */
+  .timeline { position: relative; }
+  .timeline::before {
+    content: "";
+    position: absolute;
+    left: 3px;
+    top: 32px;
+    bottom: 32px;
+    width: 1px;
+    background: var(--rule);
+  }
+  #education .entry {
+    position: relative;
+    padding-left: 28px;
+    transition: transform .5s cubic-bezier(.32,.72,0,1);
+  }
+  #education .entry::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 30px;
+    width: 7px;
+    height: 7px;
+    background: var(--paper);
+    border: 1px solid var(--ink-faint);
+    transition: background-color .5s cubic-bezier(.32,.72,0,1),
+                border-color .5s cubic-bezier(.32,.72,0,1),
+                transform .5s cubic-bezier(.32,.72,0,1);
+  }
+  #education .entry:hover { transform: translateX(4px); }
+  #education .entry:hover::before {
+    background: var(--accent);
+    border-color: var(--accent);
+    transform: scale(1.7);
+  }
+  #education .entry h3 { transition: color .4s cubic-bezier(.32,.72,0,1); }
+  #education .entry:hover h3 { color: var(--accent); }
+
+  /* Skills: chips gain weight under the pointer. */
+  .sk {
+    transition: border-color .35s cubic-bezier(.32,.72,0,1),
+                color .35s cubic-bezier(.32,.72,0,1),
+                background-color .35s cubic-bezier(.32,.72,0,1),
+                transform .35s cubic-bezier(.32,.72,0,1);
+  }
+  .sk:hover { transform: translateY(-2px); }
+  .sk:active { transform: translateY(0); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .st, .sk, #project ul.points li, #education .entry { transform: none !important; }
+  }
+
   /* ---------- contact terminal ---------- */
 
   /* The page opens on a terminal and closes on one: same frame, same
@@ -1187,6 +1287,22 @@
         Read the paper
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
       </a>
+
+      <div class="stack">
+        <button class="st" type="button" data-ctx="st-go" aria-pressed="false">Go</button>
+        <button class="st" type="button" data-ctx="st-mysql" aria-pressed="false">MySQL</button>
+        <button class="st" type="button" data-ctx="st-sql" aria-pressed="false">SQL</button>
+        <button class="st" type="button" data-ctx="st-manet" aria-pressed="false">MANET</button>
+        <button class="st" type="button" data-ctx="st-chain" aria-pressed="false">Blockchain</button>
+      </div>
+      <p class="stack-out" id="stack-out" aria-live="polite">The database extension module is written in Go, driving MySQL from application code.</p>
+      <div hidden>
+        <span id="st-go">The database extension module is written in Go, driving MySQL from application code.</span>
+        <span id="st-mysql">Schema design, query execution and transaction handling for chain and node data.</span>
+        <span id="st-sql">Joins, filtering and aggregation to persist and retrieve node state.</span>
+        <span id="st-manet">Mobile Ad Hoc Network &mdash; the decentralised layer the chain runs over.</span>
+        <span id="st-chain">Tamper resistance for the data moving across the network.</span>
+      </div>
     </div>
     <ul class="points">
       <li>Integrated a Mobile Ad Hoc Network (MANET) with blockchain technology to strengthen decentralised communication and data security.</li>
@@ -1322,18 +1438,20 @@
     <h2>Education</h2>
     <div class="line"></div>
   </div>
-  <div class="entry">
-    <div class="meta when">Sep 2023 &mdash; Dec 2025</div>
-    <div>
-      <h3>University of Plymouth</h3>
-      <p>BSc (Hons) Computer Science (Cyber Security) &mdash; Upper Second Class</p>
+  <div class="timeline">
+    <div class="entry">
+      <div class="meta when">Sep 2023 &mdash; Dec 2025</div>
+      <div>
+        <h3>University of Plymouth</h3>
+        <p>BSc (Hons) Computer Science (Cyber Security) &mdash; Upper Second Class</p>
+      </div>
     </div>
-  </div>
-  <div class="entry">
-    <div class="meta when">Jan 2021 &mdash; Apr 2023</div>
-    <div>
-      <h3>Peninsula College Malaysia</h3>
-      <p>Diploma in Computer Science &mdash; CGPA 3.53</p>
+    <div class="entry">
+      <div class="meta when">Jan 2021 &mdash; Apr 2023</div>
+      <div>
+        <h3>Peninsula College Malaysia</h3>
+        <p>Diploma in Computer Science &mdash; CGPA 3.53</p>
+      </div>
     </div>
   </div>
 
@@ -1630,6 +1748,71 @@
       root.classList.remove('js-boot');
       if (term) { term.classList.remove('typing'); }
     }
+  })();
+
+  // ---- project stack ----
+  // Same contract as the skills readout: opens on the first item so it is
+  // never empty, hover previews, click pins. Without JS the chips are inert
+  // but the default line still describes the work.
+  (function () {
+    var chips = document.querySelectorAll('.st');
+    var out = document.getElementById('stack-out');
+    if (!chips.length || !out) return;
+
+    var pinned = null;
+
+    function show(btn) {
+      if (!btn) return;
+      var src = document.getElementById(btn.getAttribute('data-ctx'));
+      if (src) out.textContent = src.textContent;
+    }
+
+    Array.prototype.forEach.call(chips, function (btn) {
+      btn.addEventListener('mouseenter', function () { show(btn); });
+      btn.addEventListener('focus', function () { show(btn); });
+      btn.addEventListener('click', function () {
+        var already = pinned === btn;
+        pinned = already ? null : btn;
+        Array.prototype.forEach.call(chips, function (b) {
+          b.setAttribute('aria-pressed', b === btn && !already ? 'true' : 'false');
+        });
+        show(btn);
+      });
+    });
+
+    var panel = document.querySelector('#project .project');
+    if (panel) {
+      panel.addEventListener('mouseleave', function () { show(pinned); });
+      panel.addEventListener('focusout', function (e) {
+        if (!panel.contains(e.relatedTarget)) show(pinned);
+      });
+    }
+  })();
+
+  // ---- skill chip roving navigation ----
+  // Thirty chips is a lot of tab stops. Arrows walk a group, Home and End
+  // jump its ends, and Tab still leaves the group in one press.
+  (function () {
+    var groups = document.querySelectorAll('.skl-items, .stack');
+    if (!groups.length) return;
+
+    Array.prototype.forEach.call(groups, function (group) {
+      var items = [].slice.call(group.querySelectorAll('button'));
+      if (items.length < 2) return;
+
+      group.addEventListener('keydown', function (e) {
+        var i = items.indexOf(document.activeElement);
+        if (i === -1) return;
+        var next = null;
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next = items[(i + 1) % items.length];
+        else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') next = items[(i - 1 + items.length) % items.length];
+        else if (e.key === 'Home') next = items[0];
+        else if (e.key === 'End') next = items[items.length - 1];
+        if (!next) return;
+        e.preventDefault();
+        next.focus();
+      });
+    });
   })();
 
   // ---- skill context ----
