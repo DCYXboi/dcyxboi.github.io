@@ -27,13 +27,6 @@
     /* Plain rgb triplet: canvas fillStyle needs a format every browser
        parses, and oklch() is not reliably one of them yet. */
     --net: 123, 46, 51;
-    /* Pixel-art palette, rgb triplets for the same canvas reason. */
-    --px-bg:    236, 235, 230;
-    --px-floor: 218, 217, 210;
-    --px-solid:  52,  54,  48;
-    --px-soft:  150, 151, 143;
-    --px-skin:  214, 175, 140;
-    --px-acc:   123,  46,  51;
 
     --serif: 'Instrument Serif', 'Iowan Old Style', Georgia, 'Times New Roman', serif;
     --sans: 'IBM Plex Sans', 'Segoe UI', system-ui, -apple-system, sans-serif;
@@ -60,13 +53,6 @@
       --footer-mut: oklch(0.555 0.006 125);
       --footer-acc: oklch(0.775 0.09 25);
       --net: 208, 140, 134;
-      /* Dark room: furniture reads light against the wall instead of dark. */
-      --px-bg:     32,  34,  29;
-      --px-floor:  24,  26,  22;
-      --px-solid: 198, 198, 192;
-      --px-soft:  104, 107,  99;
-      --px-skin:  214, 175, 140;
-      --px-acc:   208, 140, 134;
     }
   }
 
@@ -85,12 +71,6 @@
     --footer-mut: oklch(0.555 0.006 125);
     --footer-acc: oklch(0.775 0.09 25);
     --net: 208, 140, 134;
-    --px-bg:     32,  34,  29;
-    --px-floor:  24,  26,  22;
-    --px-solid: 198, 198, 192;
-    --px-soft:  104, 107,  99;
-    --px-skin:  214, 175, 140;
-    --px-acc:   208, 140, 134;
   }
 
   * { box-sizing: border-box; }
@@ -318,15 +298,12 @@
   }
   .cv svg { flex: 0 0 auto; }
 
-  /* Nearest-neighbour upscale of a 64x40 grid: the pixels stay pixels at
-     whatever width the column happens to be. */
-  .pixel { border: 1px solid var(--rule); line-height: 0; }
-  .pixel canvas {
+  .pixel { border: 1px solid var(--rule); line-height: 0; background: #14171a; }
+  .pixel video {
     display: block;
     width: 100%;
     height: auto;
-    aspect-ratio: 64 / 40;
-    image-rendering: pixelated;
+    aspect-ratio: 864 / 496;
   }
 
   /* ---------- nav ---------- */
@@ -987,7 +964,8 @@
     </a>
   </div>
   <div class="pixel">
-    <canvas id="px" role="img" aria-label="Pixel animation: a small figure brews coffee, works at a computer, then sleeps, on a loop."></canvas>
+    <video id="px" src="room-loop.mp4" autoplay muted loop playsinline preload="metadata"
+           aria-label="Pixel animation: an isometric room where a figure makes coffee and works at a computer, on a loop."></video>
   </div>
   </div>
   </div>
@@ -1355,135 +1333,17 @@
   })();
 
   // ---- pixel loop ----
-  // A 64x40 room drawn from rectangles: brew, work, sleep, repeat. Each
-  // scene has two sub-frames so something moves inside it.
+  // The room animation is a short muted video. Anyone who has asked for
+  // reduced motion gets its first frame held still instead.
   (function () {
-    var cv = document.getElementById('px');
-    if (!cv) return;
-    var ctx = cv.getContext && cv.getContext('2d');
-    if (!ctx) return;
-
-    var W = 64, H = 40, FLOOR = 31;
-    cv.width = W;
-    cv.height = H;
-
-    var pal = {};
-    var KEYS = ['bg', 'floor', 'solid', 'soft', 'skin', 'acc'];
-    function readPal() {
-      var cs = getComputedStyle(document.documentElement);
-      KEYS.forEach(function (k) {
-        var v = cs.getPropertyValue('--px-' + k).trim();
-        pal[k] = 'rgb(' + (v || '0,0,0') + ')';
-      });
-    }
-    function r(x, y, w, h, c) { ctx.fillStyle = c; ctx.fillRect(x, y, w, h); }
-    function room() {
-      r(0, 0, W, H, pal.bg);
-      r(0, FLOOR, W, H - FLOOR, pal.floor);
-    }
-    // A 3x3 pixel Z, for the sleeping scene.
-    function zed(x, y, c) { r(x, y, 3, 1, c); r(x + 1, y + 1, 1, 1, c); r(x, y + 2, 3, 1, c); }
-
-    function brew(f) {
-      room();
-      r(6, 24, 26, 2, pal.solid);            // counter top
-      r(7, 26, 24, 5, pal.soft);             // counter body
-      r(10, 15, 9, 9, pal.solid);            // machine
-      r(12, 17, 5, 4, pal.acc);              // machine window
-      r(11, 22, 7, 1, pal.soft);             // drip tray
-      r(20, 20, 4, 4, pal.acc);              // carafe
-      r(26, 21, 4, 3, pal.soft);             // mug
-      r(30, 22, 1, 1, pal.soft);             // mug handle
-      // steam rising off the machine
-      r(12, f ? 9 : 11, 1, 2, pal.soft);
-      r(14, f ? 12 : 10, 1, 2, pal.soft);
-      r(16, f ? 10 : 13, 1, 2, pal.soft);
-      // figure, facing the machine
-      r(41, 12, 7, 3, pal.solid);            // hair
-      r(41, 15, 7, 6, pal.skin);             // head
-      r(40, 21, 9, 8, pal.soft);             // torso
-      r(36, f ? 23 : 24, 5, 2, pal.skin);    // arm reaching
-      r(41, 29, 3, 2, pal.solid);            // legs
-      r(45, 29, 3, 2, pal.solid);
-    }
-
-    function work(f) {
-      room();
-      r(12, 25, 30, 2, pal.solid);           // desk top
-      r(13, 27, 2, 4, pal.soft);             // legs
-      r(39, 27, 2, 4, pal.soft);
-      r(17, 11, 16, 12, pal.solid);          // monitor
-      // The screen stays lit; it is the text on it that moves, so the
-      // monitor never reads as switched off half the time.
-      r(19, 13, 12, 8, pal.acc);
-      r(21, 15, f ? 8 : 5, 1, pal.bg);
-      r(21, 17, f ? 4 : 7, 1, pal.bg);
-      r(21, 19, f ? 6 : 3, 1, pal.bg);
-      r(23, 23, 4, 2, pal.solid);            // stand
-      r(35, 22, 3, 3, pal.acc);              // mug
-      r(52, 19, 2, 12, pal.solid);           // chair back
-      r(43, 29, 10, 2, pal.solid);           // seat
-      r(44, 13, 7, 3, pal.solid);            // hair
-      r(44, 16, 7, 6, pal.skin);             // head
-      r(43, 22, 9, 7, pal.soft);             // torso
-      r(38, f ? 23 : 24, 6, 2, pal.skin);    // hands typing
-    }
-
-    function sleep(f) {
-      room();
-      r(8, 7, 13, 12, pal.solid);            // window frame
-      r(9, 8, 11, 10, pal.soft);             // night sky
-      // Skin is the one tone lighter than the sky in BOTH themes, so the
-      // moon reads as a light rather than a hole punched in the wall.
-      r(15, 10, 3, 3, pal.skin);             // moon
-      r(14, 8, 1, 10, pal.solid);            // mullions
-      r(9, 12, 11, 1, pal.solid);
-      r(12, 21, 4, 10, pal.solid);           // headboard
-      r(16, 25, 30, 3, pal.soft);            // mattress
-      r(16, 28, 30, 2, pal.solid);           // frame
-      r(17, 30, 2, 2, pal.solid);            // legs
-      r(43, 30, 2, 2, pal.solid);
-      r(19, 19, 6, 2, pal.solid);            // hair
-      r(19, 21, 6, 3, pal.skin);             // face
-      r(26, f ? 22 : 23, 20, 4, pal.acc);    // blanket, breathing
-      zed(30, f ? 13 : 15, pal.soft);
-      zed(35, f ? 8 : 10, pal.soft);
-    }
-
-    var SCENES = [brew, work, sleep];
-    var scene = 0, sub = 0, ticks = 0;
-
-    function paint() { SCENES[scene](sub); }
-
-    try {
-      readPal();
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        scene = 1;                            // one still frame: at the desk
-        paint();
-        return;
-      }
-      paint();
-      // 520ms a sub-frame, seven of them a scene — a shade under four
-      // seconds each, which is long enough to read what is happening.
-      window.setInterval(function () {
-        if (document.hidden) return;
-        sub = sub ? 0 : 1;
-        ticks++;
-        if (ticks % 7 === 0) { scene = (scene + 1) % SCENES.length; sub = 0; }
-        paint();
-      }, 520);
-
-      var refresh = function () { readPal(); paint(); };
-      var dark = window.matchMedia('(prefers-color-scheme: dark)');
-      if (dark.addEventListener) dark.addEventListener('change', refresh);
-      new MutationObserver(refresh).observe(document.documentElement, {
-        attributes: true, attributeFilter: ['data-theme']
-      });
-    } catch (err) {
-      cv.parentNode && cv.parentNode.removeChild(cv);
+    var v = document.getElementById('px');
+    if (!v) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      v.removeAttribute('autoplay');
+      v.loop = false;
+      try { v.pause(); } catch (e) {}
     }
   })();
-
   // ---- boot screen, then terminal ----
   // The overlay runs a short boot log, then hands over to the terminal so the
   // typing starts as the curtain lifts rather than behind it.
