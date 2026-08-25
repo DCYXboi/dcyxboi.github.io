@@ -298,13 +298,6 @@
   }
   .cv svg { flex: 0 0 auto; }
 
-  .pixel { border: 1px solid var(--rule); line-height: 0; background: #14171a; }
-  .pixel video {
-    display: block;
-    width: 100%;
-    height: auto;
-    aspect-ratio: 864 / 496;
-  }
 
   /* ---------- nav ---------- */
 
@@ -565,17 +558,16 @@
   .sys li { display: flex; align-items: baseline; gap: 10px; }
   .sys .k { color: var(--ink); white-space: nowrap; }
   .sys .dots { flex: 1 1 auto; border-bottom: 1px dotted var(--rule); transform: translateY(-4px); min-width: 20px; }
-  .sys .v {
-    color: var(--accent);
-    white-space: nowrap;
-    opacity: 0;
-    transition: opacity .35s ease;
-  }
-  .sys.is-live .v { opacity: 1; }
-  .sys li:nth-child(2) .v { transition-delay: .18s; }
-  .sys li:nth-child(3) .v { transition-delay: .36s; }
-  .sys li:nth-child(4) .v { transition-delay: .54s; }
-  .sys li:nth-child(5) .v { transition-delay: .72s; }
+  .sys .v { color: var(--accent); white-space: nowrap; }
+
+  /* Boot state. Rows are hidden by visibility so the panel is full height
+     from the first frame and the buttons below it never move. Everything
+     here is scoped to .booting, which only JS adds — without it the panel
+     simply renders finished. */
+  .sys.booting li { visibility: hidden; }
+  .sys.booting li.on { visibility: visible; }
+  .sys.booting li .v { opacity: 0; }
+  .sys.booting li.ok .v { opacity: 1; transition: opacity .12s ease; }
   .bar {
     display: inline-block;
     width: 64px;
@@ -584,8 +576,9 @@
     vertical-align: -1px;
     margin-right: 7px;
   }
-  .bar i { display: block; height: 100%; width: 0; background: var(--accent); transition: width 1.2s cubic-bezier(.3,.8,.4,1) .8s; }
-  .sys.is-live .bar i { width: 100%; }
+  .bar i { display: block; height: 100%; width: 100%; background: var(--accent); }
+  .sys.booting .bar i { width: 0; }
+  .sys.booting li.ok .bar i { width: 100%; transition: width .9s cubic-bezier(.3,.8,.4,1); }
 
   /* ---------- command palette ---------- */
 
@@ -876,8 +869,9 @@
       transform: none;
     }
     /* Status readouts and the terminal simply arrive, already finished. */
-    .sys .v { opacity: 1; }
-    .sys .bar i { width: 100%; }
+    .sys.booting li { visibility: visible; }
+    .sys.booting li .v { opacity: 1; }
+    .sys.booting .bar i { width: 100%; }
     .term.typing .ch { visibility: visible; }
     .caret { animation: none; }
     .boot-log li { opacity: 1; }
@@ -945,7 +939,7 @@
   </div>
   <div class="hero-side">
   <div class="sys">
-    <div class="sys-head">[ SYSTEM ONLINE ]</div>
+    <div class="sys-head" id="sys-head">[ SYSTEM ONLINE ]</div>
     <ul>
       <li><span class="k">Linux / Unix</span><span class="dots"></span><span class="v">OK</span></li>
       <li><span class="k">Security operations</span><span class="dots"></span><span class="v">OK</span></li>
@@ -962,10 +956,6 @@
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
       Resume
     </a>
-  </div>
-  <div class="pixel">
-    <video id="px" src="room-loop.mp4" autoplay muted loop playsinline preload="metadata"
-           aria-label="Pixel animation: an isometric room where a figure makes coffee and works at a computer, on a loop."></video>
   </div>
   </div>
   </div>
@@ -1332,18 +1322,6 @@
     }
   })();
 
-  // ---- pixel loop ----
-  // The room animation is a short muted video. Anyone who has asked for
-  // reduced motion gets its first frame held still instead.
-  (function () {
-    var v = document.getElementById('px');
-    if (!v) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      v.removeAttribute('autoplay');
-      v.loop = false;
-      try { v.pause(); } catch (e) {}
-    }
-  })();
   // ---- boot screen, then terminal ----
   // The overlay runs a short boot log, then hands over to the terminal so the
   // typing starts as the curtain lifts rather than behind it.
@@ -1351,7 +1329,38 @@
     var root = document.documentElement;
     var boot = document.getElementById('boot');
     var term = document.querySelector('.term');
+    var sys = document.querySelector('.sys');
+    var sysHead = document.getElementById('sys-head');
     var calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // --- status panel: each check appears, then resolves, like a POST ---
+    function bootSys() {
+      if (!sys) return;
+      var rows = sys.querySelectorAll('li');
+      if (!rows.length) return;
+      sys.classList.add('booting');
+      if (sysHead) sysHead.textContent = '[ SYSTEM BOOT ]';
+
+      var i = 0;
+      var step = function () {
+        if (i >= rows.length) {
+          if (sysHead) sysHead.textContent = '[ SYSTEM ONLINE ]';
+          return;
+        }
+        var row = rows[i];
+        row.classList.add('on');                                  // key and dots land
+        window.setTimeout(function () { row.classList.add('ok'); }, 260);  // then the check resolves
+        i++;
+        window.setTimeout(step, 240);
+      };
+      step();
+
+      // However that goes, the panel must never be left half-checked.
+      window.setTimeout(function () {
+        Array.prototype.forEach.call(rows, function (row) { row.classList.add('on', 'ok'); });
+        if (sysHead) sysHead.textContent = '[ SYSTEM ONLINE ]';
+      }, 5000);
+    }
 
     // --- terminal: split every line into characters ---
     var chars = [];
@@ -1462,7 +1471,11 @@
 
     try {
       if (term && !calm) shatter();
-      raise(function () { if (term && !calm) type(); });
+      // Terminal and status panel come up together, as two things booting
+      // side by side rather than one after the other.
+      raise(function () {
+        if (!calm) { if (term) type(); bootSys(); }
+      });
     } catch (err) {
       // A broken intro must never cost the page.
       if (boot && boot.parentNode) boot.parentNode.removeChild(boot);
@@ -1519,19 +1532,6 @@
     });
   })();
 
-  // ---- system status ----
-  (function () {
-    var sys = document.querySelector('.sys');
-    if (!sys) return;
-    var light = function () { sys.classList.add('is-live'); };
-    if (!window.IntersectionObserver) { light(); return; }
-    var io = new IntersectionObserver(function (entries) {
-      if (!entries[0].isIntersecting) return;
-      light();
-      io.disconnect();
-    }, { threshold: 0.3 });
-    io.observe(sys);
-  })();
 
   // ---- command palette ----
   (function () {
