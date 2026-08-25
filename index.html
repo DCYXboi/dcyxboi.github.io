@@ -925,25 +925,6 @@
     .boot-log li { opacity: 1; }
   }
 
-  /* ---------- skip link ----------
-     47 focusable elements on the page, 30 of them skill chips. */
-  /* Fixed, not absolute: an absolute one lands at the top of the document, so
-     anyone focusing it while scrolled would send it off screen. */
-  .skip {
-    position: fixed;
-    left: -9999px;
-    top: 0;
-    z-index: 100;
-    padding: 12px 18px;
-    background: var(--accent);
-    color: var(--paper);
-    border: 0;
-    font-family: var(--mono);
-    font-size: 12px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
-  .skip:focus { left: 0; }
 
   /* ---------- scanlines ----------
      A CRT hint at 3% over the whole page. No colour of its own — it darkens
@@ -964,7 +945,7 @@
      Someone printing this is comparing it against a PDF. Strip the terminal
      chrome and let the content set on paper. */
   @media print {
-    .scan, .net, nav, .kbd, .pal, .boot, .skip, .caret { display: none !important; }
+    .scan, .net, nav, .kbd, .pal, .boot, .caret { display: none !important; }
     html, body { background: #fff !important; color: #000 !important; }
     .term, .sys, .contact-term { border: 1px solid #999 !important; background: none !important; }
     .ps1, .sys .v, .sys-head, .row .key, .head .line { color: #000 !important; }
@@ -1037,7 +1018,6 @@
   </div>
 </div>
 
-<a class="skip" href="#experience">Skip to content</a>
 <div class="scan" aria-hidden="true"></div>
 
 <header class="masthead wrap">
