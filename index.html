@@ -618,17 +618,27 @@
     background: var(--paper);
     font-family: var(--mono);
   }
-  .pal-input {
-    width: 100%;
-    padding: 15px 16px;
-    border: 0;
+  /* The search line reads as a prompt, like everything else on the page. */
+  .pal-prompt {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-inline: 16px;
     border-bottom: 1px solid var(--rule);
+  }
+  .pal-prompt .ps1 { color: var(--accent); font-size: 14px; }
+  .pal-input {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 15px 0;
+    border: 0;
     background: none;
     color: var(--ink);
     font-family: var(--mono);
     font-size: 14px;
   }
   .pal-input:focus { outline: none; }
+  .pal-input::placeholder { color: var(--ink-faint); }
   .pal ul { list-style: none; margin: 0; padding: 6px; max-height: 46vh; overflow-y: auto; }
   .pal li button {
     display: block;
@@ -1280,7 +1290,10 @@
 
 <div class="pal" id="palette" hidden>
   <div class="pal-box" role="dialog" aria-modal="true" aria-label="Command palette">
-    <input class="pal-input" id="pal-input" type="text" placeholder="Type a command or section&hellip;" aria-label="Search this site" autocomplete="off" spellcheck="false">
+    <div class="pal-prompt">
+      <span class="ps1" aria-hidden="true">&gt;</span>
+      <input class="pal-input" id="pal-input" type="text" placeholder="search portfolio" aria-label="Search this site" autocomplete="off" spellcheck="false">
+    </div>
     <ul id="pal-list"></ul>
     <div class="pal-foot">&uarr;&darr; move &middot; &crarr; open &middot; esc close</div>
   </div>
@@ -1582,16 +1595,18 @@
     var list = document.getElementById('pal-list');
     if (!pal || !input || !list) return;
 
+    // Terse labels: the list is scanned, not read. `keys` carry the extra
+    // words worth searching on without putting them on screen.
     var ITEMS = [
-      { label: 'Experience', hint: 'section', go: function () { jump('experience'); } },
-      { label: 'Project — CloudChain', hint: 'section', go: function () { jump('project'); } },
-      { label: 'Skills', hint: 'section', go: function () { jump('skills'); } },
-      { label: 'Education', hint: 'section', go: function () { jump('education'); } },
-      { label: 'Email danny.chan2003@yahoo.com', hint: 'contact', go: function () { location.href = 'mailto:danny.chan2003@yahoo.com'; } },
-      { label: 'LinkedIn', hint: 'external', go: function () { open('https://www.linkedin.com/in/danny-chan-a013aa204/'); } },
-      { label: 'GitHub', hint: 'external', go: function () { open('https://github.com/DCYXboi'); } },
-      { label: 'Download resume', hint: 'file', go: function () { location.href = 'resume.pdf'; } },
-      { label: 'Read the CloudChain paper', hint: 'external', go: function () { open('https://digitallibrary.peninsulacollege.edu.my/items/9e8d502c-2c09-4133-8221-f0ef71f895b6'); } }
+      { label: 'Experience', keys: 'section work roles jobs', go: function () { jump('experience'); } },
+      { label: 'Project',    keys: 'section cloudchain blockchain manet', go: function () { jump('project'); } },
+      { label: 'Skills',     keys: 'section linux tools', go: function () { jump('skills'); } },
+      { label: 'Education',  keys: 'section degree plymouth', go: function () { jump('education'); } },
+      { label: 'Contact',    keys: 'section phone details', go: function () { jump('contact'); } },
+      { label: 'Email',      keys: 'contact mail danny.chan2003@yahoo.com', go: function () { location.href = 'mailto:danny.chan2003@yahoo.com'; } },
+      { label: 'LinkedIn',   keys: 'external profile', go: function () { open('https://www.linkedin.com/in/danny-chan-a013aa204/'); } },
+      { label: 'GitHub',     keys: 'external code repo', go: function () { open('https://github.com/DCYXboi'); } },
+      { label: 'Resume',     keys: 'file cv download pdf', go: function () { location.href = 'resume.pdf'; } }
     ];
 
     function open(url) { window.open(url, '_blank', 'noopener'); }
@@ -1607,7 +1622,9 @@
     function render(q) {
       var needle = q.trim().toLowerCase();
       shown = ITEMS.filter(function (it) {
-        return !needle || it.label.toLowerCase().indexOf(needle) !== -1 || it.hint.indexOf(needle) !== -1;
+        return !needle ||
+          it.label.toLowerCase().indexOf(needle) !== -1 ||
+          it.keys.indexOf(needle) !== -1;
       });
       active = 0;
       list.innerHTML = '';
