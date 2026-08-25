@@ -112,12 +112,18 @@
     transition: border-color .18s ease;
   }
   a:hover { border-bottom-color: var(--accent); }
+  /* Keyboard focus is a square ring and nothing else. It deliberately does
+     not trigger the hover ink wipe: the wipe bleeds outside the element box
+     (16px each side on a role row) while an outline hugs it, so the two can
+     never line up. Square, because nothing else on this page is rounded. */
   a:focus-visible,
+  button:focus-visible,
   summary:focus-visible,
+  input:focus-visible,
   .navlink:focus-visible {
     outline: 2px solid var(--accent);
-    outline-offset: 3px;
-    border-radius: 2px;
+    outline-offset: 2px;
+    border-radius: 0;
   }
 
   /* Content is capped and centred, but the elements stay full width so the
@@ -788,44 +794,30 @@
   .cv::before { inset: 0; }
 
   .navlink:hover::before,
-  .navlink:focus-visible::before,
   .role summary:hover::before,
-  .role summary:focus-visible::before,
   .contact a:hover::before,
-  .contact a:focus-visible::before,
   .paper:hover::before,
-  .paper:focus-visible::before,
   .cv:hover::before,
-  .cv:focus-visible::before,
-  .contact-term a:hover::before,
-  .contact-term a:focus-visible::before {
+  .contact-term a:hover::before {
     transform: scaleY(1);
   }
 
   /* Labels ride on top of the ink, so they take the paper colour. */
-  .navlink:hover,
-  .navlink:focus-visible { color: var(--paper); }
+  .navlink:hover { color: var(--paper); }
 
   .role summary:hover h3,
   .role summary:hover .org,
   .role summary:hover .meta,
-  .role summary:hover .chev,
-  .role summary:focus-visible h3,
-  .role summary:focus-visible .org,
-  .role summary:focus-visible .meta,
-  .role summary:focus-visible .chev { color: var(--paper); }
+  .role summary:hover .chev { color: var(--paper); }
 
   .paper:hover,
-  .paper:focus-visible,
-  .contact-term a:hover,
-  .contact-term a:focus-visible {
+  .contact-term a:hover {
     color: var(--paper);
     border-bottom-color: transparent;
   }
 
   /* The boxed button keeps its frame; only the fill and label change. */
-  .cv:hover,
-  .cv:focus-visible {
+  .cv:hover {
     color: var(--paper);
     border-color: var(--accent);
   }
@@ -839,8 +831,7 @@
     border-bottom-color: color-mix(in oklab, var(--paper) 45%, transparent);
   }
   #project .paper::before { background: var(--paper); }
-  #project .paper:hover,
-  #project .paper:focus-visible {
+  #project .paper:hover {
     color: var(--accent);
     border-bottom-color: transparent;
   }
