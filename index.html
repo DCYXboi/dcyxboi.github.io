@@ -528,10 +528,40 @@
     line-height: 1.6;
     color: var(--ink-soft);
   }
-  .skl-ctx .hint { font-family: var(--mono); font-size: 12.5px; color: var(--ink-faint); }
-  .js-ctx .skl-ctx .ctx { display: none; }
-  .js-ctx .skl-ctx .ctx.is-on { display: block; }
-  .js-ctx .skl-ctx.has-pick .hint { display: none; }
+  /* With JS the six per-group panes collapse into one readout below the
+     heading; without it they stay put, so no context is ever unreachable. */
+  .js-ctx .skl-ctx { display: none; }
+
+  .skl-readout { display: none; }
+  .js-ctx .skl-readout {
+    display: block;
+    position: sticky;
+    top: 48px;
+    z-index: 5;
+    margin-bottom: 26px;
+    padding: 13px 16px;
+    border: 1px solid var(--rule);
+    background: color-mix(in oklab, var(--ink) 5%, var(--paper));
+  }
+  .skl-readout .cmd {
+    margin: 0;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    color: var(--ink-soft);
+  }
+  .skl-readout .cmd .ps1 { color: var(--accent); }
+  .skl-readout .cmd b { font-weight: 500; color: var(--ink); }
+  /* Reserved height, so swapping a short description for a long one does
+     not make the sticky box jump under the reader. */
+  .skl-readout .out {
+    margin: 7px 0 0;
+    max-width: 70ch;
+    min-height: 3.1em;
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    text-wrap: pretty;
+  }
 
   /* ---------- system status ---------- */
 
@@ -1077,6 +1107,11 @@
     <div class="line"></div>
   </div>
 
+  <div class="skl-readout" aria-live="polite">
+    <p class="cmd"><span class="ps1">$</span> man <b id="skl-cmd">linux-unix</b></p>
+    <p class="out" id="skl-out">My daily working environment at Titanicom &mdash; command-line maintenance, system health checks and issue resolution on production servers.</p>
+  </div>
+
   <div class="skl">
     <div class="label">Operating systems</div>
     <div class="skl-items">
@@ -1087,7 +1122,6 @@
       <button class="sk" type="button" data-ctx="os-mac" aria-pressed="false">macOS</button>
     </div>
     <div class="skl-ctx" aria-live="polite">
-      <span class="hint">hover or tap a skill for context</span>
       <span class="ctx" id="os-linux">My daily working environment at Titanicom &mdash; command-line maintenance, system health checks and issue resolution on production servers.</span>
       <span class="ctx" id="os-centos">I build CentOS 7 virtual machines to replicate a server environment, reproduce the fault, and prove a fix before it touches production.</span>
       <span class="ctx" id="os-rhel">Same RHEL-family workflow as CentOS: rebuild the environment, reproduce, validate, then apply.</span>
@@ -1107,7 +1141,6 @@
       <button class="sk" type="button" data-ctx="ps-deploy" aria-pressed="false">Deployment support</button>
     </div>
     <div class="skl-ctx" aria-live="polite">
-      <span class="hint">hover or tap a skill for context</span>
       <span class="ctx" id="ps-incident">Ran the full ticket lifecycle in Palo Alto XSOAR at Ensign, and handled service and change requests direct from stakeholders at PKT(M).</span>
       <span class="ctx" id="ps-logs">Monitored and analysed system and security logs for 30 client environments in IBM QRadar, investigating alerts for recurring incidents.</span>
       <span class="ctx" id="ps-rca">Traced system, BMC and event logs to the underlying hardware or platform fault &mdash; including ECC memory error investigation.</span>
@@ -1129,7 +1162,6 @@
       <button class="sk" type="button" data-ctx="tp-gpu" aria-pressed="false">GPU stress &amp; burn diagnostics</button>
     </div>
     <div class="skl-ctx" aria-live="polite">
-      <span class="hint">hover or tap a skill for context</span>
       <span class="ctx" id="tp-qradar">The SIEM I lived in at Ensign &mdash; 30 client environments, watching for the alert that actually mattered.</span>
       <span class="ctx" id="tp-xsoar">Created and managed client incident tickets end to end, working to agreed response and escalation criteria.</span>
       <span class="ctx" id="tp-cyberark">Checked out vaulted privileged credentials to reach production servers under controlled access procedures.</span>
@@ -1152,7 +1184,6 @@
       <button class="sk" type="button" data-ctx="sd-vs" aria-pressed="false">Visual Studio</button>
     </div>
     <div class="skl-ctx" aria-live="polite">
-      <span class="hint">hover or tap a skill for context</span>
       <span class="ctx" id="sd-shell">Command-line tooling for routine maintenance, plus the configuration scripts that ship with a project handover.</span>
       <span class="ctx" id="sd-go">Wrote CloudChain&rsquo;s custom database extension module in Go, backed by MySQL.</span>
       <span class="ctx" id="sd-sql">Relational schema design and queries &mdash; joins, filtering, aggregation &mdash; to persist and retrieve chain and node data.</span>
@@ -1170,7 +1201,6 @@
       <button class="sk" type="button" data-ctx="db-mongo" aria-pressed="false">MongoDB</button>
     </div>
     <div class="skl-ctx" aria-live="polite">
-      <span class="hint">hover or tap a skill for context</span>
       <span class="ctx" id="db-mysql">Schema design, query execution and transaction handling, driven from Go application code in CloudChain.</span>
       <span class="ctx" id="db-mongo">Document-store work alongside the relational side.</span>
     </div>
@@ -1184,7 +1214,6 @@
       <button class="sk" type="button" data-ctx="sp-ms" aria-pressed="false">Malay</button>
     </div>
     <div class="skl-ctx" aria-live="polite">
-      <span class="hint">hover or tap a skill for context</span>
       <span class="ctx" id="sp-en">Working language for documentation, incident reporting and stakeholder updates.</span>
       <span class="ctx" id="sp-zh">Spoken.</span>
       <span class="ctx" id="sp-ms">Spoken.</span>
@@ -1486,51 +1515,55 @@
   })();
 
   // ---- skill context ----
-  // Hover reads, click pins. Without this script every context line simply
-  // renders as a list, so nothing is hidden behind JS.
+  // One readout for the whole section instead of a prompt bar under every
+  // group. It opens showing the first skill, so it is never empty and never
+  // has to ask to be used. Without this script the per-group panes stay
+  // visible, so no context is unreachable.
   (function () {
-    var groups = document.querySelectorAll('.skl');
-    if (!groups.length) return;
+    var buttons = document.querySelectorAll('.sk');
+    var cmd = document.getElementById('skl-cmd');
+    var out = document.getElementById('skl-out');
+    if (!buttons.length || !cmd || !out) return;
+
     document.documentElement.classList.add('js-ctx');
 
-    Array.prototype.forEach.call(groups, function (group) {
-      var pane = group.querySelector('.skl-ctx');
-      var buttons = group.querySelectorAll('.sk');
-      if (!pane || !buttons.length) return;
+    var pinned = null;
 
-      var pinned = null;
+    // "IBM QRadar (SIEM)" -> "ibm-qradar-siem", so the prompt reads like one.
+    function slug(s) {
+      return s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    }
 
-      var show = function (id) {
-        var any = false;
-        Array.prototype.forEach.call(pane.querySelectorAll('.ctx'), function (c) {
-          var on = c.id === id;
-          c.classList.toggle('is-on', on);
-          if (on) any = true;
+    function show(btn) {
+      if (!btn) return;
+      var src = document.getElementById(btn.getAttribute('data-ctx'));
+      if (!src) return;
+      cmd.textContent = slug(btn.textContent);
+      out.textContent = src.textContent;
+    }
+
+    function restore() { show(pinned); }
+
+    Array.prototype.forEach.call(buttons, function (btn) {
+      btn.addEventListener('mouseenter', function () { show(btn); });
+      btn.addEventListener('focus', function () { show(btn); });
+      btn.addEventListener('click', function () {
+        var already = pinned === btn;
+        pinned = already ? null : btn;
+        Array.prototype.forEach.call(buttons, function (b) {
+          b.setAttribute('aria-pressed', b === btn && !already ? 'true' : 'false');
         });
-        pane.classList.toggle('has-pick', any);
-      };
-
-      var restore = function () { show(pinned); };
-
-      Array.prototype.forEach.call(buttons, function (btn) {
-        var id = btn.getAttribute('data-ctx');
-        btn.addEventListener('mouseenter', function () { show(id); });
-        btn.addEventListener('focus', function () { show(id); });
-        btn.addEventListener('click', function () {
-          var already = pinned === id;
-          pinned = already ? null : id;
-          Array.prototype.forEach.call(buttons, function (b) {
-            b.setAttribute('aria-pressed', b === btn && !already ? 'true' : 'false');
-          });
-          show(pinned || id);
-        });
-      });
-
-      group.addEventListener('mouseleave', restore);
-      group.addEventListener('focusout', function (e) {
-        if (!group.contains(e.relatedTarget)) restore();
+        show(btn);
       });
     });
+
+    var skills = document.getElementById('skills');
+    if (skills) {
+      skills.addEventListener('mouseleave', restore);
+      skills.addEventListener('focusout', function (e) {
+        if (!skills.contains(e.relatedTarget)) restore();
+      });
+    }
   })();
 
 
