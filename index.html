@@ -195,20 +195,71 @@
   .ps1 { color: var(--accent); }
   .dim { color: var(--ink-soft); }
 
+  /* Negative margin cancels its own width, so the caret can be moved between
+     characters without nudging anything along the line. */
   .caret {
     display: inline-block;
     width: 0.55em;
     height: 1.05em;
+    margin-right: -0.55em;
     background: var(--accent);
     vertical-align: -0.17em;
     animation: blink 1.05s steps(1) infinite;
   }
   @keyframes blink { 50% { opacity: 0; } }
 
-  /* Lines are hidden by visibility, not display, so the box never changes
-     height as they arrive and the page below never jumps. */
-  .term.typing .ln { visibility: hidden; }
-  .term.typing .ln.on { visibility: visible; }
+  /* Every character is present from the first frame and hidden by
+     visibility, so the block is full size before a word of it is typed and
+     nothing below ever shifts — including where lines wrap. */
+  .term.typing .ch { visibility: hidden; }
+  .term.typing .ch.on { visibility: visible; }
+
+  /* ---------- boot screen ---------- */
+
+  /* Only exists once the early script has run: no JS, no overlay, and the
+     page is never left behind a curtain that cannot lift. */
+  .boot { display: none; }
+  .js-boot .boot {
+    display: flex;
+    position: fixed;
+    inset: 0;
+    z-index: 90;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: var(--paper);
+    font-family: var(--mono);
+    transition: opacity .45s ease;
+  }
+  /* Both, or the viewport keeps scrolling the page hidden behind the curtain. */
+  .js-boot:not(.boot-done),
+  .js-boot:not(.boot-done) body { overflow: hidden; }
+  .js-boot.boot-done .boot { opacity: 0; pointer-events: none; }
+
+  .boot-in { width: min(420px, 100%); display: flex; flex-direction: column; gap: 18px; }
+  .boot-title {
+    font-size: 11.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .boot-log {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    font-size: 13px;
+    color: var(--ink);
+  }
+  .boot-log li { opacity: 0; transition: opacity .16s ease; }
+  .boot-log li.on { opacity: 1; }
+  .boot-log .ok { color: var(--accent); }
+  .boot-bar { height: 2px; background: var(--rule); overflow: hidden; }
+  .boot-bar i { display: block; height: 100%; width: 0; background: var(--accent); }
+  .js-boot .boot-bar i { animation: bootfill 1.4s linear forwards; }
+  @keyframes bootfill { to { width: 100%; } }
 
   .kbd {
     display: inline-flex;
@@ -819,8 +870,9 @@
     /* Status readouts and the terminal simply arrive, already finished. */
     .sys .v { opacity: 1; }
     .sys .bar i { width: 100%; }
-    .term.typing .ln { visibility: visible; }
+    .term.typing .ch { visibility: visible; }
     .caret { animation: none; }
+    .boot-log li { opacity: 1; }
   }
 </style>
 </head>
@@ -832,7 +884,26 @@
   if ('IntersectionObserver' in document.defaultView) {
     document.documentElement.classList.add('js-reveal');
   }
+  // The boot overlay only becomes visible once this has run, so a page with
+  // no JS never renders a curtain it cannot raise.
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.documentElement.classList.add('js-boot');
+  }
 </script>
+
+<div class="boot" id="boot" aria-hidden="true">
+  <div class="boot-in">
+    <div class="boot-title">danny@portfolio : boot</div>
+    <ul class="boot-log">
+      <li><span class="ok">[  OK  ]</span> mounting /home/danny</li>
+      <li><span class="ok">[  OK  ]</span> loading experience.log</li>
+      <li><span class="ok">[  OK  ]</span> indexing skills</li>
+      <li><span class="ok">[  OK  ]</span> starting security-monitor</li>
+      <li><span class="ok">[  OK  ]</span> brewing coffee</li>
+    </ul>
+    <div class="boot-bar"><i></i></div>
+  </div>
+</div>
 
 <header class="masthead wrap">
   <canvas class="net" aria-hidden="true"></canvas>
@@ -1249,36 +1320,131 @@
     }
   })();
 
-  // ---- terminal ----
-  // The lines are all in the document already; typing just reveals them in
-  // order. Hidden by visibility, so the box is full height from the first
-  // frame and nothing below it moves.
+  // ---- boot screen, then terminal ----
+  // The overlay runs a short boot log, then hands over to the terminal so the
+  // typing starts as the curtain lifts rather than behind it.
   (function () {
+    var root = document.documentElement;
+    var boot = document.getElementById('boot');
     var term = document.querySelector('.term');
-    if (!term) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    var lines = term.querySelectorAll('.ln');
-    if (!lines.length) return;
+    // --- terminal: split every line into characters ---
+    var chars = [];
+    var caret = term ? term.querySelector('.caret') : null;
+    var lastLine = term ? term.querySelector('.term-body .ln:last-child') : null;
+    var timer = null;
+    var finished = false;
 
-    term.classList.add('typing');
+    function shatter() {
+      var lines = term.querySelectorAll('.ln');
+      Array.prototype.forEach.call(lines, function (ln) {
+        var isCmd = !!ln.querySelector('.ps1');
+        var walker = document.createTreeWalker(ln, NodeFilter.SHOW_TEXT, null, false);
+        var nodes = [];
+        var n;
+        while ((n = walker.nextNode())) nodes.push(n);
+        nodes.forEach(function (node) {
+          var text = node.nodeValue;
+          if (!text) return;
+          var frag = document.createDocumentFragment();
+          for (var i = 0; i < text.length; i++) {
+            var s = document.createElement('span');
+            s.className = 'ch';
+            s.textContent = text.charAt(i);
+            frag.appendChild(s);
+            chars.push({ el: s, cmd: isCmd, line: ln });
+          }
+          node.parentNode.replaceChild(frag, node);
+        });
+      });
+    }
 
-    var i = 0;
-    var tick = function () {
-      if (i >= lines.length) return;
-      lines[i].classList.add('on');
-      i++;
-      // Command lines land a beat slower than their output, the way a real
-      // prompt does.
-      var next = lines[i - 1].querySelector('.ps1') ? 190 : 85;
-      window.setTimeout(tick, next);
-    };
-    tick();
+    function settle() {
+      if (finished) return;
+      finished = true;
+      if (timer) { window.clearTimeout(timer); timer = null; }
+      chars.forEach(function (c) { c.el.classList.add('on'); });
+      term.classList.remove('typing');
+      if (caret && lastLine) lastLine.appendChild(caret);
+    }
 
-    // If anything above stalls, never leave the hero half-drawn.
-    window.setTimeout(function () {
-      Array.prototype.forEach.call(lines, function (l) { l.classList.add('on'); });
-    }, 6000);
+    function type() {
+      if (!chars.length) return;
+      term.classList.add('typing');
+      var i = 0;
+      var step = function () {
+        if (finished) return;
+        var c = chars[i];
+        c.el.classList.add('on');
+        // The caret rides along behind the last character typed.
+        if (caret) c.el.parentNode.insertBefore(caret, c.el.nextSibling);
+        i++;
+        if (i >= chars.length) { settle(); return; }
+        var next = chars[i];
+        // Commands are typed at human speed; their output dumps out fast,
+        // with a beat between a command finishing and its output starting.
+        var wait = next.cmd ? 26 : 6;
+        if (next.line !== c.line && c.cmd) wait += 150;
+        timer = window.setTimeout(step, wait);
+      };
+      step();
+
+      // Impatience is legitimate: any click or key finishes it at once.
+      ['click', 'keydown', 'touchstart'].forEach(function (ev) {
+        document.addEventListener(ev, settle, { once: true, passive: true });
+      });
+      // And nothing may leave the hero half-typed.
+      window.setTimeout(settle, 9000);
+    }
+
+    // --- boot overlay ---
+    function raise(then) {
+      if (!boot || calm) {
+        if (boot && boot.parentNode) boot.parentNode.removeChild(boot);
+        root.classList.remove('js-boot');
+        then();
+        return;
+      }
+      var items = boot.querySelectorAll('.boot-log li');
+      var i = 0;
+      var lifted = false;
+
+      var lift = function () {
+        if (lifted) return;
+        lifted = true;
+        root.classList.add('boot-done');
+        then();   // start typing as the curtain goes, not after
+        window.setTimeout(function () {
+          if (boot.parentNode) boot.parentNode.removeChild(boot);
+          root.classList.remove('js-boot');
+        }, 520);
+      };
+
+      var tick = function () {
+        if (i < items.length) {
+          items[i].classList.add('on');
+          i++;
+          window.setTimeout(tick, 170);
+          return;
+        }
+        window.setTimeout(lift, 400);
+      };
+      window.setTimeout(tick, 120);
+
+      // If any of that stalls, the page still opens.
+      window.setTimeout(lift, 6000);
+    }
+
+    try {
+      if (term && !calm) shatter();
+      raise(function () { if (term && !calm) type(); });
+    } catch (err) {
+      // A broken intro must never cost the page.
+      if (boot && boot.parentNode) boot.parentNode.removeChild(boot);
+      root.classList.remove('js-boot');
+      if (term) { term.classList.remove('typing'); }
+    }
   })();
 
   // ---- skill context ----
