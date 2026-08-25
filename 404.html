@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>404 — Danny Chan Yi Xiang</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="alternate icon" href="favicon.png" sizes="32x32">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500&display=swap">
+<style>
+  :root {
+    --paper: oklch(0.958 0.004 125);
+    --ink: oklch(0.225 0.008 125);
+    --ink-soft: oklch(0.455 0.008 125);
+    --ink-faint: oklch(0.52 0.006 125);
+    --rule: oklch(0.865 0.005 125);
+    --accent: oklch(0.435 0.115 22);
+    --accent-dim: oklch(0.78 0.045 22);
+    --mono: 'IBM Plex Mono', ui-monospace, 'Cascadia Mono', Consolas, monospace;
+    --sans: 'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: oklch(0.195 0.007 125);
+      --ink: oklch(0.928 0.004 125);
+      --ink-soft: oklch(0.715 0.006 125);
+      --ink-faint: oklch(0.62 0.006 125);
+      --rule: oklch(0.325 0.007 125);
+      --accent: oklch(0.735 0.105 25);
+      --accent-dim: oklch(0.44 0.065 25);
+    }
+  }
+  * { box-sizing: border-box; }
+  ::selection { background: var(--accent); color: var(--paper); }
+  body {
+    margin: 0;
+    min-height: 100dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(20px, 6vw, 96px);
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  .scan {
+    position: fixed; inset: 0; z-index: 80; pointer-events: none;
+    background: repeating-linear-gradient(to bottom, rgba(0,0,0,.03) 0 1px, transparent 1px 3px);
+  }
+  .term {
+    width: min(620px, 100%);
+    border: 1px solid var(--rule);
+    background: color-mix(in oklab, var(--ink) 5%, var(--paper));
+    font-family: var(--mono);
+    font-size: clamp(12.5px, 1.3vw, 15px);
+    line-height: 1.9;
+  }
+  .term-bar {
+    padding: 9px 15px;
+    border-bottom: 1px solid var(--rule);
+    font-size: 11.5px;
+    letter-spacing: 0.07em;
+    color: var(--ink-faint);
+  }
+  .term-body { padding: 16px 15px 20px; }
+  p { margin: 0; white-space: pre-wrap; }
+  .sp { height: 0.85em; }
+  .ps1 { color: var(--accent); }
+  .dim { color: var(--ink-soft); }
+  h1 { margin: 0; font-size: inherit; font-weight: 500; font-family: var(--mono); }
+  a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent-dim); }
+  a:hover { border-bottom-color: var(--accent); }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .caret {
+    display: inline-block; width: .55em; height: 1.05em; margin-right: -.55em;
+    background: var(--accent); vertical-align: -.17em;
+    animation: blink 1.05s steps(1) infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .caret { animation: none; } }
+</style>
+</head>
+<body>
+<div class="scan" aria-hidden="true"></div>
+
+<main class="term">
+  <div class="term-bar">danny@portfolio ~</div>
+  <div class="term-body">
+    <p><span class="ps1">$</span> cd <span class="dim" id="path">that-page</span></p>
+    <h1>cd: no such file or directory</h1>
+    <p class="sp"></p>
+    <p><span class="ps1">$</span> ls ~</p>
+    <p><a href="/#experience">experience</a>  <a href="/#project">project</a>  <a href="/#skills">skills</a>  <a href="/#education">education</a>  <a href="/#contact">contact</a></p>
+    <p class="sp"></p>
+    <p><span class="ps1">$</span> cd ~</p>
+    <p><a href="/">Back to the start</a></p>
+    <p class="sp"></p>
+    <p><span class="ps1">$</span> <span class="caret" aria-hidden="true"></span></p>
+  </div>
+</main>
+
+<script>
+  // Show what was actually asked for, escaped via textContent.
+  try {
+    var p = location.pathname.replace(/^\/+/, '');
+    if (p) document.getElementById('path').textContent = p.slice(0, 60);
+  } catch (e) {}
+</script>
+</body>
+</html>

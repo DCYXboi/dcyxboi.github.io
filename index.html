@@ -5,6 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Danny Chan Yi Xiang</title>
 <meta name="description" content="Danny Chan Yi Xiang â€” Operation &amp; Maintenance Engineer and Computer Science (Cyber Security) graduate, working across security operations, application support and infrastructure.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="alternate icon" href="favicon.png" sizes="32x32">
+<link rel="canonical" href="https://dcyxboi.github.io/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://dcyxboi.github.io/">
+<meta property="og:title" content="Danny Chan Yi Xiang">
+<meta property="og:description" content="Cybersecurity / Data Center Engineer. SOC monitoring across 30 client environments, Linux server diagnostics, and application support built end to end.">
+<meta property="og:image" content="https://dcyxboi.github.io/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Danny Chan Yi Xiang">
+<meta name="twitter:description" content="Cybersecurity / Data Center Engineer — SOC operations, Linux/Unix, incident response.">
+<meta name="twitter:image" content="https://dcyxboi.github.io/og.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;450;500;600&display=swap">
@@ -15,7 +29,7 @@
     --panel:      oklch(0.925 0.005 125);
     --ink:        oklch(0.225 0.008 125);
     --ink-soft:   oklch(0.455 0.008 125);
-    --ink-faint:  oklch(0.605 0.006 125);
+    --ink-faint:  oklch(0.52 0.006 125);
     --rule:       oklch(0.865 0.005 125);
     --rule-firm:  oklch(0.225 0.008 125);
     --accent:     oklch(0.435 0.115 22);
@@ -43,7 +57,7 @@
       --panel:      oklch(0.255 0.008 125);
       --ink:        oklch(0.928 0.004 125);
       --ink-soft:   oklch(0.715 0.006 125);
-      --ink-faint:  oklch(0.575 0.006 125);
+      --ink-faint:  oklch(0.62 0.006 125);
       --rule:       oklch(0.325 0.007 125);
       --rule-firm:  oklch(0.928 0.004 125);
       --accent:     oklch(0.735 0.105 25);
@@ -58,7 +72,7 @@
     --panel:      oklch(0.255 0.008 125);
     --ink:        oklch(0.928 0.004 125);
     --ink-soft:   oklch(0.715 0.006 125);
-    --ink-faint:  oklch(0.575 0.006 125);
+    --ink-faint:  oklch(0.62 0.006 125);
     --rule:       oklch(0.325 0.007 125);
     --rule-firm:  oklch(0.928 0.004 125);
     --accent:     oklch(0.735 0.105 25);
@@ -70,6 +84,14 @@
   * { box-sizing: border-box; }
 
   html { scroll-behavior: smooth; }
+
+  /* Highlighting text was flashing browser blue on a page with no blue in it. */
+  ::selection { background: var(--accent); color: var(--paper); }
+
+  /* Digits line up in columns: dates, the CGPA, the status readout, the phone. */
+  .meta, .sys, .term, .row, .colophon, .entry p, .fact p {
+    font-variant-numeric: tabular-nums;
+  }
 
   body {
     margin: 0;
@@ -912,6 +934,60 @@
     .boot-log li { opacity: 1; }
   }
 
+  /* ---------- skip link ----------
+     47 focusable elements on the page, 30 of them skill chips. */
+  /* Fixed, not absolute: an absolute one lands at the top of the document, so
+     anyone focusing it while scrolled would send it off screen. */
+  .skip {
+    position: fixed;
+    left: -9999px;
+    top: 0;
+    z-index: 100;
+    padding: 12px 18px;
+    background: var(--accent);
+    color: var(--paper);
+    border: 0;
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .skip:focus { left: 0; }
+
+  /* ---------- scanlines ----------
+     A CRT hint at 3% over the whole page. No colour of its own — it darkens
+     what is already there — so the palette is untouched. */
+  .scan {
+    position: fixed;
+    inset: 0;
+    z-index: 80;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.03) 0 1px,
+      transparent 1px 3px
+    );
+  }
+
+  /* ---------- print ----------
+     Someone printing this is comparing it against a PDF. Strip the terminal
+     chrome and let the content set on paper. */
+  @media print {
+    .scan, .net, nav, .kbd, .pal, .boot, .skip, .caret { display: none !important; }
+    html, body { background: #fff !important; color: #000 !important; }
+    .term, .sys, .contact-term { border: 1px solid #999 !important; background: none !important; }
+    .ps1, .sys .v, .sys-head, .row .key, .head .line { color: #000 !important; }
+    a { color: #000 !important; border-bottom: 0 !important; }
+    /* The URL behind each link, since a printed page cannot be clicked. */
+    .contact-term a::after { content: " (" attr(href) ")"; font-size: 0.85em; color: #444; }
+    .role[open] .body, .role .body { display: grid !important; }
+    .skl-ctx { display: block !important; }
+    .skl-readout { position: static !important; }
+    section, .role, .entry, .skl { break-inside: avoid; }
+    .head h2 { break-after: avoid; }
+    * { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+  }
+
   /* ---------- cursor ----------
      The terminal caret, made into the pointer: a 10px cell with the hotspot
      at its centre. Drawn with the page's own fill-and-stroke pair rather
@@ -969,6 +1045,9 @@
     <div class="boot-bar"><i></i></div>
   </div>
 </div>
+
+<a class="skip" href="#experience">Skip to content</a>
+<div class="scan" aria-hidden="true"></div>
 
 <header class="masthead wrap">
   <canvas class="net" aria-hidden="true"></canvas>
