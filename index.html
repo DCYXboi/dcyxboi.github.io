@@ -1,1805 +1,1366 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Danny Chan Yi Xiang</title>
-<meta name="description" content="Danny Chan Yi Xiang â€” Operation &amp; Maintenance Engineer and Computer Science (Cyber Security) graduate, working across security operations, application support and infrastructure.">
+<meta name="description" content="Danny Chan Yi Xiang, cybersecurity and data-center engineer. SOC monitoring across 30 client environments, Linux server diagnostics, and application support built end to end.">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="alternate icon" href="favicon.png" sizes="32x32">
 <link rel="canonical" href="https://dcyxboi.github.io/">
+<meta name="theme-color" content="#141613" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f5f6f1" media="(prefers-color-scheme: light)">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://dcyxboi.github.io/">
 <meta property="og:title" content="Danny Chan Yi Xiang">
-<meta property="og:description" content="Cybersecurity / Data Center Engineer. SOC monitoring across 30 client environments, Linux server diagnostics, and application support built end to end.">
+<meta property="og:description" content="Cybersecurity and data-center engineer. SOC monitoring across 30 client environments, Linux server diagnostics, and application support built end to end.">
 <meta property="og:image" content="https://dcyxboi.github.io/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Danny Chan Yi Xiang">
-<meta name="twitter:description" content="Cybersecurity / Data Center Engineer — SOC operations, Linux/Unix, incident response.">
+<meta name="twitter:description" content="Cybersecurity and data-center engineer. SOC operations, Linux/Unix, incident response.">
 <meta name="twitter:image" content="https://dcyxboi.github.io/og.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;450;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
 
 <style>
+  /* ============================================================
+     dcyxboi.github.io  ·  dark cinematic + kinetic rebuild
+     One hand-written file. No framework, no build step.
+     Only external host touched is Google Fonts.
+     ============================================================ */
+
   :root {
-    --paper:      oklch(0.958 0.004 125);
-    --panel:      oklch(0.925 0.005 125);
-    --ink:        oklch(0.225 0.008 125);
-    --ink-soft:   oklch(0.455 0.008 125);
-    --ink-faint:  oklch(0.52 0.006 125);
-    --rule:       oklch(0.865 0.005 125);
-    --rule-firm:  oklch(0.225 0.008 125);
-    --accent:     oklch(0.435 0.115 22);
-    --accent-dim: oklch(0.78 0.045 22);
-    /* Plain rgb triplet: canvas fillStyle needs a format every browser
-       parses, and oklch() is not reliably one of them yet. */
-    --net: 123, 46, 51;
+    /* --- dark is the default palette; the bare :root carries it in full --- */
+    --bg:        oklch(0.165 0.006 150);   /* base ground, warm near-black */
+    --bg-1:      oklch(0.205 0.007 150);   /* raised surface */
+    --bg-2:      oklch(0.245 0.008 150);   /* hover surface */
+    --fg:        oklch(0.965 0.004 150);   /* primary text */
+    --fg-soft:   oklch(0.795 0.006 150);   /* secondary text */
+    --fg-faint:  oklch(0.635 0.006 150);   /* labels, meta (5.1:1 on --bg) */
+    --line:      oklch(0.30 0.006 150);    /* hairlines */
+    --line-soft: oklch(0.245 0.006 150);
+    --accent:    oklch(0.885 0.19 128);    /* electric signal-lime */
+    --accent-2:  oklch(0.80 0.16 165);     /* cooler green, gradients only */
+    --accent-ink: oklch(0.19 0.05 150);    /* text laid on an accent fill */
+    --net:       196, 236, 120;            /* rgb triplet; canvas can't read oklch */
+    --glow:      color-mix(in oklab, var(--accent) 24%, transparent);
 
-    --serif: 'Instrument Serif', 'Iowan Old Style', Georgia, 'Times New Roman', serif;
-    --sans: 'IBM Plex Sans', 'Segoe UI', system-ui, -apple-system, sans-serif;
-    --mono: 'IBM Plex Mono', ui-monospace, 'Cascadia Mono', Consolas, monospace;
+    --display: 'Space Grotesk', 'Segoe UI', system-ui, sans-serif;
+    --sans:    'IBM Plex Sans', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    --mono:    'IBM Plex Mono', ui-monospace, 'Cascadia Mono', Consolas, monospace;
 
-    --gut: clamp(20px, 6vw, 96px);
-    --col: 190px;
-    --maxw: 1240px;
-
-    /* Cursor cells. Literal hex, since a cursor url() cannot read a var. */
-    --cur-idle: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14'%3E%3Crect x='2' y='2' width='10' height='10' fill='%23ecebe6' stroke='%23343630' stroke-width='2'/%3E%3C/svg%3E");
-    --cur-live: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14'%3E%3Crect x='2' y='2' width='10' height='10' fill='%237b2e33' stroke='%23ecebe6' stroke-width='2'/%3E%3C/svg%3E");
+    --gut:  clamp(20px, 6vw, 104px);
+    --maxw: 1320px;
+    --ease: cubic-bezier(.22, 1, .36, 1);   /* one weighted curve everywhere */
+    --nav-h: 66px;
   }
 
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      --paper:      oklch(0.195 0.007 125);
-      --panel:      oklch(0.255 0.008 125);
-      --ink:        oklch(0.928 0.004 125);
-      --ink-soft:   oklch(0.715 0.006 125);
-      --ink-faint:  oklch(0.62 0.006 125);
-      --rule:       oklch(0.325 0.007 125);
-      --rule-firm:  oklch(0.928 0.004 125);
-      --accent:     oklch(0.735 0.105 25);
-      --accent-dim: oklch(0.44 0.065 25);
-      --net: 208, 140, 134;
-      --cur-idle: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14'%3E%3Crect x='2' y='2' width='10' height='10' fill='%2320221d' stroke='%23e8e8e2' stroke-width='2'/%3E%3C/svg%3E");
-      --cur-live: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14'%3E%3Crect x='2' y='2' width='10' height='10' fill='%23d08c86' stroke='%2320221d' stroke-width='2'/%3E%3C/svg%3E");    }
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) {
+      --bg:        oklch(0.975 0.004 130);
+      --bg-1:      oklch(0.945 0.005 130);
+      --bg-2:      oklch(0.905 0.006 130);
+      --fg:        oklch(0.195 0.008 150);
+      --fg-soft:   oklch(0.395 0.008 150);
+      --fg-faint:  oklch(0.455 0.009 150);   /* 4.6:1 on --bg */
+      --line:      oklch(0.85 0.006 150);
+      --line-soft: oklch(0.90 0.005 150);
+      --accent:    oklch(0.53 0.16 138);     /* deeper green for light-mode contrast */
+      --accent-2:  oklch(0.55 0.13 168);
+      --accent-ink: oklch(0.99 0.01 150);
+      --net:       70, 120, 40;
+      --glow:      color-mix(in oklab, var(--accent) 14%, transparent);
+    }
   }
 
-  :root[data-theme="dark"] {
-    --paper:      oklch(0.195 0.007 125);
-    --panel:      oklch(0.255 0.008 125);
-    --ink:        oklch(0.928 0.004 125);
-    --ink-soft:   oklch(0.715 0.006 125);
-    --ink-faint:  oklch(0.62 0.006 125);
-    --rule:       oklch(0.325 0.007 125);
-    --rule-firm:  oklch(0.928 0.004 125);
-    --accent:     oklch(0.735 0.105 25);
-    --accent-dim: oklch(0.44 0.065 25);
-    --net: 208, 140, 134;
-    --cur-idle: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14'%3E%3Crect x='2' y='2' width='10' height='10' fill='%2320221d' stroke='%23e8e8e2' stroke-width='2'/%3E%3C/svg%3E");
-    --cur-live: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14'%3E%3Crect x='2' y='2' width='10' height='10' fill='%23d08c86' stroke='%2320221d' stroke-width='2'/%3E%3C/svg%3E");  }
-
-  * { box-sizing: border-box; }
-
-  html { scroll-behavior: smooth; }
-
-  /* Highlighting text was flashing browser blue on a page with no blue in it. */
-  ::selection { background: var(--accent); color: var(--paper); }
-
-  /* Digits line up in columns: dates, the CGPA, the status readout, the phone. */
-  .meta, .sys, .term, .row, .colophon, .entry p, .fact p {
-    font-variant-numeric: tabular-nums;
+  :root[data-theme="light"] {
+    --bg:        oklch(0.975 0.004 130);
+    --bg-1:      oklch(0.945 0.005 130);
+    --bg-2:      oklch(0.905 0.006 130);
+    --fg:        oklch(0.195 0.008 150);
+    --fg-soft:   oklch(0.395 0.008 150);
+    --fg-faint:  oklch(0.455 0.009 150);
+    --line:      oklch(0.85 0.006 150);
+    --line-soft: oklch(0.90 0.005 150);
+    --accent:    oklch(0.53 0.16 138);
+    --accent-2:  oklch(0.55 0.13 168);
+    --accent-ink: oklch(0.99 0.01 150);
+    --net:       70, 120, 40;
+    --glow:      color-mix(in oklab, var(--accent) 14%, transparent);
   }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 
   body {
     margin: 0;
-    background: var(--paper);
-    color: var(--ink);
+    background: var(--bg);
+    color: var(--fg);
     font-family: var(--sans);
     font-size: 16px;
-    font-weight: 400;
-    line-height: 1.62;
+    line-height: 1.6;
     -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
   }
 
-  a {
-    color: var(--accent);
-    text-decoration: none;
-    border-bottom: 1px solid var(--accent-dim);
-    padding-bottom: 1px;
-    transition: border-color .18s ease;
-  }
-  a:hover { border-bottom-color: var(--accent); }
-  /* Keyboard focus is a square ring and nothing else. It deliberately does
-     not trigger the hover ink wipe: the wipe bleeds outside the element box
-     (16px each side on a role row) while an outline hugs it, so the two can
-     never line up. Square, because nothing else on this page is rounded. */
-  a:focus-visible,
-  button:focus-visible,
-  summary:focus-visible,
-  input:focus-visible,
-  .navlink:focus-visible {
+  ::selection { background: var(--accent); color: var(--accent-ink); }
+
+  /* Digits line up in columns wherever numbers carry meaning. */
+  .meta, .stat-n, .role-year, .edu-year, .cy, .contact-val { font-variant-numeric: tabular-nums; }
+
+  a { color: inherit; text-decoration: none; }
+
+  :focus-visible {
     outline: 2px solid var(--accent);
-    outline-offset: 2px;
+    outline-offset: 3px;
     border-radius: 0;
   }
 
-  /* Content is capped and centred, but the elements stay full width so the
-     nav bar, the accent project panel and the footer still bleed edge to
-     edge. Padding does the centring, so there is no scrollbar-width drift. */
+  /* Content is capped and centred with padding, so full-bleed bands
+     (nav, marquee, project, contact) still reach edge to edge. */
   .wrap { padding-inline: max(var(--gut), calc((100% - var(--maxw)) / 2)); }
 
-  .label {
-    font-family: var(--mono);
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--ink-faint);
+  .skip {
+    position: absolute; left: 12px; top: -60px; z-index: 200;
+    padding: 10px 16px; background: var(--accent); color: var(--accent-ink);
+    font-family: var(--mono); font-size: 13px; letter-spacing: .04em;
+    transition: top .2s var(--ease);
+  }
+  .skip:focus { top: 12px; }
+
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-family: var(--mono); font-size: 12px; font-weight: 500;
+    letter-spacing: 0.22em; text-transform: uppercase; color: var(--fg-faint);
+  }
+  .eyebrow::before {
+    content: ""; width: 26px; height: 1px; background: var(--accent);
   }
 
-  .meta {
-    font-family: var(--mono);
-    font-size: 12px;
-    letter-spacing: 0.05em;
-    color: var(--ink-soft);
+  /* ---------------- grain + ambient light ---------------- */
+
+  .grain {
+    position: fixed; inset: 0; z-index: 90; pointer-events: none;
+    opacity: .5; mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  }
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) .grain { opacity: .28; mix-blend-mode: multiply; }
+  }
+  :root[data-theme="light"] .grain { opacity: .28; mix-blend-mode: multiply; }
+
+  /* ---------------- nav ---------------- */
+
+  .nav {
+    position: fixed; inset: 0 0 auto 0; z-index: 70;
+    height: var(--nav-h);
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 18px;
+    border-bottom: 1px solid transparent;
+    transition: background-color .35s var(--ease), border-color .35s var(--ease), backdrop-filter .35s var(--ease);
+  }
+  .nav.stuck {
+    background: color-mix(in oklab, var(--bg) 72%, transparent);
+    backdrop-filter: blur(14px) saturate(1.4);
+    -webkit-backdrop-filter: blur(14px) saturate(1.4);
+    border-bottom-color: var(--line);
+  }
+  .brand {
+    display: inline-flex; align-items: center; gap: 12px;
+    font-family: var(--display); font-weight: 700; letter-spacing: -0.01em;
+    font-size: 16px;
+  }
+  .brand .mark {
+    display: grid; place-items: center;
+    width: 30px; height: 30px;
+    border: 1px solid var(--accent); color: var(--accent);
+    font-family: var(--mono); font-size: 13px; font-weight: 500;
+    box-shadow: inset 0 0 14px -6px var(--accent);
+  }
+  .brand .full { color: var(--fg); }
+  @media (max-width: 560px) { .brand .full { display: none; } }
+
+  .nav-right { display: flex; align-items: center; gap: clamp(2px, 1vw, 10px); }
+  .nav-links { display: flex; align-items: center; gap: 2px; }
+
+  /* Hamburger (mobile only) */
+  .nav-toggle { display: none; }
+  .nav-toggle {
+    width: 38px; height: 38px; align-items: center; justify-content: center;
+    border: 1px solid var(--line); background: none; color: var(--fg-soft); cursor: pointer;
+    transition: color .2s var(--ease), border-color .2s var(--ease);
+  }
+  .nav-toggle:hover { color: var(--accent); border-color: var(--accent); }
+  .nav-toggle span { position: relative; display: block; width: 16px; height: 9px; }
+  .nav-toggle span::before, .nav-toggle span::after {
+    content: ""; position: absolute; left: 0; right: 0; height: 1.5px; background: currentColor;
+    transition: transform .3s var(--ease), top .3s var(--ease);
+  }
+  .nav-toggle span::before { top: 0; }
+  .nav-toggle span::after  { top: 8px; }
+  .nav.open .nav-toggle span::before { top: 4px; transform: rotate(45deg); }
+  .nav.open .nav-toggle span::after  { top: 4px; transform: rotate(-45deg); }
+
+  @media (max-width: 720px) {
+    .nav-toggle { display: inline-flex; }
+    .nav-links {
+      position: fixed; left: 0; right: 0; top: var(--nav-h);
+      flex-direction: column; align-items: stretch; gap: 0;
+      padding: 6px max(var(--gut), 20px) 14px;
+      background: color-mix(in oklab, var(--bg) 95%, transparent);
+      backdrop-filter: blur(16px) saturate(1.4); -webkit-backdrop-filter: blur(16px) saturate(1.4);
+      border-bottom: 1px solid var(--line);
+      transform: translateY(-10px); opacity: 0; visibility: hidden; pointer-events: none;
+      transition: opacity .3s var(--ease), transform .3s var(--ease), visibility .3s var(--ease);
+    }
+    .nav.open .nav-links { transform: none; opacity: 1; visibility: visible; pointer-events: auto; }
+    .nav-links .nav-link {
+      padding: 15px 4px; font-size: 14px; text-align: left;
+      border-bottom: 1px solid var(--line-soft);
+    }
+    .nav-links .nav-link::after { display: none; }
+    .nav-links .nav-link[aria-current="true"] { color: var(--accent); }
   }
 
-  /* ---------- masthead ---------- */
-
-  .masthead {
+  .nav-link {
     position: relative;
-    padding-block: clamp(56px, 9vw, 108px) clamp(40px, 6vw, 68px);
+    padding: 8px 12px;
+    font-family: var(--mono); font-size: 12.5px; letter-spacing: .04em;
+    color: var(--fg-soft); cursor: pointer;
+    background: none; border: 0;
+    transition: color .2s var(--ease);
+  }
+  .nav-link::after {
+    content: ""; position: absolute; left: 12px; right: 12px; bottom: 4px;
+    height: 1px; background: var(--accent);
+    transform: scaleX(0); transform-origin: 0 50%;
+    transition: transform .3s var(--ease);
+  }
+  .nav-link:hover { color: var(--fg); }
+  .nav-link:hover::after,
+  .nav-link[aria-current="true"]::after { transform: scaleX(1); }
+  .nav-link[aria-current="true"] { color: var(--accent); }
+
+  .btn {
+    position: relative; isolation: isolate;
+    display: inline-flex; align-items: center; gap: 9px;
+    padding: 11px 18px;
+    font-family: var(--mono); font-size: 13px; letter-spacing: .02em;
+    line-height: 1; white-space: nowrap; cursor: pointer;
+    border: 1px solid var(--line); background: none; color: var(--fg);
+    transition: color .3s var(--ease), border-color .3s var(--ease);
+  }
+  .btn::before {
+    content: ""; position: absolute; inset: 0; z-index: -1;
+    background: var(--accent); transform: scaleY(0); transform-origin: 50% 100%;
+    transition: transform .32s var(--ease);
+  }
+  .btn:hover { color: var(--accent-ink); border-color: var(--accent); }
+  .btn:hover::before { transform: scaleY(1); }
+  .btn-solid { border-color: var(--accent); background: var(--accent); color: var(--accent-ink); }
+  .btn-solid::before { background: color-mix(in oklab, var(--accent) 78%, #000); }
+  .btn-solid:hover { color: var(--accent-ink); }
+  .btn svg { width: 15px; height: 15px; flex: 0 0 auto; }
+
+  .theme-toggle {
+    display: grid; place-items: center; width: 38px; height: 38px;
+    border: 1px solid var(--line); background: none; color: var(--fg-soft);
+    cursor: pointer; transition: color .2s var(--ease), border-color .2s var(--ease);
+  }
+  .theme-toggle:hover { color: var(--accent); border-color: var(--accent); }
+  .theme-toggle svg { width: 17px; height: 17px; }
+  .theme-toggle .sun { display: none; }
+  :root[data-theme="light"] .theme-toggle .sun,
+  :root[data-theme="dark"] .theme-toggle .moon { display: block; }
+  :root[data-theme="light"] .theme-toggle .moon,
+  :root[data-theme="dark"] .theme-toggle .sun { display: none; }
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) .theme-toggle .sun { display: block; }
+    :root:not([data-theme="dark"]) .theme-toggle .moon { display: none; }
   }
 
-  /* Drifting nodes behind the masthead â€” a quiet nod to the MANET work.
-     Purely decorative, so it sits under the text and ignores the pointer. */
-  .net {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
+  /* ---------------- hero ---------------- */
+
+  .hero {
+    position: relative;
+    min-height: 100dvh;
+    display: flex; flex-direction: column; justify-content: center;
+    padding-top: calc(var(--nav-h) + clamp(24px, 6vh, 70px));
+    padding-bottom: clamp(40px, 8vh, 96px);
+    overflow: hidden;
   }
+  .hero-canvas {
+    position: absolute; inset: 0; z-index: 0; width: 100%; height: 100%;
+    pointer-events: none; opacity: .9;
+  }
+  /* Pointer-reactive spotlight. Native cursor stays; this is background only. */
+  .hero-spot {
+    position: absolute; inset: 0; z-index: 0; pointer-events: none;
+    background: radial-gradient(360px 360px at var(--mx, 50%) var(--my, 32%),
+                var(--glow), transparent 68%);
+    opacity: 0; transition: opacity .6s var(--ease);
+  }
+  .hero:hover .hero-spot { opacity: 1; }
+  .hero-grad {
+    position: absolute; inset: 0; z-index: 0; pointer-events: none;
+    background:
+      radial-gradient(80% 55% at 12% 8%, color-mix(in oklab, var(--accent) 9%, transparent), transparent 60%),
+      radial-gradient(70% 60% at 100% 100%, color-mix(in oklab, var(--accent-2) 8%, transparent), transparent 60%);
+  }
+  .hero-inner { position: relative; z-index: 2; width: 100%; }
+
+  .hero-eyebrow { margin-bottom: clamp(20px, 3vw, 30px); }
 
   .hero-name {
-    position: relative;
-    z-index: 1;
-    margin: 0 0 clamp(26px, 4vw, 46px);
-    text-align: center;
-    font-family: var(--serif);
-    font-weight: 400;
-    font-size: clamp(42px, 7.6vw, 100px);
-    line-height: 1;
-    letter-spacing: -0.02em;
+    margin: 0;
+    font-family: var(--display); font-weight: 700;
+    font-size: clamp(52px, 12.5vw, 190px);
+    line-height: 0.92; letter-spacing: -0.035em;
     text-wrap: balance;
   }
+  .hero-name .line { display: block; overflow: hidden; padding-block: 0.04em; }
+  .hero-name .line > span { display: block; will-change: transform; }
+  .hero-name .l2 { color: var(--fg-soft); }
+  .hero-name .l2 .accent-dot { color: var(--accent); }
 
-  /* Terminal on the left, status readout and the four links stacked on the
-     right, so the whole identity block reads as one console. */
-  .intro {
+  .hero-meta {
+    display: flex; flex-wrap: wrap; align-items: flex-end;
+    justify-content: space-between; gap: 28px;
+    margin-top: clamp(28px, 4.5vw, 52px);
+  }
+  .hero-lede {
+    max-width: 46ch;
+    font-size: clamp(16px, 1.5vw, 19px); line-height: 1.55;
+    color: var(--fg-soft);
+  }
+  .hero-lede b { color: var(--fg); font-weight: 500; }
+  .hero-cta { display: flex; gap: 12px; flex-wrap: wrap; }
+
+  /* JS-driven load reveal for the name; without JS the words are just present. */
+  .js-anim .hero-name .line > span { transform: translateY(110%); }
+  .js-anim .hero-eyebrow,
+  .js-anim .hero-meta { opacity: 0; }
+
+  /* ---------------- stat strip ---------------- */
+
+  .stats {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+  }
+  .stat {
+    padding: clamp(26px, 3vw, 40px) clamp(16px, 2vw, 30px);
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .stat + .stat { border-left: 1px solid var(--line-soft); }
+  .stat-n {
+    font-family: var(--display); font-weight: 500;
+    font-size: clamp(30px, 3.4vw, 46px); line-height: 1;
+    letter-spacing: -0.02em; color: var(--accent);
+  }
+  .stat-l { font-size: 14px; color: var(--fg-soft); line-height: 1.4; }
+  @media (max-width: 780px) {
+    .stats { grid-template-columns: 1fr 1fr; }
+    .stat:nth-child(3) { border-left: 0; }
+    .stat:nth-child(n+3) { border-top: 1px solid var(--line-soft); }
+  }
+  @media (max-width: 440px) {
+    .stats { grid-template-columns: 1fr; }
+    .stat + .stat { border-left: 0; border-top: 1px solid var(--line-soft); }
+  }
+
+  /* ---------------- marquee ---------------- */
+
+  .marquee {
     position: relative;
-    z-index: 1;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(272px, 360px);
-    gap: clamp(18px, 2.6vw, 40px);
-    align-items: start;
+    border-bottom: 1px solid var(--line);
+    padding-block: clamp(16px, 2vw, 22px);
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
   }
-  .hero-side { display: flex; flex-direction: column; gap: 14px; }
-
-  /* ---------- terminal hero ---------- */
-
-  .term {
-    border: 1px solid var(--rule);
-    background: color-mix(in oklab, var(--ink) 5%, var(--paper));
-    font-family: var(--mono);
-    font-size: clamp(12.5px, 1.3vw, 15px);
-    line-height: 1.9;
+  .marquee-track {
+    display: flex; width: max-content; gap: 0;
+    animation: slide 42s linear infinite;
   }
-  .term-bar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    padding: 9px 15px;
-    border-bottom: 1px solid var(--rule);
-    font-size: 11.5px;
-    letter-spacing: 0.07em;
-    color: var(--ink-faint);
-  }
-  .term-body { padding: 16px 15px 20px; }
-
-  .ln { margin: 0; white-space: pre-wrap; color: var(--ink); }
-  .ln.sp { height: 0.85em; }
-  .ps1 { color: var(--accent); }
-  .dim { color: var(--ink-soft); }
-
-  /* Negative margin cancels its own width, so the caret can be moved between
-     characters without nudging anything along the line. */
-  .caret {
-    display: inline-block;
-    width: 0.55em;
-    height: 1.05em;
-    margin-right: -0.55em;
-    background: var(--accent);
-    vertical-align: -0.17em;
-    animation: blink 1.05s steps(1) infinite;
-  }
-  @keyframes blink { 50% { opacity: 0; } }
-
-  /* Every character is present from the first frame and hidden by
-     visibility, so the block is full size before a word of it is typed and
-     nothing below ever shifts — including where lines wrap. */
-  .term.typing .ch { visibility: hidden; }
-  .term.typing .ch.on { visibility: visible; }
-
-  /* ---------- boot screen ---------- */
-
-  /* Only exists once the early script has run: no JS, no overlay, and the
-     page is never left behind a curtain that cannot lift. */
-  .boot { display: none; }
-  .js-boot .boot {
-    display: flex;
-    position: fixed;
-    inset: 0;
-    z-index: 90;
-    align-items: center;
-    justify-content: center;
-    padding: 24px;
-    background: var(--paper);
-    font-family: var(--mono);
-    transition: opacity .45s ease;
-  }
-  /* Both, or the viewport keeps scrolling the page hidden behind the curtain. */
-  .js-boot:not(.boot-done),
-  .js-boot:not(.boot-done) body { overflow: hidden; }
-  .js-boot.boot-done .boot { opacity: 0; pointer-events: none; }
-
-  .boot-in { width: min(420px, 100%); display: flex; flex-direction: column; gap: 18px; }
-  .boot-title {
-    font-size: 11.5px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--ink-faint);
-  }
-  .boot-log {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 7px;
-    font-size: 13px;
-    color: var(--ink);
-  }
-  .boot-log li { opacity: 0; transition: opacity .16s ease; }
-  .boot-log li.on { opacity: 1; }
-  .boot-log .ok { color: var(--accent); }
-  .boot-bar { height: 2px; background: var(--rule); overflow: hidden; }
-  .boot-bar i { display: block; height: 100%; width: 0; background: var(--accent); }
-  .js-boot .boot-bar i { animation: bootfill 1.4s linear forwards; }
-  @keyframes bootfill { to { width: 100%; } }
-
-  .kbd {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 3px 8px;
-    border: 1px solid var(--rule);
-    background: none;
-    color: var(--ink-faint);
-    font-family: var(--mono);
-    font-size: 11px;
-    letter-spacing: 0.07em;
-    cursor: pointer;
-    transition: color .18s ease, border-color .18s ease;
-  }
-  .kbd:hover { color: var(--accent); border-color: var(--accent); }
-
-  /* All four read as controls now that they sit together in a block: boxed
-     rather than underlined, each taking the ink wipe edge to edge. */
-  .contact {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px;
-  }
-  .cv {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    padding: 11px 14px;
-    border: 1px solid var(--ink);
-    color: var(--ink);
-    font-size: 14px;
-    line-height: 1;
+  .marquee:hover .marquee-track { animation-play-state: paused; }
+  .marquee-track span {
+    display: inline-flex; align-items: center; gap: 26px;
+    padding-right: 26px;
+    font-family: var(--display); font-weight: 500;
+    font-size: clamp(15px, 1.8vw, 21px); letter-spacing: .01em; color: var(--fg-soft);
     white-space: nowrap;
   }
-  .cv svg { flex: 0 0 auto; }
-
-
-  /* ---------- nav ---------- */
-
-  nav {
-    position: sticky;
-    top: 0;
-    z-index: 20;
-    display: flex;
-    gap: clamp(4px, 1.4vw, 18px);
-    align-items: center;
-    overflow-x: auto;
-    scrollbar-width: none;
-    background: color-mix(in oklab, var(--paper) 92%, transparent);
-    backdrop-filter: blur(10px);
-    border-top: 1px solid var(--rule-firm);
-    border-bottom: 1px solid var(--rule);
+  .marquee-track span::after {
+    content: ""; width: 6px; height: 6px; background: var(--accent);
+    transform: rotate(45deg);
   }
-  nav::-webkit-scrollbar { display: none; }
-  /* Pull the bar back by the links' own padding so the first label still
-     sits on the page gutter. */
-  nav.wrap { padding-inline: max(calc(var(--gut) - 13px), calc((100% - var(--maxw)) / 2 - 13px)); }
+  @keyframes slide { to { transform: translateX(-50%); } }
 
-  .navlink {
-    display: flex;
-    align-items: center;
-    min-height: 46px;
-    flex: 0 0 auto;
-    font-family: var(--mono);
-    font-size: 11.5px;
-    font-weight: 500;
-    letter-spacing: 0.13em;
-    text-transform: uppercase;
-    color: var(--ink-soft);
-    border: 0;
-    border-bottom: 2px solid transparent;
-    background: none;
-    padding: 0 13px;
-    cursor: pointer;
-    transition: color .18s ease, border-color .18s ease;
+  /* ---------------- section frame ---------------- */
+
+  section { position: relative; }
+  .band { padding-block: clamp(72px, 10vw, 150px); }
+
+  .sec-head {
+    display: flex; align-items: baseline; justify-content: space-between;
+    gap: 24px; flex-wrap: wrap;
+    margin-bottom: clamp(40px, 5vw, 72px);
   }
-  .navlink[aria-current="true"] {
-    color: var(--accent);
-    border-bottom-color: var(--accent);
+  .sec-head h2 {
+    margin: 0; font-family: var(--display); font-weight: 600;
+    font-size: clamp(36px, 6vw, 78px); line-height: 0.98; letter-spacing: -0.03em;
   }
-
-
-  /* ---------- fact strip ---------- */
-
-  .facts {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    padding-inline: max(var(--gut), calc((100% - var(--maxw)) / 2));
-    border-bottom: 1px solid var(--rule);
+  .sec-count {
+    font-family: var(--mono); font-size: 13px; letter-spacing: .06em;
+    color: var(--fg-faint);
   }
-  .fact {
-    padding: 22px clamp(20px, 3vw, 32px);
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-  .fact + .fact { border-left: 1px solid var(--rule); }
-  .fact:first-child { padding-left: 0; }
-  .fact:last-child { padding-right: 0; }
-  .fact p { margin: 0; font-size: 15px; }
-  .fact span { color: var(--ink-soft); }
+  .sec-count b { color: var(--accent); font-weight: 500; }
 
-  /* ---------- sections ---------- */
+  /* ---------------- experience (editorial list) ---------------- */
 
-  section { padding-block: clamp(48px, 7vw, 84px) 0; scroll-margin-top: 48px; }
-
-  .head {
-    display: flex;
-    align-items: baseline;
-    gap: clamp(16px, 3vw, 28px);
-    margin-bottom: clamp(24px, 3.5vw, 38px);
-  }
-  .head h2 {
-    margin: 0;
-    font-family: var(--serif);
-    font-weight: 400;
-    font-size: clamp(30px, 4.2vw, 46px);
-    line-height: 1;
-    letter-spacing: -0.015em;
-    white-space: nowrap;
-  }
-  /* The rule carries the accent, so the colour recurs down the page instead
-     of only appearing on bullets and hover. */
-  .head .line { flex: 1; height: 1px; background: var(--accent); opacity: 0.5; }
-
-  /* ---------- experience ---------- */
-
-  .role { border-top: 1px solid var(--rule); }
-  .role:last-of-type { border-bottom: 1px solid var(--rule); }
-
+  .roles { border-top: 1px solid var(--line); }
+  .role { border-bottom: 1px solid var(--line); }
   .role summary {
     display: grid;
-    grid-template-columns: var(--col) 1fr 24px;
-    gap: clamp(16px, 3vw, 36px);
-    align-items: start;
-    padding-block: 26px;
-    cursor: pointer;
-    list-style: none;
+    grid-template-columns: 132px 1fr auto;
+    gap: clamp(16px, 3vw, 44px); align-items: center;
+    padding-block: clamp(24px, 3vw, 38px);
+    cursor: pointer; list-style: none;
   }
   .role summary::-webkit-details-marker { display: none; }
+  .role-year { font-family: var(--mono); font-size: 13px; color: var(--fg-faint); line-height: 1.5; }
+  .role-role {
+    font-family: var(--display); font-weight: 500;
+    font-size: clamp(24px, 3.4vw, 42px); line-height: 1.04; letter-spacing: -0.02em;
+    transition: color .3s var(--ease);
+  }
+  .role-role small { font-size: 0.5em; color: var(--fg-faint); letter-spacing: 0; font-weight: 400; }
+  .role-org { margin-top: 8px; font-family: var(--mono); font-size: 13.5px; color: var(--fg-soft); }
+  .role:hover .role-role { color: var(--accent); }
+  .role-plus {
+    position: relative; width: 22px; height: 22px; flex: 0 0 auto; color: var(--fg-faint);
+    transition: color .3s var(--ease), transform .4s var(--ease);
+  }
+  .role-plus::before, .role-plus::after {
+    content: ""; position: absolute; background: currentColor;
+    left: 50%; top: 50%; transform: translate(-50%, -50%);
+  }
+  .role-plus::before { width: 16px; height: 1.5px; }
+  .role-plus::after  { width: 1.5px; height: 16px; transition: transform .4s var(--ease); }
+  .role[open] .role-plus { color: var(--accent); transform: rotate(90deg); }
+  .role[open] .role-plus::after { transform: translate(-50%, -50%) scaleY(0); }
 
-  .role h3 {
-    margin: 0;
-    font-family: var(--serif);
-    font-weight: 400;
-    font-size: clamp(25px, 3.2vw, 34px);
-    line-height: 1.14;
-    letter-spacing: -0.005em;
-    transition: color .18s ease;
+  .role-body {
+    display: grid; grid-template-columns: 132px 1fr; gap: clamp(16px, 3vw, 44px);
+    padding-bottom: clamp(30px, 3vw, 44px);
   }
-  .role h3 small {
-    font-size: 0.6em;
-    color: var(--ink-faint);
-    letter-spacing: 0;
+  .role-body ul {
+    grid-column: 2; margin: 0; padding: 0; list-style: none;
+    display: flex; flex-direction: column; gap: 13px;
+    max-width: 74ch; font-size: 15.5px; color: var(--fg-soft);
   }
-  .role .org { font-size: 15px; color: var(--ink-soft); margin-top: 4px; }
-  .role .when { padding-top: 9px; line-height: 1.55; }
-
-  .chev {
-    padding-top: 12px;
-    color: var(--ink-faint);
-    transition: transform .24s cubic-bezier(.4,0,.2,1), color .18s ease;
+  .role-body li { position: relative; padding-left: 24px; }
+  .role-body li::before {
+    content: ""; position: absolute; left: 0; top: 0.62em;
+    width: 7px; height: 7px; background: var(--accent); transform: rotate(45deg);
   }
-  .role[open] .chev { transform: rotate(180deg); color: var(--accent); }
-
-  .role .body {
-    display: grid;
-    grid-template-columns: var(--col) 1fr 24px;
-    gap: clamp(16px, 3vw, 36px);
-    padding-bottom: 30px;
-  }
-  .role .body > ul { grid-column: 2; }
-
-  ul.points {
-    margin: 0;
-    padding: 0 0 0 20px;
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 11px;
-    max-width: 62ch;
-    font-size: 15.5px;
-    color: var(--ink-soft);
-  }
-  ul.points li { position: relative; }
-  ul.points li::before {
-    content: "";
-    position: absolute;
-    left: -20px;
-    top: 0.66em;
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: var(--accent);
+  @media (max-width: 720px) {
+    .role summary { grid-template-columns: 1fr auto; gap: 16px; }
+    .role-year { grid-column: 1; margin-bottom: 4px; }
+    .role-who { grid-column: 1; }
+    .role-plus { grid-row: 1 / span 3; grid-column: 2; align-self: start; margin-top: 4px; }
+    .role-body { grid-template-columns: 1fr; }
+    .role-body ul { grid-column: 1; }
   }
 
-  /* ---------- project ---------- */
+  /* ---------------- project (full-bleed feature) ---------------- */
 
-  /* The one hard break in the scroll: the project runs edge to edge in the
-     accent, so the page is not nine identical grey bands in a row. */
   #project {
-    background: var(--accent);
-    color: var(--paper);
-    margin-block: clamp(48px, 7vw, 84px);
-    padding-block: clamp(48px, 7vw, 84px);
+    background:
+      radial-gradient(120% 90% at 90% -10%, color-mix(in oklab, var(--accent) 10%, transparent), transparent 55%),
+      var(--bg-1);
+    border-block: 1px solid var(--line);
   }
-  #project .head h2 { color: var(--paper); }
-  #project .head .line { background: var(--paper); opacity: 0.35; }
-  #project .label { color: var(--paper); opacity: 0.7; }
-  #project .sub { color: var(--paper); opacity: 0.82; }
-  #project ul.points { color: var(--paper); opacity: 0.9; }
-  #project ul.points li::before { background: var(--paper); }
-
   .project {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: clamp(24px, 4vw, 64px);
-    align-items: start;
+    display: grid; grid-template-columns: 1.05fr 0.95fr;
+    gap: clamp(30px, 5vw, 80px); align-items: center;
   }
+  .project-tag { margin-bottom: 22px; }
   .project h3 {
-    margin: 14px 0 10px;
-    font-family: var(--serif);
-    font-weight: 400;
-    font-size: clamp(34px, 5vw, 48px);
-    line-height: 1.02;
-    letter-spacing: -0.01em;
+    margin: 0; font-family: var(--display); font-weight: 700;
+    font-size: clamp(48px, 8vw, 108px); line-height: 0.92; letter-spacing: -0.04em;
   }
-  .project .sub {
-    margin: 0;
-    font-family: var(--serif);
-    font-style: italic;
-    font-size: clamp(19px, 2.2vw, 23px);
-    line-height: 1.4;
-    color: var(--ink-soft);
+  .project-sub {
+    margin: 18px 0 0; max-width: 40ch;
+    font-size: clamp(17px, 1.7vw, 21px); color: var(--fg-soft); line-height: 1.5;
   }
-  .paper {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: 20px;
-    font-size: 15px;
+  .project-points {
+    margin: 30px 0 0; padding: 0; list-style: none;
+    display: flex; flex-direction: column; gap: 14px;
+    max-width: 60ch; font-size: 15.5px; color: var(--fg-soft);
   }
-  .paper svg { flex: 0 0 auto; }
+  .project-points li { position: relative; padding-left: 26px; }
+  .project-points li::before {
+    content: ""; position: absolute; left: 0; top: 0.55em;
+    width: 14px; height: 1.5px; background: var(--accent);
+  }
+  .link-out {
+    position: relative; isolation: isolate;
+    display: inline-flex; align-items: center; gap: 9px; margin-top: 30px;
+    padding: 4px 2px; font-family: var(--mono); font-size: 14px; color: var(--accent);
+  }
+  .link-out svg { width: 15px; height: 15px; transition: transform .3s var(--ease); }
+  .link-out::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: 0;
+    height: 1px; background: var(--accent);
+    transform: scaleX(1); transform-origin: 100% 50%; transition: transform .3s var(--ease);
+  }
+  .link-out:hover::after { transform: scaleX(0); }
+  .link-out:hover svg { transform: translate(3px, -3px); }
 
-  /* ---------- skills ---------- */
+  .project-visual {
+    position: relative; aspect-ratio: 1 / 1; width: 100%;
+    border: 1px solid var(--line); background: color-mix(in oklab, var(--bg) 60%, transparent);
+    overflow: hidden;
+  }
+  .project-visual canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .project-visual .pv-label {
+    position: absolute; left: 16px; bottom: 14px; z-index: 2;
+    font-family: var(--mono); font-size: 11px; letter-spacing: .18em;
+    text-transform: uppercase; color: var(--fg-faint);
+  }
+  .project-visual .pv-corner {
+    position: absolute; width: 12px; height: 12px; border: 1px solid var(--accent);
+  }
+  .pv-corner.tl { top: 12px; left: 12px; border-right: 0; border-bottom: 0; }
+  .pv-corner.tr { top: 12px; right: 12px; border-left: 0; border-bottom: 0; }
+  .pv-corner.bl { bottom: 12px; left: 12px; border-right: 0; border-top: 0; }
+  .pv-corner.br { bottom: 12px; right: 12px; border-left: 0; border-top: 0; }
 
-  .skl { display: grid; grid-template-columns: var(--col) 1fr; gap: clamp(16px, 3vw, 36px); }
-  .skl + .skl { margin-top: 22px; padding-top: 22px; border-top: 1px solid var(--rule); }
-  .skl .label { padding-top: 7px; }
-
-  .skl-items { display: flex; flex-wrap: wrap; gap: 8px; }
-  .sk {
-    padding: 6px 12px;
-    border: 1px solid var(--rule);
-    background: none;
-    font-family: var(--mono);
-    font-size: 13px;
-    color: var(--ink);
-    cursor: pointer;
-    transition: border-color .16s ease, color .16s ease, background-color .16s ease;
+  .stack { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 26px; }
+  .chip {
+    padding: 7px 13px; font-family: var(--mono); font-size: 12.5px;
+    border: 1px solid var(--line); background: none; color: var(--fg); cursor: pointer;
+    transition: color .28s var(--ease), border-color .28s var(--ease),
+                background-color .28s var(--ease), transform .28s var(--ease);
   }
-  .sk:hover { border-color: var(--accent); color: var(--accent); }
-  .sk[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--paper); }
-  .sk:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-
-  /* A fixed-height readout under each group, so showing context never moves
-     the page. Without JS every line simply renders as a list instead. */
-  .skl-ctx {
-    grid-column: 2;
-    min-height: 3.2em;
-    margin-top: 12px;
-    padding-left: 14px;
-    border-left: 2px solid var(--accent);
-    max-width: 62ch;
-    font-size: 14.5px;
-    line-height: 1.6;
-    color: var(--ink-soft);
+  .chip:hover { transform: translateY(-2px); border-color: var(--accent); color: var(--accent); }
+  .chip:active { transform: translateY(0); }
+  .chip[aria-pressed="true"] {
+    background: var(--accent); border-color: var(--accent); color: var(--accent-ink);
   }
-  /* With JS the six per-group panes collapse into one readout below the
-     heading; without it they stay put, so no context is ever unreachable. */
-  .js-ctx .skl-ctx { display: none; }
-
-  .skl-readout { display: none; }
-  .js-ctx .skl-readout {
-    display: block;
-    position: sticky;
-    top: 48px;
-    z-index: 5;
-    margin-bottom: 26px;
-    padding: 13px 16px;
-    border: 1px solid var(--rule);
-    background: color-mix(in oklab, var(--ink) 5%, var(--paper));
-  }
-  .skl-readout .cmd {
-    margin: 0;
-    font-family: var(--mono);
-    font-size: 12.5px;
-    color: var(--ink-soft);
-  }
-  .skl-readout .cmd .ps1 { color: var(--accent); }
-  .skl-readout .cmd b { font-weight: 500; color: var(--ink); }
-  /* Reserved height, so swapping a short description for a long one does
-     not make the sticky box jump under the reader. */
-  .skl-readout .out {
-    margin: 7px 0 0;
-    max-width: 70ch;
-    min-height: 3.1em;
-    font-size: 15px;
-    line-height: 1.55;
-    color: var(--ink-soft);
-    text-wrap: pretty;
-  }
-
-  /* ---------- system status ---------- */
-
-  .sys {
-    border: 1px solid var(--rule);
-    padding: 18px 20px;
-    font-family: var(--mono);
-    font-size: 12.5px;
-  }
-  .sys-head { color: var(--accent); letter-spacing: 0.08em; margin-bottom: 14px; }
-  .sys ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 9px; }
-  .sys li { display: flex; align-items: baseline; gap: 10px; }
-  .sys .k { color: var(--ink); white-space: nowrap; }
-  .sys .dots { flex: 1 1 auto; border-bottom: 1px dotted var(--rule); transform: translateY(-4px); min-width: 20px; }
-  .sys .v { color: var(--accent); white-space: nowrap; }
-
-  /* Boot state. Rows are hidden by visibility so the panel is full height
-     from the first frame and the buttons below it never move. Everything
-     here is scoped to .booting, which only JS adds — without it the panel
-     simply renders finished. */
-  .sys.booting li { visibility: hidden; }
-  .sys.booting li.on { visibility: visible; }
-  .sys.booting li .v { opacity: 0; }
-  .sys.booting li.ok .v { opacity: 1; transition: opacity .12s ease; }
-  .bar {
-    display: inline-block;
-    width: 64px;
-    height: 9px;
-    border: 1px solid var(--accent);
-    vertical-align: -1px;
-    margin-right: 7px;
-  }
-  .bar i { display: block; height: 100%; width: 100%; background: var(--accent); }
-  .sys.booting .bar i { width: 0; }
-  .sys.booting li.ok .bar i { width: 100%; transition: width .9s cubic-bezier(.3,.8,.4,1); }
-
-  /* ---------- command palette ---------- */
-
-  .pal {
-    position: fixed;
-    inset: 0;
-    z-index: 60;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    padding: clamp(60px, 14vh, 160px) 20px 20px;
-    background: color-mix(in oklab, var(--paper) 55%, transparent);
-    backdrop-filter: blur(4px);
-  }
-  .pal[hidden] { display: none; }
-  .pal-box {
-    width: min(520px, 100%);
-    border: 1px solid var(--accent);
-    background: var(--paper);
-    font-family: var(--mono);
-  }
-  /* The search line reads as a prompt, like everything else on the page. */
-  .pal-prompt {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding-inline: 16px;
-    border-bottom: 1px solid var(--rule);
-  }
-  .pal-prompt .ps1 { color: var(--accent); font-size: 14px; }
-  .pal-input {
-    flex: 1 1 auto;
-    min-width: 0;
-    padding: 15px 0;
-    border: 0;
-    background: none;
-    color: var(--ink);
-    font-family: var(--mono);
-    font-size: 14px;
-  }
-  .pal-input:focus { outline: none; }
-  .pal-input::placeholder { color: var(--ink-faint); }
-  .pal ul { list-style: none; margin: 0; padding: 6px; max-height: 46vh; overflow-y: auto; }
-  .pal li button {
-    display: block;
-    width: 100%;
-    padding: 9px 12px;
-    border: 0;
-    background: none;
-    color: var(--ink-soft);
-    font: inherit;
-    font-size: 13px;
-    text-align: left;
-    cursor: pointer;
-  }
-  .pal li button:hover,
-  .pal li button[data-active="true"] { background: var(--accent); color: var(--paper); }
-  .pal li.none { padding: 12px; font-size: 13px; color: var(--ink-faint); }
-  .pal-foot {
-    padding: 9px 14px;
-    border-top: 1px solid var(--rule);
-    font-size: 11px;
-    letter-spacing: 0.06em;
-    color: var(--ink-faint);
-  }
-
-  /* ---------- education ---------- */
-
-  .entry {
-    display: grid;
-    grid-template-columns: var(--col) 1fr;
-    gap: clamp(16px, 3vw, 36px);
-    padding-block: 24px;
-    border-top: 1px solid var(--rule);
-  }
-  .entry:last-child { border-bottom: 1px solid var(--rule); }
-  .entry h3 {
-    margin: 0 0 4px;
-    font-family: var(--serif);
-    font-weight: 400;
-    font-size: clamp(23px, 2.8vw, 30px);
-    line-height: 1.15;
-  }
-  .entry p { margin: 0; font-size: 15.5px; color: var(--ink-soft); }
-  .entry .when { padding-top: 7px; }
-
-  /* ---------- interaction layer ----------
-     One easing curve across all three sections, weighted rather than linear,
-     and only transform/opacity/colour so nothing triggers layout. */
-
-  /* Project: the stack is pickable, and the readout under it swaps. */
-  .stack { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
-  .st {
-    padding: 5px 11px;
-    border: 1px solid color-mix(in oklab, var(--paper) 38%, transparent);
-    background: none;
-    color: var(--paper);
-    font-family: var(--mono);
-    font-size: 12.5px;
-    cursor: pointer;
-    transition: background-color .45s cubic-bezier(.32,.72,0,1),
-                color .45s cubic-bezier(.32,.72,0,1),
-                border-color .45s cubic-bezier(.32,.72,0,1),
-                transform .45s cubic-bezier(.32,.72,0,1);
-  }
-  .st:hover,
-  .st[aria-pressed="true"] {
-    background: var(--paper);
-    border-color: var(--paper);
-    color: var(--accent);
-    transform: translateY(-2px);
-  }
-  .st:active { transform: translateY(0); }
   .stack-out {
-    margin: 14px 0 0;
-    min-height: 3em;
-    max-width: 46ch;
-    font-family: var(--mono);
-    font-size: 13px;
-    line-height: 1.55;
-    color: var(--paper);
-    opacity: 0.82;
+    margin: 18px 0 0; min-height: 3em; max-width: 52ch;
+    font-family: var(--mono); font-size: 13px; line-height: 1.55; color: var(--fg-soft);
   }
-
-  /* Bullets answer the pointer instead of sitting inert. */
-  #project ul.points li {
-    transition: transform .4s cubic-bezier(.32,.72,0,1), opacity .4s cubic-bezier(.32,.72,0,1);
-  }
-  #project ul.points li:hover { transform: translateX(5px); opacity: 1; }
-  #project ul.points li::before {
-    transition: transform .4s cubic-bezier(.32,.72,0,1);
-  }
-  #project ul.points li:hover::before { transform: scale(1.9); }
-
-  /* Education: a run of nodes rather than two stranded rows. */
-  .timeline { position: relative; }
-  .timeline::before {
-    content: "";
-    position: absolute;
-    left: 3px;
-    top: 32px;
-    bottom: 32px;
-    width: 1px;
-    background: var(--rule);
-  }
-  #education .entry {
-    position: relative;
-    padding-left: 28px;
-    transition: transform .5s cubic-bezier(.32,.72,0,1);
-  }
-  #education .entry::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 30px;
-    width: 7px;
-    height: 7px;
-    background: var(--paper);
-    border: 1px solid var(--ink-faint);
-    transition: background-color .5s cubic-bezier(.32,.72,0,1),
-                border-color .5s cubic-bezier(.32,.72,0,1),
-                transform .5s cubic-bezier(.32,.72,0,1);
-  }
-  #education .entry:hover { transform: translateX(4px); }
-  #education .entry:hover::before {
-    background: var(--accent);
-    border-color: var(--accent);
-    transform: scale(1.7);
-  }
-  #education .entry h3 { transition: color .4s cubic-bezier(.32,.72,0,1); }
-  #education .entry:hover h3 { color: var(--accent); }
-
-  /* Skills: chips gain weight under the pointer. */
-  .sk {
-    transition: border-color .35s cubic-bezier(.32,.72,0,1),
-                color .35s cubic-bezier(.32,.72,0,1),
-                background-color .35s cubic-bezier(.32,.72,0,1),
-                transform .35s cubic-bezier(.32,.72,0,1);
-  }
-  .sk:hover { transform: translateY(-2px); }
-  .sk:active { transform: translateY(0); }
-
-  @media (prefers-reduced-motion: reduce) {
-    .st, .sk, #project ul.points li, #education .entry { transform: none !important; }
-  }
-
-  /* ---------- contact terminal ---------- */
-
-  /* The page opens on a terminal and closes on one: same frame, same
-     prompt, contact details as the output of a cat. */
-  .contact-term { max-width: 660px; }
-  .rows {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-  }
-  .row {
-    display: grid;
-    grid-template-columns: 108px minmax(0, 1fr);
-    gap: 12px;
-    align-items: baseline;
-  }
-  .row .key { color: var(--ink-faint); letter-spacing: 0.06em; }
-  .contact-term a { color: var(--accent); border-bottom-color: var(--accent-dim); }
-
-  /* ---------- footer ---------- */
-
-  /* Just the colophon now that contact has its own block above. */
-  footer {
-    margin-top: clamp(48px, 7vw, 80px);
-    padding-block: 20px 26px;
-    border-top: 1px solid var(--rule);
-  }
-  .colophon {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 8px 24px;
-    font-family: var(--mono);
-    font-size: 10.5px;
-    letter-spacing: 0.13em;
-    text-transform: uppercase;
-    color: var(--ink-faint);
-  }
-
-  /* ---------- ink wipe ----------
-     A block of accent sweeps up from the baseline and the label flips to
-     paper as it passes, the way a press lays ink onto the sheet.
-     `isolation` keeps the negative-z-index block inside its own element,
-     so it covers the surface behind the label without escaping upward. */
-
-  .navlink,
-  .role summary,
-  .contact a,
-  .paper,
-  .cv,
-  .contact-term a {
-    position: relative;
-    isolation: isolate;
-  }
-
-  .navlink::before,
-  .role summary::before,
-  .contact a::before,
-  .paper::before,
-  .cv::before,
-  .contact-term a::before {
-    content: "";
-    position: absolute;
-    z-index: -1;
-    background: var(--accent);
-    transform: scaleY(0);
-    transform-origin: 50% 100%;
-    transition: transform .22s cubic-bezier(.4, 0, .2, 1);
-  }
-
-  .navlink::before { inset: 5px 0 4px; }
-  .role summary::before { inset: 8px -16px; }
-  .paper::before,
-  .contact-term a::before { inset: -3px -8px; }
-  .cv::before { inset: 0; }
-
-  .navlink:hover::before,
-  .role summary:hover::before,
-  .contact a:hover::before,
-  .paper:hover::before,
-  .cv:hover::before,
-  .contact-term a:hover::before {
-    transform: scaleY(1);
-  }
-
-  /* Labels ride on top of the ink, so they take the paper colour. */
-  .navlink:hover { color: var(--paper); }
-
-  .role summary:hover h3,
-  .role summary:hover .org,
-  .role summary:hover .meta,
-  .role summary:hover .chev { color: var(--paper); }
-
-  .paper:hover,
-  .contact-term a:hover {
-    color: var(--paper);
-    border-bottom-color: transparent;
-  }
-
-  /* The boxed button keeps its frame; only the fill and label change. */
-  .cv:hover {
-    color: var(--paper);
-    border-color: var(--accent);
-  }
-
-  .paper,
-  .contact-term a { padding-inline: 8px; margin-inline: -8px; }
-
-  /* On the accent field the wipe inverts, or it would be invisible. */
-  #project .paper {
-    color: var(--paper);
-    border-bottom-color: color-mix(in oklab, var(--paper) 45%, transparent);
-  }
-  #project .paper::before { background: var(--paper); }
-  #project .paper:hover {
-    color: var(--accent);
-    border-bottom-color: transparent;
-  }
-  #project a:focus-visible { outline-color: var(--paper); }
-
-  /* ---------- narrow ---------- */
-
   @media (max-width: 860px) {
-    :root { --col: 0px; }
-    .role summary,
-    .role .body,
-    .entry { grid-template-columns: 1fr auto; }
-    .role summary { grid-template-columns: 1fr 24px; }
-    .role summary .when { grid-column: 1; padding-top: 0; margin-bottom: 6px; }
-    .role summary .who { grid-column: 1; }
-    .role .chev { grid-row: 1 / span 2; grid-column: 2; padding-top: 4px; }
-    .role .body { grid-template-columns: 1fr; padding-bottom: 26px; }
-    .role .body > ul { grid-column: 1; }
-    .entry { grid-template-columns: 1fr; gap: 12px; }
-    .entry .when { padding-top: 0; }
-    .intro { grid-template-columns: 1fr; gap: 22px; }
-    .skl { grid-template-columns: 1fr; gap: 12px; }
-    .skl .label { padding-top: 0; }
-    .skl-ctx { grid-column: 1; }
-    .term-body { padding: 14px 13px 18px; }
-    .facts { grid-template-columns: 1fr; }
-    .fact { padding-inline: 0; }
-    .fact + .fact { border-left: 0; border-top: 1px solid var(--rule); }
     .project { grid-template-columns: 1fr; }
-    .row { grid-template-columns: minmax(0, 1fr); gap: 1px; }
-    .row .key { font-size: 0.9em; }
-    .colophon { justify-content: flex-start; flex-direction: column; }
-    /* Comfortable thumb targets once the page is being tapped, not clicked. */
-    .contact a, .contact-term a {
-      display: inline-flex;
-      align-items: center;
-      min-height: 44px;
-    }
-    .contact { gap: 4px 24px; }
+    .project-visual { order: -1; max-width: 440px; }
   }
 
-  /* ---------- scroll reveal ----------
-     Below the masthead, each block waits under the fold and rises into
-     place as it enters view. The hidden state is scoped to `.js-reveal`,
-     which only exists once the script below has run â€” without JS every
-     block renders normally. */
+  /* ---------------- skills ---------------- */
 
-  .js-reveal .fact,
-  .js-reveal .head,
-  .js-reveal .role,
-  .js-reveal .project,
-  .js-reveal .skl,
-  .js-reveal .entry,
-  .js-reveal .contact-term {
-    opacity: 0;
-    transform: translateY(16px);
-    transition: opacity .62s cubic-bezier(.22, .61, .36, 1),
-                transform .62s cubic-bezier(.22, .61, .36, 1);
+  .sk-readout {
+    position: sticky; top: calc(var(--nav-h) + 12px); z-index: 5;
+    margin-bottom: clamp(30px, 4vw, 48px);
+    padding: 18px 20px; border: 1px solid var(--line);
+    background: color-mix(in oklab, var(--bg-1) 82%, transparent);
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  }
+  .sk-readout .cmd { margin: 0; font-family: var(--mono); font-size: 13px; color: var(--fg-soft); }
+  .sk-readout .cmd .ps1 { color: var(--accent); }
+  .sk-readout .cmd b { color: var(--fg); font-weight: 500; }
+  .sk-readout .out {
+    margin: 9px 0 0; min-height: 3em; max-width: 78ch;
+    font-size: 15.5px; line-height: 1.55; color: var(--fg-soft); text-wrap: pretty;
   }
 
-  .js-reveal .is-revealed {
-    opacity: 1;
-    transform: none;
+  .sk-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(24px, 3vw, 48px); }
+  @media (max-width: 720px) { .sk-grid { grid-template-columns: 1fr; gap: 30px; } }
+  .sk-group { display: flex; flex-direction: column; gap: 14px; }
+  .sk-group > .label {
+    font-family: var(--mono); font-size: 11.5px; letter-spacing: .18em;
+    text-transform: uppercase; color: var(--fg-faint);
+    padding-bottom: 12px; border-bottom: 1px solid var(--line);
+  }
+  .sk-items { display: flex; flex-wrap: wrap; gap: 8px; }
+  .sk {
+    padding: 8px 13px; font-family: var(--mono); font-size: 13px;
+    border: 1px solid var(--line); background: none; color: var(--fg); cursor: pointer;
+    transition: color .28s var(--ease), border-color .28s var(--ease),
+                background-color .28s var(--ease), transform .28s var(--ease);
+  }
+  .sk:hover { transform: translateY(-2px); border-color: var(--accent); color: var(--accent); }
+  .sk:active { transform: translateY(0); }
+  .sk[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+
+  /* Without JS, each group shows its own readout list; JS collapses them into
+     the single sticky readout above. */
+  .sk-ctx { margin-top: 4px; font-size: 14px; color: var(--fg-soft); line-height: 1.5; }
+  .sk-ctx span { display: block; }
+  .sk-ctx span + span { margin-top: 6px; }
+  .sk-readout { display: none; }         /* no JS: the per-group lists stay visible */
+  .js-ctx .sk-ctx { display: none; }     /* JS: collapse per-group lists */
+  .js-ctx .sk-readout { display: block; }/* JS: show the single sticky readout */
+
+  /* ---------------- education ---------------- */
+
+  .edu { position: relative; }
+  .edu::before {
+    content: ""; position: absolute; left: 4px; top: 14px; bottom: 14px;
+    width: 1px; background: var(--line);
+  }
+  .edu-row {
+    position: relative; padding-left: 34px;
+    display: grid; grid-template-columns: 200px 1fr; gap: clamp(16px, 3vw, 40px);
+    padding-block: clamp(24px, 3vw, 36px);
+    border-bottom: 1px solid var(--line);
+    transition: transform .4s var(--ease);
+  }
+  .edu-row:first-child { border-top: 1px solid var(--line); }
+  .edu-row::before {
+    content: ""; position: absolute; left: 0; top: calc(clamp(24px, 3vw, 36px) + 6px);
+    width: 9px; height: 9px; background: var(--bg); border: 1px solid var(--fg-faint);
+    transform: rotate(45deg);
+    transition: background-color .4s var(--ease), border-color .4s var(--ease), transform .4s var(--ease);
+  }
+  .edu-row:hover { transform: translateX(6px); }
+  .edu-row:hover::before { background: var(--accent); border-color: var(--accent); transform: rotate(45deg) scale(1.3); }
+  .edu-year { font-family: var(--mono); font-size: 13px; color: var(--fg-faint); }
+  .edu-h { margin: 0; font-family: var(--display); font-weight: 500; font-size: clamp(22px, 2.8vw, 32px); line-height: 1.1; transition: color .3s var(--ease); }
+  .edu-row:hover .edu-h { color: var(--accent); }
+  .edu-p { margin: 8px 0 0; font-size: 15px; color: var(--fg-soft); }
+  @media (max-width: 620px) { .edu-row { grid-template-columns: 1fr; gap: 8px; } }
+
+  /* ---------------- contact ---------------- */
+
+  #contact {
+    background:
+      radial-gradient(90% 120% at 50% 120%, color-mix(in oklab, var(--accent) 12%, transparent), transparent 60%),
+      var(--bg);
+    border-top: 1px solid var(--line);
+    text-align: center;
+  }
+  .contact-h {
+    margin: 0 auto; max-width: 16ch;
+    font-family: var(--display); font-weight: 700;
+    font-size: clamp(44px, 9vw, 128px); line-height: 0.94; letter-spacing: -0.04em;
+  }
+  .contact-mail {
+    display: inline-block; margin-top: clamp(28px, 4vw, 44px);
+    font-family: var(--display); font-weight: 500;
+    font-size: clamp(20px, 3.4vw, 40px); letter-spacing: -0.02em;
+    color: var(--accent);
+    border-bottom: 1px solid color-mix(in oklab, var(--accent) 40%, transparent);
+    padding-bottom: 4px; transition: border-color .3s var(--ease);
+  }
+  .contact-mail:hover { border-bottom-color: var(--accent); }
+  .contact-rows {
+    display: flex; flex-wrap: wrap; justify-content: center; gap: 12px 14px;
+    margin-top: clamp(34px, 5vw, 54px);
+  }
+  .contact-rows a, .contact-rows span {
+    font-family: var(--mono); font-size: 13.5px; color: var(--fg-soft);
+    padding: 10px 16px; border: 1px solid var(--line);
+    transition: color .25s var(--ease), border-color .25s var(--ease);
+  }
+  .contact-rows a:hover { color: var(--accent); border-color: var(--accent); }
+  .contact-loc { color: var(--fg-faint); }
+
+  /* ---------------- footer ---------------- */
+
+  footer { border-top: 1px solid var(--line); padding-block: 28px 34px; }
+  .colophon {
+    display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px 28px;
+    font-family: var(--mono); font-size: 11.5px; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--fg-faint);
   }
 
-  /* Members of a set arrive in reading order rather than all at once. */
-  .js-reveal .facts .fact:nth-child(2),
-  .js-reveal #education .entry:nth-of-type(2) { transition-delay: 90ms; }
-  .js-reveal .facts .fact:nth-child(3) { transition-delay: 180ms; }
+  /* ---------------- scroll reveal ---------------- */
+
+  .js-reveal [data-reveal] {
+    opacity: 0; transform: translateY(26px);
+    transition: opacity .8s var(--ease), transform .8s var(--ease);
+  }
+  .js-reveal [data-reveal].in { opacity: 1; transform: none; }
+  .js-reveal [data-reveal].d1 { transition-delay: .08s; }
+  .js-reveal [data-reveal].d2 { transition-delay: .16s; }
+  .js-reveal [data-reveal].d3 { transition-delay: .24s; }
+
+  /* ---------------- reduced motion ---------------- */
 
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
-    * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
-    /* No motion means no reveal â€” everything is simply present. */
-    .js-reveal .fact,
-    .js-reveal .head,
-    .js-reveal .role,
-    .js-reveal .project,
-    .js-reveal .skl,
-    .js-reveal .entry,
-    .js-reveal .contact-term {
-      opacity: 1;
-      transform: none;
-    }
-    /* Status readouts and the terminal simply arrive, already finished. */
-    .sys.booting li { visibility: visible; }
-    .sys.booting li .v { opacity: 1; }
-    .sys.booting .bar i { width: 100%; }
-    .term.typing .ch { visibility: visible; }
-    .caret { animation: none; }
-    .boot-log li { opacity: 1; }
+    * { animation-duration: .001ms !important; animation-iteration-count: 1 !important;
+        transition-duration: .001ms !important; }
+    .marquee-track { animation: none; transform: none; }
+    .js-anim .hero-name .line > span,
+    .js-anim .hero-eyebrow, .js-anim .hero-meta { transform: none; opacity: 1; }
+    .js-reveal [data-reveal] { opacity: 1; transform: none; }
+    .hero-spot { display: none; }
   }
 
+  /* ---------------- print ---------------- */
 
-  /* ---------- scanlines ----------
-     A CRT hint at 3% over the whole page. No colour of its own — it darkens
-     what is already there — so the palette is untouched. */
-  .scan {
-    position: fixed;
-    inset: 0;
-    z-index: 80;
-    pointer-events: none;
-    background: repeating-linear-gradient(
-      to bottom,
-      rgba(0, 0, 0, 0.03) 0 1px,
-      transparent 1px 3px
-    );
-  }
-
-  /* ---------- print ----------
-     Someone printing this is comparing it against a PDF. Strip the terminal
-     chrome and let the content set on paper. */
   @media print {
-    .scan, .net, nav, .kbd, .pal, .boot, .caret { display: none !important; }
+    .nav, .grain, .hero-canvas, .hero-spot, .hero-grad, .marquee, .theme-toggle, .project-visual { display: none !important; }
     html, body { background: #fff !important; color: #000 !important; }
-    .term, .sys, .contact-term { border: 1px solid #999 !important; background: none !important; }
-    .ps1, .sys .v, .sys-head, .row .key, .head .line { color: #000 !important; }
-    a { color: #000 !important; border-bottom: 0 !important; }
-    /* The URL behind each link, since a printed page cannot be clicked. */
-    .contact-term a::after { content: " (" attr(href) ")"; font-size: 0.85em; color: #444; }
-    .role[open] .body, .role .body { display: grid !important; }
-    .skl-ctx { display: block !important; }
-    .skl-readout { position: static !important; }
-    section, .role, .entry, .skl { break-inside: avoid; }
-    .head h2 { break-after: avoid; }
-    * { opacity: 1 !important; transform: none !important; visibility: visible !important; }
-  }
-
-  /* ---------- cursor ----------
-     The terminal caret, made into the pointer: a 10px cell with the hotspot
-     at its centre. Drawn with the page's own fill-and-stroke pair rather
-     than the accent, so it stays visible over the accent project panel as
-     well as over paper. Native cursors underneath as the fallback, and
-     text fields keep their I-beam. */
-
-  body { cursor: var(--cur-idle) 7 7, default; }
-
-  a,
-  button,
-  .navlink,
-  .kbd,
-  .sk,
-  .role summary,
-  .pal li button { cursor: var(--cur-live) 7 7, pointer; }
-
-  input,
-  textarea,
-  .pal-input { cursor: text; }
-
-  /* Nothing to point with on a touch screen; give hybrids their own cursor
-     back rather than a drawn one that may never move. */
-  @media (hover: none) {
-    body,
-    a, button, .navlink, .kbd, .sk, .role summary, .pal li button { cursor: auto; }
+    * { color: #000 !important; }
+    .role-body, .sk-ctx { display: block !important; }
+    .role[open] .role-body { display: grid !important; }
   }
 </style>
 </head>
 <body>
 
 <script>
-  // Arm the reveal before the page paints, so blocks are never seen
-  // arriving and then hiding. Anything that can't observe stays visible.
-  if ('IntersectionObserver' in document.defaultView) {
-    document.documentElement.classList.add('js-reveal');
-  }
-  // The boot overlay only becomes visible once this has run, so a page with
-  // no JS never renders a curtain it cannot raise.
-  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    document.documentElement.classList.add('js-boot');
-  }
+  /* Set theme before first paint so there is no flash. */
+  (function () {
+    try {
+      var t = localStorage.getItem('theme');
+      if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+    var r = document.documentElement;
+    if ('IntersectionObserver' in window) r.classList.add('js-reveal');
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) r.classList.add('js-anim');
+  })();
 </script>
 
-<div class="boot" id="boot" aria-hidden="true">
-  <div class="boot-in">
-    <div class="boot-title">danny@portfolio : boot</div>
-    <ul class="boot-log">
-      <li><span class="ok">[  OK  ]</span> mounting /home/danny</li>
-      <li><span class="ok">[  OK  ]</span> loading experience.log</li>
-      <li><span class="ok">[  OK  ]</span> indexing skills</li>
-      <li><span class="ok">[  OK  ]</span> starting security-monitor</li>
-      <li><span class="ok">[  OK  ]</span> brewing coffee</li>
-    </ul>
-    <div class="boot-bar"><i></i></div>
-  </div>
-</div>
+<div class="grain" aria-hidden="true"></div>
+<a class="skip" href="#experience">Skip to content</a>
 
-<div class="scan" aria-hidden="true"></div>
-
-<header class="masthead wrap">
-  <canvas class="net" aria-hidden="true"></canvas>
-  <h1 class="hero-name">Danny Chan Yi Xiang</h1>
-  <div class="intro">
-  <div class="term">
-    <div class="term-bar">
-      <span>danny@portfolio ~</span>
-      <button class="kbd" type="button" data-open-palette>Ctrl K</button>
-    </div>
-    <div class="term-body">
-      <p class="ln"><span class="ps1">$</span> whoami</p>
-      <p class="ln">Danny Chan Yi Xiang <span class="dim">&mdash; Cybersecurity / Data Center Engineer</span></p>
-      <p class="ln sp"></p>
-      <p class="ln"><span class="ps1">$</span> cat interests.txt</p>
-      <p class="ln">SOC operations</p>
-      <p class="ln">Linux / Unix</p>
-      <p class="ln">Server infrastructure</p>
-      <p class="ln">Incident response</p>
-      <p class="ln">Hardware diagnostics</p>
-      <p class="ln">Automation</p>
-      <p class="ln sp"></p>
-      <p class="ln"><span class="ps1">$</span> whereis danny</p>
-      <p class="ln">Petaling Jaya, Selangor, Malaysia <span class="dim">(UTC+8)</span></p>
-      <p class="ln sp"></p>
-      <p class="ln"><span class="ps1">$</span> uptime</p>
-      <p class="ln">Always learning. Always troubleshooting.</p>
-      <p class="ln sp"></p>
-      <p class="ln"><span class="ps1">$</span> <span class="caret" aria-hidden="true"></span></p>
-    </div>
-  </div>
-  <div class="hero-side">
-  <div class="sys">
-    <div class="sys-head" id="sys-head">[ SYSTEM ONLINE ]</div>
-    <ul>
-      <li><span class="k">Linux / Unix</span><span class="dots"></span><span class="v">OK</span></li>
-      <li><span class="k">Security operations</span><span class="dots"></span><span class="v">OK</span></li>
-      <li><span class="k">Infrastructure</span><span class="dots"></span><span class="v">OK</span></li>
-      <li><span class="k">Security+</span><span class="dots"></span><span class="v">VALID &rarr; FEB 2028</span></li>
-      <li><span class="k">Coffee</span><span class="dots"></span><span class="v"><span class="bar" aria-hidden="true"><i></i></span>100%</span></li>
-    </ul>
-  </div>
-  <div class="contact">
-    <a class="cv" href="mailto:danny.chan2003@yahoo.com">Email</a>
-    <a class="cv" href="https://www.linkedin.com/in/danny-chan-a013aa204/" target="_blank" rel="noopener">LinkedIn</a>
-    <a class="cv" href="https://github.com/DCYXboi" target="_blank" rel="noopener">GitHub</a>
-    <a class="cv" href="resume.pdf" download="Danny-Chan-Yi-Xiang-Resume.pdf">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-      Resume
-    </a>
-  </div>
-  </div>
+<!-- ===================== NAV ===================== -->
+<header class="nav wrap" id="nav">
+  <a class="brand" href="#top" aria-label="Danny Chan Yi Xiang, home">
+    <span class="mark">DC</span>
+    <span class="full">Danny Chan</span>
+  </a>
+  <div class="nav-right">
+    <nav class="nav-links" id="navlinks" aria-label="Sections">
+      <button class="nav-link" data-to="experience" aria-current="true">Experience</button>
+      <button class="nav-link" data-to="project">Project</button>
+      <button class="nav-link" data-to="skills">Skills</button>
+      <button class="nav-link" data-to="education">Education</button>
+    </nav>
+    <button class="nav-toggle" id="navToggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="navlinks"><span></span></button>
+    <button class="theme-toggle" id="theme" type="button" aria-label="Toggle colour theme">
+      <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg>
+    </button>
+    <a class="btn magnetic" href="mailto:danny.chan2003@yahoo.com">Get in touch</a>
   </div>
 </header>
 
-<nav class="wrap" aria-label="Sections">
-  <button class="navlink" data-to="experience" aria-current="true">Experience</button>
-  <button class="navlink" data-to="project">Project</button>
-  <button class="navlink" data-to="skills">Skills</button>
-  <button class="navlink" data-to="education">Education</button>
-</nav>
+<!-- ===================== HERO ===================== -->
+<section class="hero wrap" id="top">
+  <canvas class="hero-canvas" aria-hidden="true"></canvas>
+  <div class="hero-grad" aria-hidden="true"></div>
+  <div class="hero-spot" aria-hidden="true"></div>
 
-<div class="facts">
-  <div class="fact">
-    <div class="label">Certification</div>
-    <p>CompTIA Security+ CE <span>&mdash; valid to Feb 2028</span></p>
+  <div class="hero-inner">
+    <div class="hero-eyebrow"><span class="eyebrow">Security operations · Infrastructure</span></div>
+
+    <h1 class="hero-name">
+      <span class="line l1"><span>Danny Chan</span></span>
+      <span class="line l2"><span>Yi Xiang<i class="accent-dot" aria-hidden="true">.</i></span></span>
+    </h1>
+
+    <div class="hero-meta">
+      <p class="hero-lede">
+        <b>Cybersecurity and data-center engineer.</b> I keep production infrastructure
+        monitored, diagnosed, and online across Linux, SOC, and hardware.
+      </p>
+      <div class="hero-cta">
+        <button class="btn btn-solid magnetic" type="button" data-to="experience">
+          See the work
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </button>
+        <a class="btn magnetic" href="resume.pdf" download="Danny-Chan-Yi-Xiang-Resume.pdf">
+          Résumé
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+        </a>
+      </div>
+    </div>
   </div>
-  <div class="fact">
-    <div class="label">Degree</div>
-    <p>BSc (Hons) Computer Science <span>&mdash; Cyber Security</span></p>
+</section>
+
+<!-- ===================== STATS ===================== -->
+<div class="stats wrap" aria-label="At a glance">
+  <div class="stat" data-reveal>
+    <span class="stat-n">Security+</span>
+    <span class="stat-l">CompTIA CE, valid to Feb 2028</span>
   </div>
-  <div class="fact">
-    <div class="label">Languages</div>
-    <p>Mandarin &middot; English &middot; Malay</p>
+  <div class="stat" data-reveal>
+    <span class="stat-n" data-count="30">30</span>
+    <span class="stat-l">client environments monitored at Ensign</span>
+  </div>
+  <div class="stat" data-reveal>
+    <span class="stat-n" data-count="3">3</span>
+    <span class="stat-l">roles across security and infrastructure</span>
+  </div>
+  <div class="stat" data-reveal>
+    <span class="stat-n">BSc (Hons)</span>
+    <span class="stat-l">Computer Science, Cyber Security</span>
+  </div>
+</div>
+
+<!-- ===================== MARQUEE ===================== -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <span>Linux / Unix</span><span>IBM QRadar</span><span>Palo Alto XSOAR</span><span>CyberArk</span><span>CentOS &amp; RHEL</span><span>PuTTY / SSH</span><span>PRTG</span><span>Go</span><span>MySQL</span><span>PowerApps</span><span>Power Automate</span><span>fieldiag</span><span>GPU diagnostics</span>
+    <span>Linux / Unix</span><span>IBM QRadar</span><span>Palo Alto XSOAR</span><span>CyberArk</span><span>CentOS &amp; RHEL</span><span>PuTTY / SSH</span><span>PRTG</span><span>Go</span><span>MySQL</span><span>PowerApps</span><span>Power Automate</span><span>fieldiag</span><span>GPU diagnostics</span>
   </div>
 </div>
 
 <main>
 
-<section id="experience" class="wrap">
-  <div class="head">
-    <h2>Experience</h2>
-    <div class="line"></div>
+<!-- ===================== EXPERIENCE ===================== -->
+<section class="band wrap" id="experience">
+  <div class="sec-head">
+    <h2 data-reveal>Experience</h2>
+    <span class="sec-count" data-reveal><b>03</b> roles, security to infrastructure</span>
   </div>
 
-  <details class="role" open>
-    <summary>
-      <div class="meta when">Jul 2026 &mdash;<br>Present</div>
-      <div class="who">
-        <h3>Operation &amp; Maintenance Engineer</h3>
-        <div class="org">Titanicom Tech (Malaysia) Sdn Bhd</div>
+  <div class="roles" data-reveal>
+    <details class="role" open>
+      <summary>
+        <div class="role-year">Jul 2026<br>Present</div>
+        <div class="role-who">
+          <div class="role-role">Operation and Maintenance Engineer</div>
+          <div class="role-org">Titanicom Tech (Malaysia) Sdn Bhd</div>
+        </div>
+        <span class="role-plus" aria-hidden="true"></span>
+      </summary>
+      <div class="role-body">
+        <ul>
+          <li>Provide operational support for enterprise server and network infrastructure, resolving tickets and troubleshooting faulty devices alongside team members and vendors.</li>
+          <li>Work in Linux and Unix server environments, using command-line tools for routine maintenance, system health checks and issue resolution.</li>
+          <li>Build CentOS 7 and RHEL virtual machines to replicate server environments and validate fixes before they touch production.</li>
+          <li>Run hardware diagnostics on production servers, including fieldiag test suites and GPU burn and stress testing, to prove stability and isolate faulty components before deployment.</li>
+          <li>Analyse system, BMC and event logs to find the root cause of hardware and platform faults, including ECC memory error investigation.</li>
+          <li>Support onsite implementation and deployment: installation, cabling, switch configuration and acceptance testing.</li>
+          <li>Prepare and maintain operational documentation, from configuration scripts to cable connection tables and service acceptance reports.</li>
+        </ul>
       </div>
-      <div class="chev" aria-hidden="true">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-      </div>
-    </summary>
-    <div class="body">
-      <ul class="points">
-        <li>Provide operational support for enterprise server and network infrastructure, resolving tickets and troubleshooting faulty devices alongside team members and vendors.</li>
-        <li>Work in Linux/Unix server environments, using command-line tools for routine maintenance, system health checks and issue resolution.</li>
-        <li>Build CentOS 7 and RHEL virtual machines to replicate server environments and validate fixes before applying them to production systems.</li>
-        <li>Run hardware diagnostics on production servers &mdash; fieldiag test suites and GPU burn and stress testing &mdash; to validate stability and isolate faulty components before deployment.</li>
-        <li>Analyse system, BMC and event logs to identify the root cause of hardware and platform faults, including ECC memory error investigation.</li>
-        <li>Support onsite project implementation and deployment: installation, cabling, switch configuration and acceptance testing.</li>
-        <li>Prepare and maintain operational documentation &mdash; configuration scripts, cable connection tables, and project and service acceptance reports.</li>
-      </ul>
-    </div>
-  </details>
+    </details>
 
-  <details class="role">
-    <summary>
-      <div class="meta when">Sep 2025 &mdash;<br>Mar 2026</div>
-      <div class="who">
-        <h3>Security Analyst <small>(internship)</small></h3>
-        <div class="org">Ensign InfoSecurity</div>
+    <details class="role">
+      <summary>
+        <div class="role-year">Sep 2025<br>Mar 2026</div>
+        <div class="role-who">
+          <div class="role-role">Security Analyst <small>(Internship)</small></div>
+          <div class="role-org">Ensign InfoSecurity</div>
+        </div>
+        <span class="role-plus" aria-hidden="true"></span>
+      </summary>
+      <div class="role-body">
+        <ul>
+          <li>Monitored and analysed system and security logs for 30 client environments in IBM QRadar, investigating alerts to surface recurring incidents and their root causes.</li>
+          <li>Connected to Linux servers through PuTTY using CyberArk-vaulted privileged credentials, following controlled access procedures for production investigation and log retrieval.</li>
+          <li>Managed the full incident ticket lifecycle in Palo Alto XSOAR, working to agreed response and escalation criteria.</li>
+          <li>Assessed whether incidents needed escalation to Level 2, documenting findings, root-cause assessment and status updates for stakeholders.</li>
+          <li>Ran daily health checks on client devices and monitored application and website availability across a multi-client production environment.</li>
+        </ul>
       </div>
-      <div class="chev" aria-hidden="true">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-      </div>
-    </summary>
-    <div class="body">
-      <ul class="points">
-        <li>Monitored and analysed system and security logs for 30 client environments using IBM QRadar, investigating alerts to identify recurring incidents and their underlying root causes.</li>
-        <li>Connected to Linux servers via PuTTY using CyberArk-vaulted privileged credentials, following controlled access procedures for production investigation and log retrieval.</li>
-        <li>Managed the full incident ticket lifecycle in Palo Alto XSOAR, working to agreed response and escalation criteria.</li>
-        <li>Assessed whether incidents required escalation to Level 2 support, documenting findings, root cause assessment and status updates for stakeholders.</li>
-        <li>Performed daily system health checks on client devices and monitored application and website availability across a multi-client production environment.</li>
-      </ul>
-    </div>
-  </details>
+    </details>
 
-  <details class="role">
-    <summary>
-      <div class="meta when">Sep 2022 &mdash;<br>Feb 2024</div>
-      <div class="who">
-        <h3>Software Programmer <small>(part-time)</small></h3>
-        <div class="org">PKT(M) Logistics Sdn Bhd</div>
+    <details class="role">
+      <summary>
+        <div class="role-year">Sep 2022<br>Feb 2024</div>
+        <div class="role-who">
+          <div class="role-role">Software Programmer <small>(Part-time)</small></div>
+          <div class="role-org">PKT(M) Logistics Sdn Bhd</div>
+        </div>
+        <span class="role-plus" aria-hidden="true"></span>
+      </summary>
+      <div class="role-body">
+        <ul>
+          <li>Sole developer and application-support owner for the company's employee onboarding, offboarding and joiner-leaver record system, built on PowerApps, SharePoint and Power Automate.</li>
+          <li>Handled service and change requests from internal stakeholders, investigated production issues, and resolved defects without escalation support.</li>
+          <li>Monitored automated Power Automate workflows, investigated failed runs and fixed processing errors to keep the system running and cut downtime.</li>
+          <li>Owned end-to-end quality for delivered changes, from requirement validation through functional and regression testing to user acceptance testing before release.</li>
+          <li>Documented system configuration for handover and maintained application and data-security compliance across connected platforms.</li>
+        </ul>
       </div>
-      <div class="chev" aria-hidden="true">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-      </div>
-    </summary>
-    <div class="body">
-      <ul class="points">
-        <li>Sole developer and application support owner for the company&rsquo;s employee onboarding, offboarding and joiner&ndash;leaver record management system, built on PowerApps, SharePoint and Power Automate.</li>
-        <li>Provided ongoing application support: handled service and change requests from internal stakeholders, investigated production issues, and resolved defects without escalation support.</li>
-        <li>Monitored automated Power Automate workflow execution, investigated failed runs and resolved processing errors to maintain continuous operation and reduce downtime.</li>
-        <li>Owned end-to-end quality for delivered changes, from requirement validation through functional and regression testing to user acceptance testing prior to release.</li>
-        <li>Documented system configuration for handover and maintained application and data security compliance across connected platforms.</li>
-      </ul>
-    </div>
-  </details>
+    </details>
+  </div>
 </section>
 
-<section id="project" class="wrap">
-  <div class="head">
-    <h2>Project</h2>
-    <div class="line"></div>
-  </div>
+<!-- ===================== PROJECT ===================== -->
+<section class="band wrap" id="project">
   <div class="project">
-    <div>
-      <div class="label">Final year project &middot; conference paper</div>
-      <h3>CloudChain</h3>
-      <p class="sub">Integrating blockchain systems with MANET technology.</p>
-      <a class="paper" href="https://digitallibrary.peninsulacollege.edu.my/items/9e8d502c-2c09-4133-8221-f0ef71f895b6" target="_blank" rel="noopener">
-        Read the paper
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-      </a>
+    <div class="project-copy">
+      <span class="eyebrow project-tag" data-reveal>Final year project · conference paper</span>
+      <h3 data-reveal>CloudChain</h3>
+      <p class="project-sub" data-reveal>Integrating blockchain with Mobile Ad Hoc Network (MANET) technology.</p>
 
-      <div class="stack">
-        <button class="st" type="button" data-ctx="st-go" aria-pressed="false">Go</button>
-        <button class="st" type="button" data-ctx="st-mysql" aria-pressed="false">MySQL</button>
-        <button class="st" type="button" data-ctx="st-sql" aria-pressed="false">SQL</button>
-        <button class="st" type="button" data-ctx="st-manet" aria-pressed="false">MANET</button>
-        <button class="st" type="button" data-ctx="st-chain" aria-pressed="false">Blockchain</button>
+      <ul class="project-points d1" data-reveal>
+        <li>Integrated a Mobile Ad Hoc Network (MANET) with blockchain to strengthen decentralised communication and data security.</li>
+        <li>Built a custom database extension module in Go backed by MySQL, covering relational schema design and SQL queries (joins, filtering, aggregation) to persist and retrieve chain and node data and reduce tampering risk.</li>
+        <li>Handled MySQL connectivity, query execution and transaction handling from Go application code.</li>
+        <li>Optimised MANET scalability and performance, improving network efficiency and stability.</li>
+      </ul>
+
+      <div class="stack" data-reveal>
+        <button class="chip" type="button" data-ctx="st-go" aria-pressed="false">Go</button>
+        <button class="chip" type="button" data-ctx="st-mysql" aria-pressed="false">MySQL</button>
+        <button class="chip" type="button" data-ctx="st-sql" aria-pressed="false">SQL</button>
+        <button class="chip" type="button" data-ctx="st-manet" aria-pressed="false">MANET</button>
+        <button class="chip" type="button" data-ctx="st-chain" aria-pressed="false">Blockchain</button>
       </div>
       <p class="stack-out" id="stack-out" aria-live="polite">The database extension module is written in Go, driving MySQL from application code.</p>
+
+      <a class="link-out" href="https://digitallibrary.peninsulacollege.edu.my/items/9e8d502c-2c09-4133-8221-f0ef71f895b6" target="_blank" rel="noopener">
+        Read the paper
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+      </a>
+
       <div hidden>
         <span id="st-go">The database extension module is written in Go, driving MySQL from application code.</span>
         <span id="st-mysql">Schema design, query execution and transaction handling for chain and node data.</span>
         <span id="st-sql">Joins, filtering and aggregation to persist and retrieve node state.</span>
-        <span id="st-manet">Mobile Ad Hoc Network &mdash; the decentralised layer the chain runs over.</span>
+        <span id="st-manet">Mobile Ad Hoc Network. The decentralised layer the chain runs over.</span>
         <span id="st-chain">Tamper resistance for the data moving across the network.</span>
       </div>
     </div>
-    <ul class="points">
-      <li>Integrated a Mobile Ad Hoc Network (MANET) with blockchain technology to strengthen decentralised communication and data security.</li>
-      <li>Developed a custom database extension module in Go backed by MySQL &mdash; relational schema design and SQL queries covering joins, filtering and aggregation &mdash; to persist and retrieve chain and node data, reducing data tampering risks.</li>
-      <li>Handled MySQL connectivity, query execution and transaction handling from Go application code.</li>
-      <li>Optimised MANET scalability and performance, increasing network efficiency and stability.</li>
-    </ul>
-  </div>
-</section>
 
-<section id="skills" class="wrap">
-  <div class="head">
-    <h2>Skills</h2>
-    <div class="line"></div>
-  </div>
-
-  <div class="skl-readout" aria-live="polite">
-    <p class="cmd"><span class="ps1">$</span> man <b id="skl-cmd">linux-unix</b></p>
-    <p class="out" id="skl-out">My daily working environment at Titanicom &mdash; command-line maintenance, system health checks and issue resolution on production servers.</p>
-  </div>
-
-  <div class="skl">
-    <div class="label">Operating systems</div>
-    <div class="skl-items">
-      <button class="sk" type="button" data-ctx="os-linux" aria-pressed="false">Linux / Unix</button>
-      <button class="sk" type="button" data-ctx="os-centos" aria-pressed="false">CentOS 7</button>
-      <button class="sk" type="button" data-ctx="os-rhel" aria-pressed="false">RHEL</button>
-      <button class="sk" type="button" data-ctx="os-win" aria-pressed="false">Windows</button>
-      <button class="sk" type="button" data-ctx="os-mac" aria-pressed="false">macOS</button>
-    </div>
-    <div class="skl-ctx" aria-live="polite">
-      <span class="ctx" id="os-linux">My daily working environment at Titanicom &mdash; command-line maintenance, system health checks and issue resolution on production servers.</span>
-      <span class="ctx" id="os-centos">I build CentOS 7 virtual machines to replicate a server environment, reproduce the fault, and prove a fix before it touches production.</span>
-      <span class="ctx" id="os-rhel">Same RHEL-family workflow as CentOS: rebuild the environment, reproduce, validate, then apply.</span>
-      <span class="ctx" id="os-win">Client-device support during daily health checks at Ensign, and the desktop side of application support at PKT(M).</span>
-      <span class="ctx" id="os-mac">Third working environment alongside Linux and Windows.</span>
-    </div>
-  </div>
-
-  <div class="skl">
-    <div class="label">Production support</div>
-    <div class="skl-items">
-      <button class="sk" type="button" data-ctx="ps-incident" aria-pressed="false">Incident &amp; service request management</button>
-      <button class="sk" type="button" data-ctx="ps-logs" aria-pressed="false">Log &amp; system alert analysis</button>
-      <button class="sk" type="button" data-ctx="ps-rca" aria-pressed="false">Root cause investigation</button>
-      <button class="sk" type="button" data-ctx="ps-sla" aria-pressed="false">SLA-based escalation</button>
-      <button class="sk" type="button" data-ctx="ps-monitor" aria-pressed="false">Health &amp; availability monitoring</button>
-      <button class="sk" type="button" data-ctx="ps-deploy" aria-pressed="false">Deployment support</button>
-    </div>
-    <div class="skl-ctx" aria-live="polite">
-      <span class="ctx" id="ps-incident">Ran the full ticket lifecycle in Palo Alto XSOAR at Ensign, and handled service and change requests direct from stakeholders at PKT(M).</span>
-      <span class="ctx" id="ps-logs">Monitored and analysed system and security logs for 30 client environments in IBM QRadar, investigating alerts for recurring incidents.</span>
-      <span class="ctx" id="ps-rca">Traced system, BMC and event logs to the underlying hardware or platform fault &mdash; including ECC memory error investigation.</span>
-      <span class="ctx" id="ps-sla">Judged which incidents warranted escalation to Level 2, and documented the findings and reasoning for stakeholders.</span>
-      <span class="ctx" id="ps-monitor">Daily health checks on client devices, plus application and website availability across a multi-client production environment.</span>
-      <span class="ctx" id="ps-deploy">Onsite implementation work: installation, cabling, switch configuration and acceptance testing.</span>
-    </div>
-  </div>
-
-  <div class="skl">
-    <div class="label">Tools &amp; platforms</div>
-    <div class="skl-items">
-      <button class="sk" type="button" data-ctx="tp-qradar" aria-pressed="false">IBM QRadar (SIEM)</button>
-      <button class="sk" type="button" data-ctx="tp-xsoar" aria-pressed="false">Palo Alto XSOAR (SOAR)</button>
-      <button class="sk" type="button" data-ctx="tp-cyberark" aria-pressed="false">CyberArk</button>
-      <button class="sk" type="button" data-ctx="tp-putty" aria-pressed="false">PuTTY / SSH</button>
-      <button class="sk" type="button" data-ctx="tp-prtg" aria-pressed="false">PRTG Network Monitoring</button>
-      <button class="sk" type="button" data-ctx="tp-fieldiag" aria-pressed="false">fieldiag</button>
-      <button class="sk" type="button" data-ctx="tp-gpu" aria-pressed="false">GPU stress &amp; burn diagnostics</button>
-    </div>
-    <div class="skl-ctx" aria-live="polite">
-      <span class="ctx" id="tp-qradar">The SIEM I lived in at Ensign &mdash; 30 client environments, watching for the alert that actually mattered.</span>
-      <span class="ctx" id="tp-xsoar">Created and managed client incident tickets end to end, working to agreed response and escalation criteria.</span>
-      <span class="ctx" id="tp-cyberark">Checked out vaulted privileged credentials to reach production servers under controlled access procedures.</span>
-      <span class="ctx" id="tp-putty">How I actually got onto those Linux servers for investigation and log retrieval.</span>
-      <span class="ctx" id="tp-prtg">Network and device monitoring.</span>
-      <span class="ctx" id="tp-fieldiag">Hardware test suites run against production servers to isolate a faulty component before it ships.</span>
-      <span class="ctx" id="tp-gpu">Burn and stress testing on GPU servers to prove stability before deployment.</span>
-    </div>
-  </div>
-
-  <div class="skl">
-    <div class="label">Scripting &amp; development</div>
-    <div class="skl-items">
-      <button class="sk" type="button" data-ctx="sd-shell" aria-pressed="false">Shell &amp; configuration scripting</button>
-      <button class="sk" type="button" data-ctx="sd-go" aria-pressed="false">Go</button>
-      <button class="sk" type="button" data-ctx="sd-sql" aria-pressed="false">SQL</button>
-      <button class="sk" type="button" data-ctx="sd-powerapps" aria-pressed="false">PowerApps</button>
-      <button class="sk" type="button" data-ctx="sd-flow" aria-pressed="false">Power Automate</button>
-      <button class="sk" type="button" data-ctx="sd-sp" aria-pressed="false">SharePoint</button>
-      <button class="sk" type="button" data-ctx="sd-vs" aria-pressed="false">Visual Studio</button>
-    </div>
-    <div class="skl-ctx" aria-live="polite">
-      <span class="ctx" id="sd-shell">Command-line tooling for routine maintenance, plus the configuration scripts that ship with a project handover.</span>
-      <span class="ctx" id="sd-go">Wrote CloudChain&rsquo;s custom database extension module in Go, backed by MySQL.</span>
-      <span class="ctx" id="sd-sql">Relational schema design and queries &mdash; joins, filtering, aggregation &mdash; to persist and retrieve chain and node data.</span>
-      <span class="ctx" id="sd-powerapps">Sole developer of PKT(M)&rsquo;s employee onboarding, offboarding and joiner&ndash;leaver system.</span>
-      <span class="ctx" id="sd-flow">The automated workflows behind that system. I monitored the runs and fixed the ones that failed.</span>
-      <span class="ctx" id="sd-sp">The data layer the same joiner&ndash;leaver system was built on.</span>
-      <span class="ctx" id="sd-vs">Development environment for that work.</span>
-    </div>
-  </div>
-
-  <div class="skl">
-    <div class="label">Databases</div>
-    <div class="skl-items">
-      <button class="sk" type="button" data-ctx="db-mysql" aria-pressed="false">MySQL</button>
-      <button class="sk" type="button" data-ctx="db-mongo" aria-pressed="false">MongoDB</button>
-    </div>
-    <div class="skl-ctx" aria-live="polite">
-      <span class="ctx" id="db-mysql">Schema design, query execution and transaction handling, driven from Go application code in CloudChain.</span>
-      <span class="ctx" id="db-mongo">Document-store work alongside the relational side.</span>
-    </div>
-  </div>
-
-  <div class="skl">
-    <div class="label">Spoken</div>
-    <div class="skl-items">
-      <button class="sk" type="button" data-ctx="sp-en" aria-pressed="false">English</button>
-      <button class="sk" type="button" data-ctx="sp-zh" aria-pressed="false">Mandarin</button>
-      <button class="sk" type="button" data-ctx="sp-ms" aria-pressed="false">Malay</button>
-    </div>
-    <div class="skl-ctx" aria-live="polite">
-      <span class="ctx" id="sp-en">Working language for documentation, incident reporting and stakeholder updates.</span>
-      <span class="ctx" id="sp-zh">Spoken.</span>
-      <span class="ctx" id="sp-ms">Spoken.</span>
+    <div class="project-visual d1" data-reveal aria-hidden="true">
+      <canvas></canvas>
+      <span class="pv-corner tl"></span><span class="pv-corner tr"></span>
+      <span class="pv-corner bl"></span><span class="pv-corner br"></span>
+      <span class="pv-label">MANET · chained nodes</span>
     </div>
   </div>
 </section>
 
-<section id="education" class="wrap">
-  <div class="head">
-    <h2>Education</h2>
-    <div class="line"></div>
+<!-- ===================== SKILLS ===================== -->
+<section class="band wrap" id="skills">
+  <div class="sec-head">
+    <h2 data-reveal>Skills</h2>
+    <span class="sec-count" data-reveal>Hover any tag for the story behind it</span>
   </div>
-  <div class="timeline">
-    <div class="entry">
-      <div class="meta when">Sep 2023 &mdash; Dec 2025</div>
+
+  <div class="sk-readout" aria-live="polite">
+    <p class="cmd"><span class="ps1">$</span> man <b id="sk-cmd">linux-unix</b></p>
+    <p class="out" id="sk-out">My daily working environment at Titanicom: command-line maintenance, health checks and issue resolution on production servers.</p>
+  </div>
+
+  <div class="sk-grid" data-reveal>
+    <div class="sk-group">
+      <div class="label">Operating systems</div>
+      <div class="sk-items">
+        <button class="sk" type="button" data-ctx="os-linux" aria-pressed="false">Linux / Unix</button>
+        <button class="sk" type="button" data-ctx="os-centos" aria-pressed="false">CentOS 7</button>
+        <button class="sk" type="button" data-ctx="os-rhel" aria-pressed="false">RHEL</button>
+        <button class="sk" type="button" data-ctx="os-win" aria-pressed="false">Windows</button>
+        <button class="sk" type="button" data-ctx="os-mac" aria-pressed="false">macOS</button>
+      </div>
+      <div class="sk-ctx">
+        <span id="os-linux">My daily working environment at Titanicom: command-line maintenance, health checks and issue resolution on production servers.</span>
+        <span id="os-centos">I build CentOS 7 virtual machines to replicate a server environment, reproduce the fault, and prove a fix before it reaches production.</span>
+        <span id="os-rhel">Same RHEL-family workflow as CentOS: rebuild the environment, reproduce, validate, then apply.</span>
+        <span id="os-win">Client-device support during daily health checks at Ensign, and the desktop side of application support at PKT(M).</span>
+        <span id="os-mac">A third working environment alongside Linux and Windows.</span>
+      </div>
+    </div>
+
+    <div class="sk-group">
+      <div class="label">Production support</div>
+      <div class="sk-items">
+        <button class="sk" type="button" data-ctx="ps-incident" aria-pressed="false">Incident and service request management</button>
+        <button class="sk" type="button" data-ctx="ps-logs" aria-pressed="false">Log and system alert analysis</button>
+        <button class="sk" type="button" data-ctx="ps-rca" aria-pressed="false">Root cause investigation</button>
+        <button class="sk" type="button" data-ctx="ps-sla" aria-pressed="false">SLA-based escalation</button>
+        <button class="sk" type="button" data-ctx="ps-monitor" aria-pressed="false">Health and availability monitoring</button>
+        <button class="sk" type="button" data-ctx="ps-deploy" aria-pressed="false">Deployment support</button>
+      </div>
+      <div class="sk-ctx">
+        <span id="ps-incident">Ran the full ticket lifecycle in Palo Alto XSOAR at Ensign, and handled service and change requests direct from stakeholders at PKT(M).</span>
+        <span id="ps-logs">Monitored and analysed system and security logs for 30 client environments in IBM QRadar, investigating alerts for recurring incidents.</span>
+        <span id="ps-rca">Traced system, BMC and event logs to the underlying hardware or platform fault, including ECC memory error investigation.</span>
+        <span id="ps-sla">Judged which incidents warranted escalation to Level 2, and documented the findings and reasoning for stakeholders.</span>
+        <span id="ps-monitor">Daily health checks on client devices, plus application and website availability across a multi-client production environment.</span>
+        <span id="ps-deploy">Onsite implementation work: installation, cabling, switch configuration and acceptance testing.</span>
+      </div>
+    </div>
+
+    <div class="sk-group">
+      <div class="label">Tools and platforms</div>
+      <div class="sk-items">
+        <button class="sk" type="button" data-ctx="tp-qradar" aria-pressed="false">IBM QRadar (SIEM)</button>
+        <button class="sk" type="button" data-ctx="tp-xsoar" aria-pressed="false">Palo Alto XSOAR (SOAR)</button>
+        <button class="sk" type="button" data-ctx="tp-cyberark" aria-pressed="false">CyberArk</button>
+        <button class="sk" type="button" data-ctx="tp-putty" aria-pressed="false">PuTTY / SSH</button>
+        <button class="sk" type="button" data-ctx="tp-prtg" aria-pressed="false">PRTG</button>
+        <button class="sk" type="button" data-ctx="tp-fieldiag" aria-pressed="false">fieldiag</button>
+        <button class="sk" type="button" data-ctx="tp-gpu" aria-pressed="false">GPU stress and burn</button>
+      </div>
+      <div class="sk-ctx">
+        <span id="tp-qradar">The SIEM I lived in at Ensign, watching 30 client environments for the alert that actually mattered.</span>
+        <span id="tp-xsoar">Created and managed client incident tickets end to end, working to agreed response and escalation criteria.</span>
+        <span id="tp-cyberark">Checked out vaulted privileged credentials to reach production servers under controlled access procedures.</span>
+        <span id="tp-putty">How I got onto those Linux servers for investigation and log retrieval.</span>
+        <span id="tp-prtg">Network and device monitoring.</span>
+        <span id="tp-fieldiag">Hardware test suites run against production servers to isolate a faulty component before it ships.</span>
+        <span id="tp-gpu">Burn and stress testing on GPU servers to prove stability before deployment.</span>
+      </div>
+    </div>
+
+    <div class="sk-group">
+      <div class="label">Scripting and development</div>
+      <div class="sk-items">
+        <button class="sk" type="button" data-ctx="sd-shell" aria-pressed="false">Shell and config scripting</button>
+        <button class="sk" type="button" data-ctx="sd-go" aria-pressed="false">Go</button>
+        <button class="sk" type="button" data-ctx="sd-sql" aria-pressed="false">SQL</button>
+        <button class="sk" type="button" data-ctx="sd-powerapps" aria-pressed="false">PowerApps</button>
+        <button class="sk" type="button" data-ctx="sd-flow" aria-pressed="false">Power Automate</button>
+        <button class="sk" type="button" data-ctx="sd-sp" aria-pressed="false">SharePoint</button>
+        <button class="sk" type="button" data-ctx="sd-vs" aria-pressed="false">Visual Studio</button>
+      </div>
+      <div class="sk-ctx">
+        <span id="sd-shell">Command-line tooling for routine maintenance, plus the configuration scripts that ship with a project handover.</span>
+        <span id="sd-go">Wrote CloudChain's custom database extension module in Go, backed by MySQL.</span>
+        <span id="sd-sql">Relational schema design and queries (joins, filtering, aggregation) to persist and retrieve chain and node data.</span>
+        <span id="sd-powerapps">Sole developer of PKT(M)'s employee onboarding, offboarding and joiner-leaver system.</span>
+        <span id="sd-flow">The automated workflows behind that system. I monitored the runs and fixed the ones that failed.</span>
+        <span id="sd-sp">The data layer the same joiner-leaver system was built on.</span>
+        <span id="sd-vs">Development environment for that work.</span>
+      </div>
+    </div>
+
+    <div class="sk-group">
+      <div class="label">Databases</div>
+      <div class="sk-items">
+        <button class="sk" type="button" data-ctx="db-mysql" aria-pressed="false">MySQL</button>
+        <button class="sk" type="button" data-ctx="db-mongo" aria-pressed="false">MongoDB</button>
+      </div>
+      <div class="sk-ctx">
+        <span id="db-mysql">Schema design, query execution and transaction handling, driven from Go application code in CloudChain.</span>
+        <span id="db-mongo">Document-store work alongside the relational side.</span>
+      </div>
+    </div>
+
+    <div class="sk-group">
+      <div class="label">Spoken</div>
+      <div class="sk-items">
+        <button class="sk" type="button" data-ctx="sp-en" aria-pressed="false">English</button>
+        <button class="sk" type="button" data-ctx="sp-zh" aria-pressed="false">Mandarin</button>
+        <button class="sk" type="button" data-ctx="sp-ms" aria-pressed="false">Malay</button>
+      </div>
+      <div class="sk-ctx">
+        <span id="sp-en">Working language for documentation, incident reporting and stakeholder updates.</span>
+        <span id="sp-zh">Spoken (Mandarin).</span>
+        <span id="sp-ms">Spoken (Malay).</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== EDUCATION ===================== -->
+<section class="band wrap" id="education">
+  <div class="sec-head">
+    <h2 data-reveal>Education</h2>
+  </div>
+  <div class="edu" data-reveal>
+    <div class="edu-row">
+      <div class="edu-year">Sep 2023 - Dec 2025</div>
       <div>
-        <h3>University of Plymouth</h3>
-        <p>BSc (Hons) Computer Science (Cyber Security) &mdash; Upper Second Class</p>
+        <h3 class="edu-h">University of Plymouth</h3>
+        <p class="edu-p">BSc (Hons) Computer Science (Cyber Security), Upper Second Class</p>
       </div>
     </div>
-    <div class="entry">
-      <div class="meta when">Jan 2021 &mdash; Apr 2023</div>
+    <div class="edu-row">
+      <div class="edu-year">Jan 2021 - Apr 2023</div>
       <div>
-        <h3>Peninsula College Malaysia</h3>
-        <p>Diploma in Computer Science &mdash; CGPA 3.53</p>
+        <h3 class="edu-h">Peninsula College Malaysia</h3>
+        <p class="edu-p">Diploma in Computer Science, CGPA 3.53</p>
       </div>
-    </div>
-  </div>
-
-</section>
-
-<section id="contact" class="wrap">
-  <div class="term contact-term">
-    <div class="term-bar">
-      <span>danny@portfolio ~/contact</span>
-    </div>
-    <div class="term-body">
-      <p class="ln"><span class="ps1">$</span> cat contact.txt</p>
-      <p class="ln sp"></p>
-      <div class="rows">
-        <div class="row"><span class="key">EMAIL</span><span><a href="mailto:danny.chan2003@yahoo.com">danny.chan2003@yahoo.com</a></span></div>
-        <div class="row"><span class="key">PHONE</span><span><a href="tel:+60125506089">+6012-5506089</a></span></div>
-        <div class="row"><span class="key">LINKEDIN</span><span><a href="https://www.linkedin.com/in/danny-chan-a013aa204/" target="_blank" rel="noopener">/in/danny-chan-a013aa204</a></span></div>
-        <div class="row"><span class="key">GITHUB</span><span><a href="https://github.com/DCYXboi" target="_blank" rel="noopener">DCYXboi</a></span></div>
-        <div class="row"><span class="key">LOCATION</span><span class="dim">Petaling Jaya, Selangor, Malaysia (UTC+8)</span></div>
-      </div>
-      <p class="ln sp"></p>
-      <p class="ln"><span class="ps1">$</span> <span class="caret" aria-hidden="true"></span></p>
     </div>
   </div>
 </section>
 
 </main>
 
+<!-- ===================== CONTACT ===================== -->
+<section class="band wrap" id="contact">
+  <h2 class="contact-h" data-reveal>Get in touch</h2>
+  <a class="contact-mail magnetic d1" href="mailto:danny.chan2003@yahoo.com" data-reveal>danny.chan2003@yahoo.com</a>
+  <div class="contact-rows d2" data-reveal>
+    <a href="tel:+60125506089">+6012-5506089</a>
+    <a href="https://www.linkedin.com/in/danny-chan-a013aa204/" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="https://github.com/DCYXboi" target="_blank" rel="noopener">GitHub</a>
+    <span class="contact-loc">Petaling Jaya, Selangor, Malaysia (UTC+8)</span>
+  </div>
+</section>
+
 <footer class="wrap">
   <div class="colophon">
-    <span>&copy; 2026 Danny Chan Yi Xiang</span>
+    <span>© 2026 Danny Chan Yi Xiang</span>
+    <span>Designed and built from scratch. No frameworks.</span>
     <span>References available on request</span>
   </div>
 </footer>
 
-<div class="pal" id="palette" hidden>
-  <div class="pal-box" role="dialog" aria-modal="true" aria-label="Command palette">
-    <div class="pal-prompt">
-      <span class="ps1" aria-hidden="true">&gt;</span>
-      <input class="pal-input" id="pal-input" type="text" placeholder="search portfolio" aria-label="Search this site" autocomplete="off" spellcheck="false">
-    </div>
-    <ul id="pal-list"></ul>
-    <div class="pal-foot">&uarr;&darr; move &middot; &crarr; open &middot; esc close</div>
-  </div>
-</div>
-
 <script>
+  /* ---------------- theme toggle ---------------- */
   (function () {
-    var links = Array.prototype.slice.call(document.querySelectorAll('.navlink'));
-
-    var setCurrent = function (id) {
-      links.forEach(function (link) {
-        link.setAttribute('aria-current', link.dataset.to === id ? 'true' : 'false');
-      });
-    };
-
-    links.forEach(function (link) {
-      link.addEventListener('click', function () {
-        var target = document.getElementById(link.dataset.to);
-        if (!target) return;
-        setCurrent(link.dataset.to);
-        target.scrollIntoView({ block: 'start' });
-      });
-    });
-
-    // The section that has most recently passed under the sticky bar is the
-    // one being read, so highlight the last one whose top has crossed it.
-    var sections = links.map(function (link) {
-      return document.getElementById(link.dataset.to);
-    });
-
-    var sync = function () {
-      var current = links[0].dataset.to;
-      for (var i = 0; i < sections.length; i++) {
-        if (sections[i] && sections[i].getBoundingClientRect().top <= 60) {
-          current = links[i].dataset.to;
-        }
+    var btn = document.getElementById('theme');
+    if (!btn) return;
+    var meta = document.querySelector('meta[name="theme-color"]');
+    btn.addEventListener('click', function () {
+      var root = document.documentElement;
+      var cur = root.getAttribute('data-theme');
+      if (!cur) {
+        // No explicit choice yet: flip away from the system preference.
+        cur = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
       }
-      setCurrent(current);
-    };
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem('theme', next); } catch (e) {}
+    });
+  })();
+
+  /* ---------------- nav: active link + stuck state + smooth jump ---------------- */
+  (function () {
+    var nav = document.getElementById('nav');
+    var links = [].slice.call(document.querySelectorAll('.nav-link, [data-to]'));
+    var navLinks = [].slice.call(document.querySelectorAll('.nav-link'));
+    var ids = ['experience', 'project', 'skills', 'education'];
+
+    var toggle = document.getElementById('navToggle');
+    function closeMenu() {
+      if (!nav) return;
+      nav.classList.remove('open');
+      if (toggle) toggle.setAttribute('aria-expanded', 'false');
+    }
+    if (toggle && nav) {
+      toggle.addEventListener('click', function () {
+        var open = nav.classList.toggle('open');
+        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeMenu(); });
+    }
+
+    links.forEach(function (l) {
+      if (!l.dataset.to) return;
+      l.addEventListener('click', function (e) {
+        var t = document.getElementById(l.dataset.to);
+        if (t) { e.preventDefault(); closeMenu(); t.scrollIntoView({ block: 'start' }); }
+      });
+    });
+
+    function setCurrent(id) {
+      navLinks.forEach(function (l) {
+        l.setAttribute('aria-current', l.dataset.to === id ? 'true' : 'false');
+      });
+    }
 
     var queued = false;
-    window.addEventListener('scroll', function () {
-      if (queued) return;
-      queued = true;
-      window.requestAnimationFrame(function () {
+    function onScroll() {
+      if (queued) return; queued = true;
+      requestAnimationFrame(function () {
         queued = false;
-        sync();
+        if (nav) nav.classList.toggle('stuck', window.scrollY > 40);
+        var cur = ids[0];
+        for (var i = 0; i < ids.length; i++) {
+          var el = document.getElementById(ids[i]);
+          if (el && el.getBoundingClientRect().top <= 120) cur = ids[i];
+        }
+        setCurrent(cur);
       });
-    }, { passive: true });
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  })();
 
-    window.addEventListener('resize', sync, { passive: true });
-    sync();
+  /* ---------------- hero: kinetic load reveal ---------------- */
+  (function () {
+    var root = document.documentElement;
+    if (!root.classList.contains('js-anim')) return;
+    var spans = document.querySelectorAll('.hero-name .line > span');
+    var eyebrow = document.querySelector('.hero-eyebrow');
+    var meta = document.querySelector('.hero-meta');
 
-    // ---- scroll reveal ----
+    function animate() {
+      spans.forEach(function (s, i) {
+        s.animate(
+          [{ transform: 'translateY(110%)' }, { transform: 'translateY(0)' }],
+          { duration: 1100, delay: 120 + i * 130, easing: 'cubic-bezier(.22,1,.36,1)', fill: 'both' }
+        );
+      });
+      [eyebrow, meta].forEach(function (el, i) {
+        if (!el) return;
+        el.animate(
+          [{ opacity: 0, transform: 'translateY(14px)' }, { opacity: 1, transform: 'none' }],
+          { duration: 900, delay: 380 + i * 160, easing: 'cubic-bezier(.22,1,.36,1)', fill: 'both' }
+        );
+      });
+    }
+    if (document.fonts && document.fonts.ready) {
+      // Wait for the display face so the mask reveal lines up on final glyphs.
+      Promise.race([document.fonts.ready, new Promise(function (r) { setTimeout(r, 600); })]).then(animate);
+    } else { animate(); }
+  })();
+
+  /* ---------------- hero spotlight follows the pointer ---------------- */
+  (function () {
+    var hero = document.querySelector('.hero');
+    var spot = document.querySelector('.hero-spot');
+    if (!hero || !spot || !window.matchMedia('(hover: hover)').matches) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var raf = false, mx = 50, my = 32;
+    hero.addEventListener('pointermove', function (e) {
+      var r = hero.getBoundingClientRect();
+      mx = ((e.clientX - r.left) / r.width) * 100;
+      my = ((e.clientY - r.top) / r.height) * 100;
+      if (raf) return; raf = true;
+      requestAnimationFrame(function () {
+        raf = false;
+        spot.style.setProperty('--mx', mx + '%');
+        spot.style.setProperty('--my', my + '%');
+      });
+    });
+  })();
+
+  /* ---------------- magnetic buttons ---------------- */
+  (function () {
+    if (!window.matchMedia('(hover: hover)').matches) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var els = [].slice.call(document.querySelectorAll('.magnetic'));
+    els.forEach(function (el) {
+      var raf = false, tx = 0, ty = 0;
+      el.style.transition = 'transform .4s cubic-bezier(.22,1,.36,1)';
+      el.addEventListener('pointermove', function (e) {
+        var r = el.getBoundingClientRect();
+        tx = (e.clientX - (r.left + r.width / 2)) * 0.28;
+        ty = (e.clientY - (r.top + r.height / 2)) * 0.34;
+        if (raf) return; raf = true;
+        requestAnimationFrame(function () { raf = false; el.style.transform = 'translate(' + tx + 'px,' + ty + 'px)'; });
+      });
+      el.addEventListener('pointerleave', function () { el.style.transform = 'translate(0,0)'; });
+    });
+  })();
+
+  /* ---------------- scroll reveal ---------------- */
+  (function () {
     var root = document.documentElement;
     if (!root.classList.contains('js-reveal')) return;
-
-    var blocks = document.querySelectorAll(
-      '.fact, .head, .role, .project, .skl, .entry, .contact-term'
-    );
-
-    var reveal = function (el) { el.classList.add('is-revealed'); };
-
+    var items = document.querySelectorAll('[data-reveal]');
     try {
-      var watcher = new IntersectionObserver(function (entries, self) {
-        entries.forEach(function (entry) {
-          if (!entry.isIntersecting) return;
-          reveal(entry.target);
-          self.unobserve(entry.target);   // reveal once; never re-hide on the way back up
+      var io = new IntersectionObserver(function (entries, self) {
+        entries.forEach(function (en) {
+          if (!en.isIntersecting) return;
+          en.target.classList.add('in');
+          self.unobserve(en.target);
         });
-      }, { rootMargin: '0px 0px -12% 0px', threshold: 0.08 });
+      }, { rootMargin: '0px 0px -10% 0px', threshold: 0.12 });
+      items.forEach(function (el) { io.observe(el); });
 
-      Array.prototype.forEach.call(blocks, function (el) { watcher.observe(el); });
-
-      // The observer ignores the bottom slice of the viewport, so a block
-      // sitting in the last screenful can never scroll high enough to
-      // trigger and would stay invisible for good. Once the page is at the
-      // end — or never scrolls at all — reveal whatever is still waiting.
-      var sweep = function () {
-        var atEnd = window.innerHeight + window.scrollY >=
-                    document.documentElement.scrollHeight - 4;
-        if (!atEnd) return;
-        Array.prototype.forEach.call(blocks, reveal);
+      // Never strand a block that sits in the final screenful.
+      function sweep() {
+        if (window.innerHeight + window.scrollY < document.documentElement.scrollHeight - 4) return;
+        items.forEach(function (el) { el.classList.add('in'); });
         window.removeEventListener('scroll', sweep);
-        window.removeEventListener('resize', sweep);
-      };
-      window.addEventListener('scroll', sweep, { passive: true });
-      window.addEventListener('resize', sweep, { passive: true });
-      sweep();
-    } catch (err) {
-      // Never leave the page's content stranded behind a broken effect.
-      Array.prototype.forEach.call(blocks, reveal);
-    }
-  })();
-
-  // ---- boot screen, then terminal ----
-  // The overlay runs a short boot log, then hands over to the terminal so the
-  // typing starts as the curtain lifts rather than behind it.
-  (function () {
-    var root = document.documentElement;
-    var boot = document.getElementById('boot');
-    var term = document.querySelector('.term');
-    var sys = document.querySelector('.sys');
-    var sysHead = document.getElementById('sys-head');
-    var calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    // --- status panel: each check appears, then resolves, like a POST ---
-    function bootSys() {
-      if (!sys) return;
-      var rows = sys.querySelectorAll('li');
-      if (!rows.length) return;
-      sys.classList.add('booting');
-      if (sysHead) sysHead.textContent = '[ SYSTEM BOOT ]';
-
-      var i = 0;
-      var step = function () {
-        if (i >= rows.length) {
-          if (sysHead) sysHead.textContent = '[ SYSTEM ONLINE ]';
-          return;
-        }
-        var row = rows[i];
-        row.classList.add('on');                                  // key and dots land
-        window.setTimeout(function () { row.classList.add('ok'); }, 260);  // then the check resolves
-        i++;
-        window.setTimeout(step, 240);
-      };
-      step();
-
-      // However that goes, the panel must never be left half-checked.
-      window.setTimeout(function () {
-        Array.prototype.forEach.call(rows, function (row) { row.classList.add('on', 'ok'); });
-        if (sysHead) sysHead.textContent = '[ SYSTEM ONLINE ]';
-      }, 5000);
-    }
-
-    // --- terminal: split every line into characters ---
-    var chars = [];
-    var caret = term ? term.querySelector('.caret') : null;
-    var lastLine = term ? term.querySelector('.term-body .ln:last-child') : null;
-    var timer = null;
-    var finished = false;
-
-    function shatter() {
-      var lines = term.querySelectorAll('.ln');
-      Array.prototype.forEach.call(lines, function (ln) {
-        var isCmd = !!ln.querySelector('.ps1');
-        var walker = document.createTreeWalker(ln, NodeFilter.SHOW_TEXT, null, false);
-        var nodes = [];
-        var n;
-        while ((n = walker.nextNode())) nodes.push(n);
-        nodes.forEach(function (node) {
-          var text = node.nodeValue;
-          if (!text) return;
-          var frag = document.createDocumentFragment();
-          for (var i = 0; i < text.length; i++) {
-            var s = document.createElement('span');
-            s.className = 'ch';
-            s.textContent = text.charAt(i);
-            frag.appendChild(s);
-            chars.push({ el: s, cmd: isCmd, line: ln });
-          }
-          node.parentNode.replaceChild(frag, node);
-        });
-      });
-    }
-
-    function settle() {
-      if (finished) return;
-      finished = true;
-      if (timer) { window.clearTimeout(timer); timer = null; }
-      chars.forEach(function (c) { c.el.classList.add('on'); });
-      term.classList.remove('typing');
-      if (caret && lastLine) lastLine.appendChild(caret);
-    }
-
-    function type() {
-      if (!chars.length) return;
-      term.classList.add('typing');
-      var i = 0;
-      var step = function () {
-        if (finished) return;
-        var c = chars[i];
-        c.el.classList.add('on');
-        // The caret rides along behind the last character typed.
-        if (caret) c.el.parentNode.insertBefore(caret, c.el.nextSibling);
-        i++;
-        if (i >= chars.length) { settle(); return; }
-        var next = chars[i];
-        // Commands are typed at human speed; their output dumps out fast,
-        // with a beat between a command finishing and its output starting.
-        var wait = next.cmd ? 26 : 6;
-        if (next.line !== c.line && c.cmd) wait += 150;
-        timer = window.setTimeout(step, wait);
-      };
-      step();
-
-      // Impatience is legitimate: any click or key finishes it at once.
-      ['click', 'keydown', 'touchstart'].forEach(function (ev) {
-        document.addEventListener(ev, settle, { once: true, passive: true });
-      });
-      // And nothing may leave the hero half-typed.
-      window.setTimeout(settle, 9000);
-    }
-
-    // --- boot overlay ---
-    function raise(then) {
-      if (!boot || calm) {
-        if (boot && boot.parentNode) boot.parentNode.removeChild(boot);
-        root.classList.remove('js-boot');
-        then();
-        return;
       }
-      var items = boot.querySelectorAll('.boot-log li');
-      var i = 0;
-      var lifted = false;
-
-      var lift = function () {
-        if (lifted) return;
-        lifted = true;
-        root.classList.add('boot-done');
-        then();   // start typing as the curtain goes, not after
-        window.setTimeout(function () {
-          if (boot.parentNode) boot.parentNode.removeChild(boot);
-          root.classList.remove('js-boot');
-        }, 520);
-      };
-
-      var tick = function () {
-        if (i < items.length) {
-          items[i].classList.add('on');
-          i++;
-          window.setTimeout(tick, 170);
-          return;
-        }
-        window.setTimeout(lift, 400);
-      };
-      window.setTimeout(tick, 120);
-
-      // If any of that stalls, the page still opens.
-      window.setTimeout(lift, 6000);
-    }
-
-    try {
-      if (term && !calm) shatter();
-      // Terminal and status panel come up together, as two things booting
-      // side by side rather than one after the other.
-      raise(function () {
-        if (!calm) { if (term) type(); bootSys(); }
-      });
-    } catch (err) {
-      // A broken intro must never cost the page.
-      if (boot && boot.parentNode) boot.parentNode.removeChild(boot);
-      root.classList.remove('js-boot');
-      if (term) { term.classList.remove('typing'); }
+      window.addEventListener('scroll', sweep, { passive: true });
+      sweep();
+    } catch (e) {
+      items.forEach(function (el) { el.classList.add('in'); });
     }
   })();
 
-  // ---- project stack ----
-  // Same contract as the skills readout: opens on the first item so it is
-  // never empty, hover previews, click pins. Without JS the chips are inert
-  // but the default line still describes the work.
+  /* ---------------- count-up stats ---------------- */
   (function () {
-    var chips = document.querySelectorAll('.st');
-    var out = document.getElementById('stack-out');
-    if (!chips.length || !out) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (!('IntersectionObserver' in window)) return;
+    var nums = document.querySelectorAll('[data-count]');
+    var io = new IntersectionObserver(function (entries, self) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        self.unobserve(en.target);
+        var el = en.target, end = parseInt(el.getAttribute('data-count'), 10) || 0, t0 = null;
+        function tick(ts) {
+          if (!t0) t0 = ts;
+          var p = Math.min((ts - t0) / 900, 1);
+          var eased = 1 - Math.pow(1 - p, 3);
+          el.textContent = Math.round(end * eased);
+          if (p < 1) requestAnimationFrame(tick);
+          else el.textContent = end;
+        }
+        requestAnimationFrame(tick);
+      });
+    }, { threshold: 0.6 });
+    nums.forEach(function (n) { io.observe(n); });
+  })();
+
+  /* ---------------- skills readout ---------------- */
+  (function () {
+    var buttons = document.querySelectorAll('.sk');
+    var cmd = document.getElementById('sk-cmd');
+    var out = document.getElementById('sk-out');
+    if (!buttons.length || !cmd || !out) return;
+    document.documentElement.classList.add('js-ctx');
 
     var pinned = null;
-
+    function slug(s) { return s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''); }
     function show(btn) {
       if (!btn) return;
       var src = document.getElementById(btn.getAttribute('data-ctx'));
-      if (src) out.textContent = src.textContent;
+      if (!src) return;
+      cmd.textContent = slug(btn.textContent);
+      out.textContent = src.textContent;
     }
-
-    Array.prototype.forEach.call(chips, function (btn) {
+    [].forEach.call(buttons, function (btn) {
       btn.addEventListener('mouseenter', function () { show(btn); });
       btn.addEventListener('focus', function () { show(btn); });
       btn.addEventListener('click', function () {
         var already = pinned === btn;
         pinned = already ? null : btn;
-        Array.prototype.forEach.call(chips, function (b) {
-          b.setAttribute('aria-pressed', b === btn && !already ? 'true' : 'false');
-        });
+        [].forEach.call(buttons, function (b) { b.setAttribute('aria-pressed', b === btn && !already ? 'true' : 'false'); });
         show(btn);
       });
     });
-
-    var panel = document.querySelector('#project .project');
-    if (panel) {
-      panel.addEventListener('mouseleave', function () { show(pinned); });
-      panel.addEventListener('focusout', function (e) {
-        if (!panel.contains(e.relatedTarget)) show(pinned);
-      });
+    var skills = document.getElementById('skills');
+    if (skills) {
+      skills.addEventListener('mouseleave', function () { show(pinned); });
+      skills.addEventListener('focusout', function (e) { if (!skills.contains(e.relatedTarget)) show(pinned); });
     }
   })();
 
-  // ---- skill chip roving navigation ----
-  // Thirty chips is a lot of tab stops. Arrows walk a group, Home and End
-  // jump its ends, and Tab still leaves the group in one press.
+  /* ---------------- project stack readout ---------------- */
   (function () {
-    var groups = document.querySelectorAll('.skl-items, .stack');
-    if (!groups.length) return;
+    var chips = document.querySelectorAll('.chip');
+    var out = document.getElementById('stack-out');
+    if (!chips.length || !out) return;
+    var pinned = null;
+    function show(btn) { if (!btn) return; var s = document.getElementById(btn.getAttribute('data-ctx')); if (s) out.textContent = s.textContent; }
+    [].forEach.call(chips, function (btn) {
+      btn.addEventListener('mouseenter', function () { show(btn); });
+      btn.addEventListener('focus', function () { show(btn); });
+      btn.addEventListener('click', function () {
+        var already = pinned === btn;
+        pinned = already ? null : btn;
+        [].forEach.call(chips, function (b) { b.setAttribute('aria-pressed', b === btn && !already ? 'true' : 'false'); });
+        show(btn);
+      });
+    });
+    var panel = document.querySelector('#project .project');
+    if (panel) {
+      panel.addEventListener('mouseleave', function () { show(pinned); });
+      panel.addEventListener('focusout', function (e) { if (!panel.contains(e.relatedTarget)) show(pinned); });
+    }
+  })();
 
-    Array.prototype.forEach.call(groups, function (group) {
+  /* ---------------- roving arrow keys across chip groups ---------------- */
+  (function () {
+    var groups = document.querySelectorAll('.sk-items, .stack');
+    [].forEach.call(groups, function (group) {
       var items = [].slice.call(group.querySelectorAll('button'));
       if (items.length < 2) return;
-
       group.addEventListener('keydown', function (e) {
         var i = items.indexOf(document.activeElement);
         if (i === -1) return;
@@ -1809,310 +1370,161 @@
         else if (e.key === 'Home') next = items[0];
         else if (e.key === 'End') next = items[items.length - 1];
         if (!next) return;
-        e.preventDefault();
-        next.focus();
+        e.preventDefault(); next.focus();
       });
     });
   })();
 
-  // ---- skill context ----
-  // One readout for the whole section instead of a prompt bar under every
-  // group. It opens showing the first skill, so it is never empty and never
-  // has to ask to be used. Without this script the per-group panes stay
-  // visible, so no context is unreachable.
+  /* ---------------- hero node field (canvas) ---------------- */
   (function () {
-    var buttons = document.querySelectorAll('.sk');
-    var cmd = document.getElementById('skl-cmd');
-    var out = document.getElementById('skl-out');
-    if (!buttons.length || !cmd || !out) return;
-
-    document.documentElement.classList.add('js-ctx');
-
-    var pinned = null;
-
-    // "IBM QRadar (SIEM)" -> "ibm-qradar-siem", so the prompt reads like one.
-    function slug(s) {
-      return s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-    }
-
-    function show(btn) {
-      if (!btn) return;
-      var src = document.getElementById(btn.getAttribute('data-ctx'));
-      if (!src) return;
-      cmd.textContent = slug(btn.textContent);
-      out.textContent = src.textContent;
-    }
-
-    function restore() { show(pinned); }
-
-    Array.prototype.forEach.call(buttons, function (btn) {
-      btn.addEventListener('mouseenter', function () { show(btn); });
-      btn.addEventListener('focus', function () { show(btn); });
-      btn.addEventListener('click', function () {
-        var already = pinned === btn;
-        pinned = already ? null : btn;
-        Array.prototype.forEach.call(buttons, function (b) {
-          b.setAttribute('aria-pressed', b === btn && !already ? 'true' : 'false');
-        });
-        show(btn);
-      });
-    });
-
-    var skills = document.getElementById('skills');
-    if (skills) {
-      skills.addEventListener('mouseleave', restore);
-      skills.addEventListener('focusout', function (e) {
-        if (!skills.contains(e.relatedTarget)) restore();
-      });
-    }
-  })();
-
-
-  // ---- command palette ----
-  (function () {
-    var pal = document.getElementById('palette');
-    var input = document.getElementById('pal-input');
-    var list = document.getElementById('pal-list');
-    if (!pal || !input || !list) return;
-
-    // Terse labels: the list is scanned, not read. `keys` carry the extra
-    // words worth searching on without putting them on screen.
-    var ITEMS = [
-      { label: 'Experience', keys: 'section work roles jobs', go: function () { jump('experience'); } },
-      { label: 'Project',    keys: 'section cloudchain blockchain manet', go: function () { jump('project'); } },
-      { label: 'Skills',     keys: 'section linux tools', go: function () { jump('skills'); } },
-      { label: 'Education',  keys: 'section degree plymouth', go: function () { jump('education'); } },
-      { label: 'Contact',    keys: 'section phone details', go: function () { jump('contact'); } },
-      { label: 'Email',      keys: 'contact mail danny.chan2003@yahoo.com', go: function () { location.href = 'mailto:danny.chan2003@yahoo.com'; } },
-      { label: 'LinkedIn',   keys: 'external profile', go: function () { open('https://www.linkedin.com/in/danny-chan-a013aa204/'); } },
-      { label: 'GitHub',     keys: 'external code repo', go: function () { open('https://github.com/DCYXboi'); } },
-      { label: 'Resume',     keys: 'file cv download pdf', go: function () { location.href = 'resume.pdf'; } }
-    ];
-
-    function open(url) { window.open(url, '_blank', 'noopener'); }
-    function jump(id) {
-      var el = document.getElementById(id);
-      if (el) el.scrollIntoView({ block: 'start' });
-    }
-
-    var shown = [];
-    var active = 0;
-    var lastFocus = null;
-
-    function render(q) {
-      var needle = q.trim().toLowerCase();
-      shown = ITEMS.filter(function (it) {
-        return !needle ||
-          it.label.toLowerCase().indexOf(needle) !== -1 ||
-          it.keys.indexOf(needle) !== -1;
-      });
-      active = 0;
-      list.innerHTML = '';
-      if (!shown.length) {
-        var li = document.createElement('li');
-        li.className = 'none';
-        li.textContent = 'no matches';
-        list.appendChild(li);
-        return;
-      }
-      shown.forEach(function (it, i) {
-        var li = document.createElement('li');
-        var b = document.createElement('button');
-        b.type = 'button';
-        b.textContent = it.label;
-        if (i === 0) b.setAttribute('data-active', 'true');
-        b.addEventListener('click', function () { close(); it.go(); });
-        b.addEventListener('mouseenter', function () { active = i; paint(); });
-        li.appendChild(b);
-        list.appendChild(li);
-      });
-    }
-
-    function paint() {
-      var bs = list.querySelectorAll('button');
-      Array.prototype.forEach.call(bs, function (b, i) {
-        if (i === active) { b.setAttribute('data-active', 'true'); b.scrollIntoView({ block: 'nearest' }); }
-        else { b.removeAttribute('data-active'); }
-      });
-    }
-
-    function openPal() {
-      lastFocus = document.activeElement;
-      pal.hidden = false;
-      input.value = '';
-      render('');
-      input.focus();
-    }
-    function close() {
-      pal.hidden = true;
-      if (lastFocus && lastFocus.focus) lastFocus.focus();
-    }
-
-    input.addEventListener('input', function () { render(input.value); });
-
-    document.addEventListener('keydown', function (e) {
-      var k = e.key.toLowerCase();
-      if ((e.metaKey || e.ctrlKey) && k === 'k') {
-        e.preventDefault();
-        if (pal.hidden) { openPal(); } else { close(); }
-        return;
-      }
-      if (pal.hidden) return;
-      if (e.key === 'Escape') { e.preventDefault(); close(); return; }
-      if (!shown.length) return;
-      if (e.key === 'ArrowDown') { e.preventDefault(); active = (active + 1) % shown.length; paint(); }
-      else if (e.key === 'ArrowUp') { e.preventDefault(); active = (active - 1 + shown.length) % shown.length; paint(); }
-      else if (e.key === 'Enter') { e.preventDefault(); var it = shown[active]; close(); if (it) it.go(); }
-    });
-
-    // Clicking the backdrop dismisses it.
-    pal.addEventListener('mousedown', function (e) { if (e.target === pal) close(); });
-
-    Array.prototype.forEach.call(document.querySelectorAll('[data-open-palette]'), function (b) {
-      b.addEventListener('click', openPal);
-    });
-  })();
-
-  // ---- masthead node field ----
-  // Slow-drifting points that draw a line when they come close: a network
-  // finding its neighbours. Decorative only, and it stops entirely for
-  // anyone who has asked for reduced motion.
-  (function () {
-    var canvas = document.querySelector('.net');
-    var host = canvas && canvas.parentElement;
+    var canvas = document.querySelector('.hero-canvas');
+    var host = canvas && canvas.closest('.hero');
     if (!canvas || !host) return;
-
     var ctx = canvas.getContext && canvas.getContext('2d');
     if (!ctx) return;
 
     var calm = window.matchMedia('(prefers-reduced-motion: reduce)');
-    var dark = window.matchMedia('(prefers-color-scheme: dark)');
+    var LINK = 150, nodes = [], w = 0, h = 0, dpr = 1, rgb = '196,236,120', raf = null, vis = true;
 
-    var LINK = 132;          // px within which two nodes draw a link
-    var nodes = [];
-    var w = 0, h = 0, dpr = 1;
-    var rgb = '123, 46, 51';
-    var raf = null;
-    var visible = true;
-
-    var readColour = function () {
+    function readColour() {
       var v = getComputedStyle(document.documentElement).getPropertyValue('--net');
       if (v && v.trim()) rgb = v.trim();
-    };
-
-    var seed = function () {
-      // Enough to read as a network, few enough to stay cheap on a phone.
-      var count = Math.max(14, Math.min(34, Math.round(w / 46)));
+    }
+    function seed() {
+      var count = Math.max(18, Math.min(46, Math.round(w / 40)));
       nodes = [];
-      for (var i = 0; i < count; i++) {
-        nodes.push({
-          x: Math.random() * w,
-          y: Math.random() * h,
-          vx: (Math.random() - 0.5) * 0.16,
-          vy: (Math.random() - 0.5) * 0.16,
-          r: 1 + Math.random() * 1.4
-        });
-      }
-    };
-
-    var resize = function () {
-      var rect = host.getBoundingClientRect();
-      if (!rect.width || !rect.height) return;
+      for (var i = 0; i < count; i++) nodes.push({
+        x: Math.random() * w, y: Math.random() * h,
+        vx: (Math.random() - 0.5) * 0.18, vy: (Math.random() - 0.5) * 0.18,
+        r: 1 + Math.random() * 1.6
+      });
+    }
+    function resize() {
+      var r = host.getBoundingClientRect();
+      if (!r.width || !r.height) return;
       dpr = Math.min(window.devicePixelRatio || 1, 2);
-      w = rect.width;
-      h = rect.height;
-      canvas.width = Math.round(w * dpr);
-      canvas.height = Math.round(h * dpr);
+      w = r.width; h = r.height;
+      canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       seed();
-    };
-
-    var draw = function () {
+    }
+    function draw() {
       ctx.clearRect(0, 0, w, h);
-
       for (var i = 0; i < nodes.length; i++) {
         var a = nodes[i];
         for (var j = i + 1; j < nodes.length; j++) {
-          var b = nodes[j];
-          var dx = a.x - b.x, dy = a.y - b.y;
-          var d = Math.sqrt(dx * dx + dy * dy);
+          var b = nodes[j], dx = a.x - b.x, dy = a.y - b.y, d = Math.sqrt(dx * dx + dy * dy);
           if (d >= LINK) continue;
-          ctx.strokeStyle = 'rgba(' + rgb + ', ' + (0.22 * (1 - d / LINK)).toFixed(3) + ')';
+          ctx.strokeStyle = 'rgba(' + rgb + ',' + (0.20 * (1 - d / LINK)).toFixed(3) + ')';
           ctx.lineWidth = 1;
-          ctx.beginPath();
-          ctx.moveTo(a.x, a.y);
-          ctx.lineTo(b.x, b.y);
-          ctx.stroke();
+          ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
         }
       }
-
-      ctx.fillStyle = 'rgba(' + rgb + ', 0.42)';
+      ctx.fillStyle = 'rgba(' + rgb + ',0.5)';
       for (var k = 0; k < nodes.length; k++) {
         var n = nodes[k];
-        ctx.beginPath();
-        ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.beginPath(); ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2); ctx.fill();
       }
-    };
-
-    var step = function () {
+    }
+    function step() {
       for (var i = 0; i < nodes.length; i++) {
-        var n = nodes[i];
-        n.x += n.vx;
-        n.y += n.vy;
+        var n = nodes[i]; n.x += n.vx; n.y += n.vy;
         if (n.x < 0 || n.x > w) n.vx *= -1;
         if (n.y < 0 || n.y > h) n.vy *= -1;
       }
-      draw();
-      raf = window.requestAnimationFrame(step);
-    };
-
-    var stop = function () {
-      if (raf !== null) { window.cancelAnimationFrame(raf); raf = null; }
-    };
-
-    var start = function () {
-      stop();
-      draw();   // always leave a painted field, even if we never animate
-      if (calm.matches || !visible) return;
-      raf = window.requestAnimationFrame(step);
-    };
-
-    try {
-      readColour();
-      resize();
-      start();
-
-      if (window.ResizeObserver) {
-        new ResizeObserver(function () { resize(); draw(); }).observe(host);
-      } else {
-        window.addEventListener('resize', function () { resize(); draw(); });
-      }
-
-      // Nothing to animate while the hero is off screen or the tab is hidden.
-      if (window.IntersectionObserver) {
-        new IntersectionObserver(function (entries) {
-          var wasVisible = visible;
-          visible = entries[0].isIntersecting;
-          if (visible && !wasVisible) { start(); }
-          else if (!visible) { stop(); }   // keeps the last painted frame
-        }, { threshold: 0 }).observe(host);
-      }
-      document.addEventListener('visibilitychange', function () {
-        if (document.hidden) { stop(); } else { start(); }
-      });
-
-      var onScheme = function () { readColour(); draw(); };
-      if (dark.addEventListener) dark.addEventListener('change', onScheme);
-      if (calm.addEventListener) calm.addEventListener('change', start);
-      // The artifact shell stamps data-theme on <html> to force a theme.
-      new MutationObserver(onScheme).observe(document.documentElement, {
-        attributes: true, attributeFilter: ['data-theme']
-      });
-    } catch (err) {
-      stop();
-      canvas.remove();   // decoration is never worth a broken page
+      draw(); raf = requestAnimationFrame(step);
     }
+    function stop() { if (raf !== null) { cancelAnimationFrame(raf); raf = null; } }
+    function start() { stop(); draw(); if (calm.matches || !vis) return; raf = requestAnimationFrame(step); }
+
+    // If the backing store drifts from the CSS box (a bad first measure while
+    // layout was settling), re-size before painting so it never ships blurry.
+    function reflow() { resize(); draw(); }
+    try {
+      readColour(); resize(); start();
+      if (window.ResizeObserver) new ResizeObserver(reflow).observe(host);
+      window.addEventListener('resize', reflow, { passive: true });
+      window.addEventListener('load', reflow);
+      requestAnimationFrame(reflow);
+      if (window.IntersectionObserver) new IntersectionObserver(function (en) {
+        var was = vis; vis = en[0].isIntersecting;
+        if (vis && !was) start(); else if (!vis) stop();
+      }, { threshold: 0 }).observe(host);
+      document.addEventListener('visibilitychange', function () { if (document.hidden) stop(); else start(); });
+      new MutationObserver(function () { readColour(); draw(); }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+      if (window.matchMedia) window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function () { readColour(); draw(); });
+    } catch (e) { stop(); canvas.remove(); }
+  })();
+
+  /* ---------------- project visual: chained node ring ---------------- */
+  (function () {
+    var wrap = document.querySelector('.project-visual');
+    var canvas = wrap && wrap.querySelector('canvas');
+    if (!canvas) return;
+    var ctx = canvas.getContext && canvas.getContext('2d');
+    if (!ctx) return;
+    var calm = window.matchMedia('(prefers-reduced-motion: reduce)');
+    var w = 0, h = 0, dpr = 1, rgb = '196,236,120', fg = '160,160,160', raf = null, t = 0, vis = true, N = 9;
+
+    function colours() {
+      var cs = getComputedStyle(document.documentElement);
+      var v = cs.getPropertyValue('--net'); if (v && v.trim()) rgb = v.trim();
+    }
+    function resize() {
+      var r = wrap.getBoundingClientRect();
+      if (!r.width) return;
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      w = r.width; h = r.height;
+      canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    function draw() {
+      ctx.clearRect(0, 0, w, h);
+      var cx = w / 2, cy = h / 2, R = Math.min(w, h) * 0.30;
+      var pts = [];
+      for (var i = 0; i < N; i++) {
+        var ang = (i / N) * Math.PI * 2 + t * 0.15;
+        pts.push({ x: cx + Math.cos(ang) * R, y: cy + Math.sin(ang) * R });
+      }
+      // chain links around the ring
+      ctx.lineWidth = 1;
+      for (var i2 = 0; i2 < N; i2++) {
+        var a = pts[i2], b = pts[(i2 + 1) % N];
+        ctx.strokeStyle = 'rgba(' + rgb + ',0.5)';
+        ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+      }
+      // a few cross links (the ad-hoc mesh)
+      ctx.strokeStyle = 'rgba(' + rgb + ',0.16)';
+      for (var i3 = 0; i3 < N; i3++) {
+        var c = pts[i3], d = pts[(i3 + 3) % N];
+        ctx.beginPath(); ctx.moveTo(c.x, c.y); ctx.lineTo(d.x, d.y); ctx.stroke();
+      }
+      // nodes as small blocks (chain)
+      for (var i4 = 0; i4 < N; i4++) {
+        var p = pts[i4], pulse = 2.6 + Math.sin(t * 1.4 + i4) * 0.9;
+        ctx.fillStyle = 'rgba(' + rgb + ',0.9)';
+        ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(Math.PI / 4);
+        ctx.fillRect(-pulse, -pulse, pulse * 2, pulse * 2); ctx.restore();
+      }
+      // travelling packet
+      var seg = (t * 0.35) % N, ia = Math.floor(seg), f = seg - ia;
+      var pa = pts[ia], pb = pts[(ia + 1) % N];
+      var px = pa.x + (pb.x - pa.x) * f, py = pa.y + (pb.y - pa.y) * f;
+      ctx.fillStyle = 'rgba(' + rgb + ',1)';
+      ctx.beginPath(); ctx.arc(px, py, 2.4, 0, Math.PI * 2); ctx.fill();
+    }
+    function step() { t += 0.016; draw(); raf = requestAnimationFrame(step); }
+    function stop() { if (raf !== null) { cancelAnimationFrame(raf); raf = null; } }
+    function start() { stop(); draw(); if (calm.matches || !vis) return; raf = requestAnimationFrame(step); }
+    try {
+      colours(); resize(); start();
+      if (window.ResizeObserver) new ResizeObserver(function () { resize(); draw(); }).observe(wrap);
+      if (window.IntersectionObserver) new IntersectionObserver(function (en) {
+        var was = vis; vis = en[0].isIntersecting;
+        if (vis && !was) start(); else if (!vis) stop();
+      }, { threshold: 0 }).observe(wrap);
+      new MutationObserver(function () { colours(); draw(); }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+    } catch (e) { stop(); }
   })();
 </script>
 

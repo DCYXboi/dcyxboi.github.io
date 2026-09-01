@@ -1,223 +1,224 @@
 # DESIGN.md — dcyxboi.github.io
 
-Personal portfolio for **Danny Chan Yi Xiang** — Cybersecurity / Data Center Engineer,
-Petaling Jaya, Malaysia. Audience: recruiters and hiring managers for security
-operations, application support and infrastructure roles.
+Personal portfolio for **Danny Chan Yi Xiang** — cybersecurity and data-center
+engineer, Petaling Jaya, Malaysia. Audience: recruiters and hiring managers for
+security operations, application support and infrastructure roles.
 
 - **Live:** https://dcyxboi.github.io
 - **Repo:** https://github.com/DCYXboi/dcyxboi.github.io (GitHub Pages, `main` branch, root)
-- **Stack:** one hand-written `index.html`. No framework, no build step, no dependencies.
-  Vanilla CSS in a single `<style>`, vanilla JS in a single `<script>`.
+- **Stack:** one hand-written `index.html`. No framework, no build step, no
+  dependencies. Vanilla CSS in a single `<style>`, vanilla JS in a single
+  `<script>`. The only external host touched is Google Fonts.
 
 ---
 
 ## 1. Direction
 
-A **command line**. The page opens on a terminal and closes on one; everything
-between them is set as if printed. This was chosen deliberately over the generic
-"premium SaaS" look and should not drift toward it.
+**Dark cinematic and kinetic.** A near-black stage, oversized display type that
+reveals itself in motion, one electric signal-lime accent, and a live node field
+behind the name. The brief was an award-caliber front-end / UI-UX feel (the
+references were awwwards.com and sharplink.com), delivered on top of unchanged,
+truthful résumé content. The signal-lime accent and the node field keep a thread
+back to the person's actual world (terminals, SOC, networks) without literal
+terminal cosplay.
 
-**Reject on sight:** glassmorphism, `backdrop-filter` on content, rounded corners
-(the page is square throughout — only the cursor and focus ring are exceptions, and
-they are square too), pill buttons, purple/blue gradients, Inter/Roboto/Arial,
-drop shadows, three-equal-card feature rows, spring-bounce overshoot.
+Dark is the default; a toggle in the nav switches to a full light theme and the
+choice persists in `localStorage`. System preference is respected until the
+visitor chooses.
 
-**Already refused, on purpose:** Vercel's copywriting house style (title case, "&"
-for "and") — that is Vercel's voice, not this site's. Design-system clones from
-extracted DESIGN.md libraries — reference the structure, never wear the identity.
+**Reject on sight:** AI-purple/blue glow, glassmorphism on content, three-equal
+feature cards, Inter as a display face, serif display (this rebuild deliberately
+retired Instrument Serif), custom mouse cursors, em-dashes anywhere in copy,
+rounded corners (the page is square throughout; the only radius is a 4px favicon).
 
 ---
 
 ## 2. Tokens
 
-Every colour is oklch. Two themes, driven by `prefers-color-scheme` with a
-`[data-theme]` override. **Never define a colour only inside a media query** — the
-bare `:root` carries the full light palette.
+Every colour is `oklch`. The bare `:root` carries the **dark** palette in full;
+light is redefined under both `prefers-color-scheme: light` and
+`:root[data-theme="light"]`. Never define a colour only inside a media query.
+
+### Dark (default)
+```
+--bg        oklch(0.165 0.006 150)   page ground, warm near-black
+--bg-1      oklch(0.205 0.007 150)   raised surface (project band, readout)
+--bg-2      oklch(0.245 0.008 150)   hover surface
+--fg        oklch(0.965 0.004 150)   primary text            (17.4:1 on --bg)
+--fg-soft   oklch(0.795 0.006 150)   secondary text          (10.1:1)
+--fg-faint  oklch(0.635 0.006 150)   labels, meta            (5.6:1 — do not darken)
+--line      oklch(0.30 0.006 150)    hairlines
+--accent    oklch(0.885 0.19 128)    electric signal-lime    (14.2:1)
+--accent-2  oklch(0.80 0.16 165)     cooler green, gradients only
+--accent-ink oklch(0.19 0.05 150)    text on an accent fill  (13.5:1 on --accent)
+--net       196, 236, 120            rgb triplet for canvas
+```
 
 ### Light
 ```
---paper       oklch(0.958 0.004 125)   page ground
---panel       oklch(0.925 0.005 125)
---ink         oklch(0.225 0.008 125)   body text
---ink-soft    oklch(0.455 0.008 125)   secondary text
---ink-faint   oklch(0.52  0.006 125)   labels, meta   (4.85:1 — do not lighten)
---rule        oklch(0.865 0.005 125)   hairlines
---rule-firm   oklch(0.225 0.008 125)
---accent      oklch(0.435 0.115 22)    oxblood
---accent-dim  oklch(0.78  0.045 22)
---net         123, 46, 51              rgb triplet for canvas
+--bg        oklch(0.975 0.004 130)
+--fg        oklch(0.195 0.008 150)
+--fg-faint  oklch(0.455 0.009 150)   (6.75:1 on --bg)
+--accent    oklch(0.53 0.16 138)     deeper green for contrast (4.61:1)
+--accent-ink oklch(0.99 0.01 150)    near-white on the accent  (4.84:1)
+--net       70, 120, 40
 ```
 
-### Dark
-```
---paper       oklch(0.195 0.007 125)
---panel       oklch(0.255 0.008 125)
---ink         oklch(0.928 0.004 125)
---ink-soft    oklch(0.715 0.006 125)
---ink-faint   oklch(0.62  0.006 125)   (5.05:1 — do not darken)
---rule        oklch(0.325 0.007 125)
---rule-firm   oklch(0.928 0.004 125)
---accent      oklch(0.735 0.105 25)    rose
---accent-dim  oklch(0.44  0.065 25)
---net         208, 140, 134
-```
-
-**One accent only.** Neutrals are all tinted to hue 125 (a cool green-grey) — never
-mix a warm grey in.
-
-`--net` and the pixel palette exist as rgb triplets because `canvas` `fillStyle`
-cannot be trusted to parse `oklch()`.
+**One accent only.** Neutrals are all tinted to hue 150 (cool green-grey). `--net`
+is an rgb triplet because `canvas` `fillStyle` cannot be trusted to parse `oklch`.
 
 ### Measured contrast — treat as floors
-| pair | light | dark |
-|---|---|---|
-| ink on paper | 15.22 | 14.87 |
-| ink-faint on paper | 4.85 | 5.05 |
-| paper on accent | 7.46 | 7.49 |
-
-`--ink-faint` sits on 10.5–15px text, so it is bound by the 4.5:1 normal-text floor,
-not the 3:1 large-text one. It failed at 3.44 (light) before being corrected.
+Every text/background pair clears WCAG AA (4.5:1) in **both** themes. `--fg-faint`
+sits on 11–14px text, so it is bound by the 4.5:1 normal-text floor.
 
 ---
 
 ## 3. Type
 
-Loaded from Google Fonts — the only external host the page touches.
-
+Loaded from Google Fonts.
 ```
---serif  'Instrument Serif', 'Iowan Old Style', Georgia, 'Times New Roman', serif
---sans   'IBM Plex Sans', 'Segoe UI', system-ui, -apple-system, sans-serif
---mono   'IBM Plex Mono', ui-monospace, 'Cascadia Mono', Consolas, monospace
+--display  'Space Grotesk', 'Segoe UI', system-ui, sans-serif
+--sans     'IBM Plex Sans', 'Segoe UI', system-ui, -apple-system, sans-serif
+--mono     'IBM Plex Mono', ui-monospace, 'Cascadia Mono', Consolas, monospace
 ```
 
-The tension is the point: a high-contrast literary serif against a technical
-grotesque. Serif for the name and section headings only. Mono carries the terminals,
-labels, dates, status and chips. Sans carries body copy.
+Space Grotesk (technical grotesque) carries every headline and the name; it reads
+well huge and in motion. IBM Plex Mono carries labels, years, chips, readouts and
+the marquee — the technical register that ties back to the security world. IBM
+Plex Sans carries body copy.
 
-- Name: `clamp(42px, 7.6vw, 100px)`, centred, `letter-spacing: -0.02em`
-- Section headings: `clamp(30px, 4.2vw, 46px)` serif, with an accent hairline beside them
-- Body: 16px / 1.62, capped at 62–70ch
-- Labels: 11px mono, uppercase, `letter-spacing: 0.15em`
-- `font-variant-numeric: tabular-nums` on dates, CGPA, status and phone
+- Name: `clamp(52px, 12.5vw, 190px)`, weight 700, `letter-spacing: -0.035em`
+- Section headings: `clamp(36px, 6vw, 78px)`, weight 600
+- Body: 15.5–16px / 1.55–1.6, capped ~74ch
+- Labels: 11.5–12px mono, uppercase, `letter-spacing: 0.18–0.22em`
+- `font-variant-numeric: tabular-nums` on years, stats and the phone number
 
 ---
 
 ## 4. Layout
 
 ```
---gut   clamp(20px, 6vw, 96px)
---col   190px      left meta column (dates, labels) — collapses to 0 below 860px
---maxw  1240px
+--gut   clamp(20px, 6vw, 104px)
+--maxw  1320px
+--nav-h 66px
 ```
 
-Centring is done with **padding, not `max-width` + auto margins**:
-
+Centring is done with **padding, not `max-width` + auto margins**, so full-bleed
+bands (nav, marquee, `#project`, `#contact`) still reach edge to edge while their
+content aligns:
 ```css
 .wrap { padding-inline: max(var(--gut), calc((100% - var(--maxw)) / 2)); }
 ```
 
-This keeps elements full width so the sticky nav, the accent project panel, the
-fact strip and the footer still bleed edge to edge while their content aligns. It
-also avoids the scrollbar drift a `100vw` calculation introduces. At 1920px this
-yields a 1240px centred column; below ~1440px the gutter takes over.
+Breakpoints: **720px** (nav collapses to a hamburger; two-column grids become one)
+and **860px** (project splits to one column). Stats regrid at 780px and 440px.
 
-Single breakpoint: **860px**. Below it `--col` goes to 0 and every two-column grid
-becomes one.
+One weighted easing curve everywhere: `cubic-bezier(.22, 1, .36, 1)`.
 
 ---
 
 ## 5. Structure
 
-`#experience` · `#project` · `#skills` · `#education` · `#contact`
+`#experience` · `#project` · `#skills` · `#education` · `#contact` — IDs preserved
+from the previous build so old links and muscle memory still resolve.
 
-- **Boot screen** — full-screen overlay, ~1.4s log, then fades and hands to the hero.
-- **Hero** — centred serif name; terminal left (`danny@portfolio ~`), `[ SYSTEM ONLINE ]`
-  status panel right with four boxed links beneath it; drifting node canvas behind.
-- **Sticky nav** — four sections, mono, active state tracked by scroll position.
-- **Fact strip** — certification / degree / languages, three cells with border dividers.
-- **Experience** — three `<details>` rows, date in the left column, first one open.
-- **Project** — the one full-bleed accent panel; inverts in dark mode. Pickable
-  tech stack with a readout.
-- **Skills** — six category rows of chips, one sticky `$ man <skill>` readout.
-- **Education** — timeline rail with a node per entry.
-- **Contact** — closing terminal, `$ cat contact.txt`.
+Eight distinct layout families, so the page never repeats a section shape:
+
+- **Fixed nav** — brand mark, section links, theme toggle, one "Get in touch"
+  button. Gains a blurred background once scrolled. Links collapse into a
+  hamburger dropdown below 720px.
+- **Hero** — full-height, asymmetric. Eyebrow, huge two-line name with a lime
+  full stop, a lede, two CTAs. Node canvas + pointer spotlight + corner gradients
+  behind. Content is capped so it always fits one viewport.
+- **Stat strip** — four real facts (Security+, 30 client environments, 3 roles,
+  BSc), divider-separated, numbers count up on reveal.
+- **Marquee** — one continuous mono strip of the real toolset. Pauses on hover and
+  under reduced motion.
+- **Experience** — three `<details>` rows: year, big role title, org, expand plus.
+  First open. Editorial list, not cards.
+- **Project** — full-bleed `--bg-1` band. Big CloudChain title, sub, four points,
+  a pickable tech stack with a readout, and a live "chained node ring" canvas.
+- **Skills** — six category groups in a two-column grid, one sticky `$ man <skill>`
+  readout above them.
+- **Education** — a two-node timeline rail.
+- **Contact** — centred closing moment: "Get in touch", the email at display
+  scale, then phone / LinkedIn / GitHub / location.
 - **Footer** — colophon only.
 
 ---
 
 ## 6. Signature components
 
-**Ink wipe** — a block of accent sweeps up from the baseline and the label flips to
-paper as it passes. On nav, role rows, and links. It deliberately **bleeds outside**
-the element box (16px each side on a role row). Hover only — never focus, because an
-outline hugs the box and the two can never align.
+**Kinetic name reveal** — each line of the name sits in an `overflow: hidden`
+clip and rises from 110% on load via the Web Animations API, timed to fire after
+the display font is ready so the mask lines up on final glyphs.
 
-**Focus ring** — `2px solid var(--accent)`, `outline-offset: 2px`, square. On the
-accent panel it flips to `--paper`.
+**Node fields (canvas)** — the hero runs a drifting node/link network themed to
+`--net`; the project runs a rotating "chain ring" with a travelling packet. Both
+pause off-screen, on tab-hide, and under reduced motion, re-read their colour when
+the theme flips, and remove themselves rather than cost the page if anything
+throws. The hero canvas re-sizes on load / resize / ResizeObserver so its backing
+store can never drift from its box.
 
-**Cursor** — a 10px terminal cell, hotspot centred, drawn as an inline SVG in the
-`cursor` property. Fills with accent over anything clickable. Built from a
-fill-and-stroke pair, not flat accent, so it survives the accent panel. Reverts to
-native on touch.
+**Pointer spotlight** — a radial `--glow` follows the cursor across the hero
+background. The native cursor is untouched (no custom-cursor tell); pointer-only,
+reduced-motion off.
 
-**Readout pattern** — used twice (Skills, Project). Hover previews, click pins,
-leaving restores the pin. Opens showing the first item so it is never empty and never
-needs instruction copy. Reserved height so swapping entries does not shift the page.
+**Magnetic buttons** — `.magnetic` controls translate toward the cursor via rAF
+and transform (never React/`useState`, never per-frame layout). Pointer-only,
+reduced-motion off.
 
-**Scanlines** — fixed overlay, `repeating-linear-gradient` at 3% black, 1px on / 2px
-off, `pointer-events: none`. Adds no colour of its own.
+**Readout pattern** — used twice (skills, project). Hover previews, click pins,
+leaving restores the pin, opens on the first item so it is never empty. Reserved
+height so swapping entries never shifts the page.
+
+**Ink-fill controls** — buttons, chips and the plus toggle fill or lift on hover
+with the accent; on the accent-ink pairing the text stays legible (13.5:1).
+
+**Grain** — a fixed `feTurbulence` overlay, `pointer-events: none`, `overlay`
+blend on dark and `multiply` on light. Adds texture, no colour of its own.
 
 ---
 
 ## 7. Motion
 
-One curve: `cubic-bezier(.32, .72, 0, 1)` — weighted, never `linear` or `ease-in-out`.
-Only `transform`, `opacity` and colour animate.
+Dials: variance 8 / motion 8 / density 4. Only `transform`, `opacity` and colour
+animate. Scroll reveals use `IntersectionObserver` (16–26px rise, staggered),
+with an end-of-page sweep so nothing in the last screenful is ever stranded.
 
-- **Terminal typing** — 285 per-character spans, hidden by `visibility` so the box is
-  full size before a word appears. Commands ~26ms/char, output ~6ms, 150ms beat
-  between a command and its output. Any click or key finishes it.
-- **Status boot** — each check lands, then resolves ~260ms later; header flips
-  `[ SYSTEM BOOT ]` → `[ SYSTEM ONLINE ]`.
-- **Scroll reveal** — 16px rise over 620ms via `IntersectionObserver`. Plus a sweep
-  that reveals anything left when the page reaches its end, because the observer's
-  bottom margin can otherwise strand a block near the document floor forever.
-- **Hover** — chips and entries lift 2–4px and press back on `:active`.
-
-`prefers-reduced-motion` skips the boot screen, the typing, the caret blink, the
-status sequence and every transform.
+`prefers-reduced-motion` collapses everything: no name reveal, no marquee, no
+spotlight, no magnetism, no count-up, canvases paint one static frame, reveals are
+simply present.
 
 ---
 
 ## 8. Non-negotiables
 
-1. **Progressive enhancement.** Every JS-dependent state is scoped to a class only JS
-   adds (`.js-reveal`, `.js-ctx`, `.js-boot`, `.booting`, `.typing`). Without JS the
-   page renders finished. The boot overlay is `display: none` until armed — a curtain
-   that cannot lift is worse than no curtain.
-2. **Reserve height before animating.** Hide with `visibility`, not `display`.
-   Nothing below an animating block may move.
-3. **Failsafes.** Boot screen, typing and status each have a timeout that completes
-   them; the intro sits in `try/catch` and removes itself rather than costing the page.
-4. **No invented content.** Every claim traces to the resume. Missing facts get a
-   visibly marked placeholder, never a plausible guess.
+1. **Progressive enhancement.** Every JS-dependent state is scoped to a class only
+   JS adds (`js-reveal`, `js-anim`, `js-ctx`). Without JS the page renders
+   finished: the name is present, the marquee is CSS, `<details>` work natively,
+   and each skill group shows its own readout list instead of the single readout.
+2. **Reserve height before animating.** Nothing below an animating block moves.
+3. **Failsafes.** Every canvas and the reveal observer sit in `try/catch` and fail
+   to a finished page, never a broken one.
+4. **No invented content.** Every claim traces to the résumé (V04). Zero
+   em-dashes and en-dashes in visible copy — checked mechanically before ship.
+5. **One accent, one radius system, one theme per page.**
 
 ---
 
 ## 9. Content sources
 
-Resume **V04** (`resume.pdf`) is canonical. Earlier versions differ materially —
-V03 lacks the Linux/CentOS work, the Go/MySQL project detail and the six skill
-categories. The site's copy is a rewrite of V04, not a transcription.
+Résumé **V04** (`resume.pdf`) is canonical; the site's copy is a rewrite of it,
+not a transcription. Every experience bullet, skill readout, the CloudChain
+project and both education entries map to V04.
 
-Deliberately **off** the page: home address, referees' names and phone numbers
-("references available on request"), and Peninsula's "First Class" (CGPA only).
-Deliberately **on**: mobile number, added at the owner's explicit request after the
-spam trade-off was raised.
+Deliberately **off** the page: home address, referees, Peninsula's "First Class"
+(CGPA only). Deliberately **on**: the mobile number, at the owner's explicit
+request.
 
-**Naming mismatch to watch:** the site says "Security Analyst (internship)" and omits
-"First Class"; the PDF says "Security Analyst Intern" and includes it. Site titles the
-role "Data Center Engineer"; the PDF says "Operation & Maintenance Engineer".
+**Naming choices carried over:** the site titles the current role "Operation and
+Maintenance Engineer" and the Ensign role "Security Analyst (Internship)".
 
 ---
 
@@ -225,24 +226,22 @@ role "Data Center Engineer"; the PDF says "Operation & Maintenance Engineer".
 
 | file | tracked | purpose |
 |---|---|---|
-| `index.html` | yes | the entire site, 79.5 KB |
-| `404.html` | yes | terminal-styled, `cd: no such file or directory` |
-| `resume.pdf` | yes | V04, served by the Resume button |
-| `og.png` | yes | 1200×630 social card, generated from the palette |
-| `favicon.svg` | yes | caret + prompt lines |
-| `favicon.png` | yes | 32px raster fallback |
-| `V04_ Resume_Danny.pdf` | **no** | untracked duplicate of `resume.pdf` |
-| `headshot.png` | **no** | untracked; a portrait was tried and removed |
+| `index.html` | yes | the entire site |
+| `404.html` | yes | dark 404, big `404.` display, section links |
+| `resume.pdf` | yes | V04, served by the Résumé button |
+| `og.png` | yes | 1200×630 social card, regenerated in the new palette |
+| `favicon.svg` | yes | lime node-triangle mark on near-black |
+| `favicon.png` | yes | 64px raster fallback |
 
-29 commits. `main` deploys to Pages from root.
+`main` deploys to Pages from root.
 
 ---
 
 ## 11. Open items
 
-- Two untracked files sitting in the repo (above) — commit, delete, or ignore.
 - No `robots.txt` or `sitemap.xml`.
-- Hero lede was written from V03 and still undersells the V04 infrastructure work.
-- Python is absent from the skills — named three times in the L2 Production Support
-  role being targeted.
-- Print stylesheet exists but has never been checked against a real printer.
+- Python is still absent from the skills, though named for some L2 support roles.
+- The OG card and favicon are generated from the palette; if the accent hue ever
+  changes, regenerate both (`--accent` → `--net` rgb must stay in sync).
+- Print stylesheet strips the cinematic chrome but has never been checked against
+  a real printer.
